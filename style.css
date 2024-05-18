@@ -1,0 +1,44 @@
+:root{
+    --primary-color: rgb(255, 255, 255);
+    --secondary-color: rgb(198, 250, 228);
+    --text-color: rgb(0, 0, 0)
+}
+
+.listItem{
+   background: var(--secondary-color);
+   padding: 5px;
+}
+
+.button{
+    border-radius: 10px;
+    background: var(--secondary-color);
+    padding: 5px;
+}
+
+.button:hover{
+    background: color-mix(in srgb, var(--secondary-color), var(--primary-color))
+
+}
+
+input[type="text"]{
+    border-radius: 10px;
+    background: var(--secondary-color);
+    padding: 5px;
+}
+
+body{
+    align-items: center;
+}
+
+.modal{
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
