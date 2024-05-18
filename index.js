@@ -98,3 +98,34 @@ function clearList() {
     localStorage.setItem("listContents", JSON.stringify(listContents))
     list.innerHTML = ""
 }
+
+//To do: Changing the to-do list to a homework list
+class Homework {
+    constructor(subjectName, subjectID, subjectType, isGroupWork, dueDate, description, points){
+        this.subjectName = subjectName || "No Subject"
+        this.subjectID = subjectID || "Unknown ID"
+        this.subjectType = subjectType || "Unknown"
+        this.isGroupWork = isGroupWork || false
+        this.dueDate = dueDate || "Unknown"
+        this.description = description || ""
+        this.points = points || "Unknown"
+    }
+
+    start(){
+        this.timeStarted = Date.now()
+    }
+}
+
+/* 
+{
+    "subject": {
+        "id": "",
+        "name": "",
+        "type": "",
+    }
+    "isGroupWork": false,
+    "dueDate": "",
+    "description": "",
+    "points": ""
+} 
+*/
