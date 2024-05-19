@@ -102,9 +102,9 @@ function clearList() {
 //To do: Changing the to-do list to a homework list
 class Homework {
     constructor(subjectName, subjectID, subjectType, isGroupWork, dueDate, description, points){
-        this.subjectName = subjectName || "No Subject"
-        this.subjectID = subjectID || "Unknown ID"
-        this.subjectType = subjectType || "Unknown"
+        this._subjectName = subjectName || "No Subject"
+        this._subjectID = subjectID || "Unknown ID"
+        this._subjectType = subjectType || "Unknown"
         this.isGroupWork = isGroupWork || false
         this.dueDate = dueDate || "Unknown"
         this.description = description || ""
@@ -113,6 +113,40 @@ class Homework {
 
     start(){
         this.timeStarted = Date.now()
+    }
+
+    get subject() {
+        return {
+          id: this._subjectID,
+          name: this._subjectName,
+          type: this._subjectType,
+        };
+    }
+
+    get homeworkObject(){
+        return {
+            subject: this.subject,
+            isGroupWork: this.isGroupWork,
+            dueDate: this.dueDate,
+            description: this.description,
+            points: this.points,
+            timeStarted: this.timeStarted
+        }
+    }
+
+    set homeworkObject(obj){
+        this.subject = obj.subject
+        this.isGroupWork = obj.isGroupWork
+        this.dueDate = obj.dueDate
+        this.description = obj.description
+        this.points = obj.points
+        this.timeStarted = obj.timeStarted
+    }
+
+    set subject(obj){
+        this._subjectID = obj.id
+        this._subjectName = obj.name
+        this._subjectType = obj.type
     }
 }
 
