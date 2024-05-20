@@ -21,17 +21,23 @@ if (storedlistContents != null && storedlistContents.length > 0) {
     }
 }
 
+/**
+ * Handles different types of input elements and returns the appropriate value.
+ *
+ * @param {HTMLElement} element - The input element to handle.
+ * @return {string|number|boolean|Date|null} The value of the input element, or null if it is empty.
+ */
 function inputHandler(element){
     switch(element.type){
         case "text":
         case "textarea":
-            return element.value || undefined
+            return element.value != ""? element.value:null
         case "number":
-            return element.value || undefined
+            return element.value != ""? element.value:null
         case "checkbox":
             return element.checked
         case "date":
-            return Date(element.value) || undefined
+            return element.value != ""? new Date(element.value):null
         default:
             console.error("Invalid Input")
     }
@@ -52,6 +58,7 @@ inputDiv.addEventListener(
             )
             for(inputs of allInputs) {
                 inputs.value = ""
+                inputs.checked = false
             }
             listContents.push(inputHomework.homeworkObject)
             manageLocalStorage.update()
@@ -60,16 +67,22 @@ inputDiv.addEventListener(
     }
 )
 
-const manageLocalStorage = {
-    update(){
+class manageLocalStorage {
+    static update(){
         localStorage.setItem("listContents", JSON.stringify(listContents))
-    },
-    delete(listItem){
+    }
+    static delete(listItem){
         listContents.splice(listContents.indexOf(listItem), 1)
         manageLocalStorage.update()
     }
 }
-
+/**
+ * 
+ * @param {homework.homeworkObject} homeworkObject 
+ * 
+ * @description adds a list item and attaches it with a details, delete and edit button
+ * 
+ */
 function addListItem(homeworkObject) {
     const listItem = document.createElement("div")
     const subjectName = document.createElement("h1")
@@ -103,7 +116,7 @@ function addListItem(homeworkObject) {
     deleteButton.value = "Delete"
     deleteButton.addEventListener(
         "click", function () {
-            delete(homeworkObject)
+            manageLocalStorage.delete(homeworkObject)
             listItem.remove()
         }
     )
