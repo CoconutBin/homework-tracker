@@ -25,6 +25,12 @@ if (Storage == null) {
     alert("Your browser does not support local storage, so list items won't save when you exit the tab");
 }
 
+if (localStorage.getItem("version")!== "2.1b") {
+    localStorage.clear()
+}
+
+localStorage.setItem("version", "2.1b")
+
 if (storedlistContents != null && storedlistContents.length > 0) {
     for (let i = 0; i < storedlistContents.length; i++) {
         addListItem(storedlistContents[i]);
