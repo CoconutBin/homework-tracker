@@ -9,7 +9,17 @@ const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupW
 const inputDiv = document.getElementById("inputform")
 const list = document.getElementById("list")
 const listContents = []
-const storedlistContents = JSON.parse(localStorage.getItem("listContents")) || []
+const storedlistContents = JSON.parse(localStorage.getItem("listContents")) ?? []
+const editModal = document.getElementById("editModal")
+const editSubject = document.getElementById("editSubject")
+const editSubjectID = document.getElementById("editSubjectID")
+const editSubjectType = document.getElementById("editSubjectType")
+const editIsGroupWork = document.getElementById("editIsGroupWork")
+const editDueDate = document.getElementById("editDueDate")
+const editPoints = document.getElementById("editPoints")
+const editDescription = document.getElementById("editDescription")
+const allEdits = [editSubject, editSubjectID, editSubjectType, editIsGroupWork, editDueDate, editPoints, editDescription]
+
 
 if (Storage == null) {
     alert("Your browser does not support local storage, so list items won't save when you exit the tab");
@@ -27,24 +37,28 @@ if (storedlistContents != null && storedlistContents.length > 0) {
  * @param {HTMLElement} element - The input element to handle.
  * @return {string|number|boolean|Date|null} The value of the input element, or null if it is empty.
  */
-function inputHandler(element){
-    switch(element.type){
+function inputHandler(element) {
+    switch (element.type) {
         case "text":
         case "textarea":
-            return element.value != ""? element.value:null
+            return element.value != "" ? element.value : null
         case "number":
-            return element.value != ""? element.value:null
+            return element.value != "" ? element.value : null
         case "checkbox":
             return element.checked
         case "date":
-            return element.value != ""? new Date(element.value):null
+            return element.value != "" ? new Date(element.value) : null
         default:
             console.error("Invalid Input")
     }
 }
 
+function closeModal(element){
+    element.style.display = "none"
+}
+
 inputDiv.addEventListener(
-     "submit", function (event) {
+    "submit", function (event) {
         event.preventDefault();
         if (inputSubject.value) {
             const inputHomework = new Homework(
@@ -53,27 +67,27 @@ inputDiv.addEventListener(
                 inputHandler(inputSubjectType),
                 inputHandler(inputIsGroupWork),
                 inputHandler(inputDueDate),
-                inputHandler(inputDescription),
-                inputHandler(inputPoints)
+                inputHandler(inputPoints),
+                inputHandler(inputDescription)
             )
-            for(inputs of allInputs) {
+            for (inputs of allInputs) {
                 inputs.value = ""
                 inputs.checked = false
             }
             listContents.push(inputHomework.homeworkObject)
-            manageLocalStorage.update()
+            ManageLocalStorage.update()
             addListItem(inputHomework.homeworkObject)
         }
     }
 )
 
-class manageLocalStorage {
-    static update(){
+class ManageLocalStorage {
+    static update() {
         localStorage.setItem("listContents", JSON.stringify(listContents))
     }
-    static delete(listItem){
+    static delete(listItem) {
         listContents.splice(listContents.indexOf(listItem), 1)
-        manageLocalStorage.update()
+        ManageLocalStorage.update()
     }
 }
 /**
@@ -86,18 +100,42 @@ class manageLocalStorage {
 function addListItem(homeworkObject) {
     const listItem = document.createElement("div")
     const subjectName = document.createElement("h1")
+    const subjectID = document.createElement("h2")
+    const subjectType = document.createElement("h2")
+    const dueDate = document.createElement("h3")
+    const points = document.createElement("h3")
+    const isGroupWork = document.createElement("h3")
+    const description = document.createElement("p")
     const detailsButton = document.createElement("input")
     const deleteButton = document.createElement("input")
     const editButton = document.createElement("input")
-    const editModal = document.createElement("div")
 
     //Main Div
     listItem.classList.add("listItem")
 
     //Displaying Text Item
-    subjectName.classList.add("listItem")
     subjectName.textContent = homeworkObject.subject.name
     listItem.appendChild(subjectName)
+    subjectID.textContent = homeworkObject.subject.id
+    subjectType.textContent = homeworkObject.subject.type
+    dueDate.textContent = homeworkObject.dueDate
+    points.textContent = homeworkObject.points
+    isGroupWork.textContent = homeworkObject.isGroupWork == true? "Group Work":"Not Group Work"
+    description.textContent = homeworkObject.description
+
+    //Details Modal
+    const detailsModal = document.createElement("div")
+    const detailsDisplay = document.createElement("div")
+    detailsModal.classList.add("modal")
+    detailsDisplay.classList.add("listItem")
+    detailsDisplay.appendChild(subjectID)
+    detailsDisplay.appendChild(subjectType)
+    detailsDisplay.appendChild(dueDate)
+    detailsDisplay.appendChild(points)
+    detailsDisplay.appendChild(isGroupWork)
+    detailsDisplay.appendChild(description)
+    detailsModal.appendChild(detailsDisplay)
+    listItem.appendChild(detailsModal)
 
     //Details Button
     detailsButton.type = "button"
@@ -105,7 +143,7 @@ function addListItem(homeworkObject) {
     detailsButton.value = "Details"
     detailsButton.addEventListener(
         "click", function () {
-            console.log(homeworkObject)
+            detailsModal.style.display = "flex"
         }
     )
     listItem.appendChild(detailsButton)
@@ -116,19 +154,39 @@ function addListItem(homeworkObject) {
     deleteButton.value = "Delete"
     deleteButton.addEventListener(
         "click", function () {
-            manageLocalStorage.delete(homeworkObject)
+            ManageLocalStorage.delete(homeworkObject)
             listItem.remove()
         }
     )
     listItem.appendChild(deleteButton)
 
-    //Editing System
+    //To do:Edit Modal
+    editModal.addEventListener(
+        "submit", function (event) {
+            event.preventDefault();
+            if(editSubject.value != "") {
+                subjectName.textContent = editSubject.value
+                editModal.style.display = "none"
+            }
+
+        }
+    )
+ 
+
+    //Edit Button
     editButton.type = "button"
     editButton.classList.add("button")
     editButton.value = "Edit"
     editButton.addEventListener(
         "click", function () {
             editModal.style.display = "flex"
+            editSubject.value = homeworkObject.subject.name
+            editSubjectID.value = homeworkObject.subject.id ?? ""
+            editSubjectType.value = homeworkObject.subject.type ?? ""
+            editIsGroupWork.value = homeworkObject.isGroupWork ?? ""
+            editDueDate.value = homeworkObject.dueDate ?? ""
+            editPoints.value = homeworkObject.points ?? ""
+            editDescription.value = homeworkObject.description ?? ""
         }
     )
     listItem.appendChild(editButton)
@@ -214,7 +272,7 @@ function clearList() {
 
 //To do: Changing the to-do list to a homework list
 class Homework {
-    constructor(subjectName, subjectID, subjectType, isGroupWork, dueDate, description, points){
+    constructor(subjectName, subjectID, subjectType, isGroupWork, dueDate, points, description) {
         this._subjectName = subjectName ?? undefined
         this._subjectID = subjectID ?? undefined
         this._subjectType = subjectType ?? undefined
@@ -224,19 +282,19 @@ class Homework {
         this.points = points ?? undefined
     }
 
-    start(){
+    start() {
         this.timeStarted = Date.now()
     }
 
     get subject() {
         return {
-          id: this._subjectID,
-          name: this._subjectName,
-          type: this._subjectType,
+            id: this._subjectID,
+            name: this._subjectName,
+            type: this._subjectType,
         };
     }
 
-    get homeworkObject(){
+    get homeworkObject() {
         return {
             subject: this.subject,
             isGroupWork: this.isGroupWork,
@@ -247,7 +305,7 @@ class Homework {
         }
     }
 
-    set homeworkObject(obj){
+    set homeworkObject(obj) {
         this.subject = obj.subject
         this.isGroupWork = obj.isGroupWork
         this.dueDate = obj.dueDate
@@ -256,7 +314,7 @@ class Homework {
         this.timeStarted = obj.timeStarted
     }
 
-    set subject(obj){
+    set subject(obj) {
         this._subjectID = obj.id
         this._subjectName = obj.name
         this._subjectType = obj.type

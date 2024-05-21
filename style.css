@@ -7,6 +7,9 @@
 .listItem{
    background: var(--secondary-color);
    padding: 5px;
+   border: solid 2px black;
+   border-radius: 3px;
+   margin-bottom: 5px;
 }
 
 .button{
@@ -39,14 +42,22 @@ textarea{
 
 body{
     align-items: center;
+    font-size: larger;
 }
 
 .modal{
     display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
+    position: absolute; /* Stay in place */
     align-items: center;
     justify-content: center;
-    overflow: auto; /* Enable scroll if needed */
+    overflow: hidden; /* Enable scroll if needed */
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 div{

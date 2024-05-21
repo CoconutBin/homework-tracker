@@ -40,6 +40,40 @@
             <input type="button" value="Clear List" onclick="clearList()" class="button">
         </form>
     </div>
+    <div id="editModal" class="modal">
+        <form class="listItem">
+            <label>
+                Subject:
+                <input type="text" name="subject" id="editSubject" autocomplete="off">
+            </label><br>
+            <label>
+                Subject ID:
+                <input type="text" name="subjectId" id="editSubjectID" autocomplete="off">
+            </label><br>
+            <label>
+                Subject Type:
+                <input type="text" name="subjectType" id="editSubjectType" autocomplete="off">
+            </label><br>
+            <label>
+                Is it a group work?
+                <input type="checkbox" name="isGroupWork" id="editIsGroupWork" autocomplete="off">
+            </label><br><br>
+            <label>
+                Due Date:
+                <input type="date" name="dueDate" id="editDueDate" autocomplete="off">
+            </label><br><br>
+            <label>
+                Points:
+                <input type="number" name="points" id="editPoints" autocomplete="off">
+            </label><br><br>
+            <label>
+                Work Details:
+                <textarea name="description" id="editDescription" autocomplete="off"></textarea>
+            </label><br><br>
+            <input type="submit" class="button">
+            <input type="button" value="Close" onclick="closeModal(editModal)" class="button">
+        </form>
+    </div>
 </body>
 <script src="index.js"></script>
 
