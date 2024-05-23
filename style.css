@@ -7,6 +7,9 @@
 .listItem{
    background: var(--secondary-color);
    padding: 5px;
+   border: solid 2px black;
+   border-radius: 3px;
+   margin-bottom: 5px;
 }
 
 .button{
@@ -21,25 +24,47 @@
 
 }
 
-input[type="text"]{
+input[type="text"], input[type="number"], textarea{
     border-radius: 10px;
     background: var(--secondary-color);
     padding: 5px;
+    margin-bottom: 5px;
+}
+
+input[type="number"]{
+    width: 5vw;
+}
+
+textarea{
+    width: 25vw;
+    height: 15vh;
 }
 
 body{
     align-items: center;
+    font-size: larger;
 }
 
 .modal{
     display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
+    position: absolute; /* Stay in place */
     align-items: center;
     justify-content: center;
-    overflow: auto; /* Enable scroll if needed */
+    overflow: hidden; /* Enable scroll if needed */
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 div{
     display: flexbox;
     width: max(30vw, 300px);
+}
+
+p{
+    margin-bottom: -5px !important;
 }
