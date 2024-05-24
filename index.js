@@ -118,7 +118,6 @@ function addListItem(homeworkObject) {
     const points = document.createElement("h3")
     const isGroupWork = document.createElement("h3")
     const description = document.createElement("p")
-    const detailsButton = document.createElement("input")
     const deleteButton = document.createElement("input")
     const editButton = document.createElement("input")
     const closeDetailButton = document.createElement("input")
