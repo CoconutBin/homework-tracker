@@ -96,8 +96,9 @@ class ManageLocalStorage {
         ManageLocalStorage.update()
     }
 
-    static replace(listItem, updatedListItem) {
-        listContents.splice(listContents.indexOf(listItem), 1, updatedListItem)
+    static replace(index, updatedListItem) {
+        listContents.splice(index, 1, updatedListItem)
+        ManageLocalStorage.update()
     }
 }
 /**
@@ -109,6 +110,7 @@ class ManageLocalStorage {
  */
 function addListItem(homeworkObject) {
     const listItem = document.createElement("div")
+    const displayDiv = document.createElement("div")
     const subjectName = document.createElement("h1")
     const subjectID = document.createElement("h2")
     const subjectType = document.createElement("h2")
@@ -120,20 +122,75 @@ function addListItem(homeworkObject) {
     const deleteButton = document.createElement("input")
     const editButton = document.createElement("input")
     const closeDetailButton = document.createElement("input")
-    let previousEdit = homeworkObject
+    let listItemIndex
 
     //Main Div
     listItem.classList.add("listItem")
 
     //Displaying Text Item
     subjectName.textContent = homeworkObject.subject.name
-    listItem.appendChild(subjectName)
+    displayDiv.appendChild(subjectName)
+    displayDiv.classList.add("listItem")
     subjectID.textContent = homeworkObject.subject.id
     subjectType.textContent = homeworkObject.subject.type
     dueDate.textContent = homeworkObject.dueDate
     points.textContent = homeworkObject.points
     isGroupWork.textContent = homeworkObject.isGroupWork == true ? "Group Work" : "Not Group Work"
     description.textContent = homeworkObject.description
+
+    //Delete Button
+    deleteButton.type = "button"
+    deleteButton.classList.add("button")
+    deleteButton.value = "Delete"
+    deleteButton.addEventListener(
+        "click", function () {
+            ManageLocalStorage.delete(homeworkObject)
+            listItem.remove()
+        }
+    )
+    listItem.appendChild(deleteButton)
+
+    //Edit Modal
+    editModal.addEventListener(
+        "submit", function (event) {
+            event.preventDefault();
+            if (editSubject.value != "") {
+                subjectName.textContent = editSubject.value
+                homeworkObject.subject.name = editSubject.value
+                homeworkObject.subject.id = editSubjectID.value
+                homeworkObject.subject.type = editSubjectType.value
+                homeworkObject.isGroupWork = editIsGroupWork.value
+                homeworkObject.dueDate = editDueDate.value
+                homeworkObject.points = editPoints.value
+                homeworkObject.description = editDescription.value
+                ManageLocalStorage.replace(listItemIndex, homeworkObject)
+                ManageLocalStorage.update()
+                editModal.style.display = "none"
+            }
+
+        }
+    )
+
+
+    //Edit Button
+    editButton.type = "button"
+    editButton.classList.add("button")
+    editButton.value = "Edit"
+    editButton.addEventListener(
+        "click", function () {
+            editModal.style.display = "flex"
+            editSubject.value = homeworkObject.subject.name
+            editSubjectID.value = homeworkObject.subject.id ?? ""
+            editSubjectType.value = homeworkObject.subject.type ?? ""
+            editIsGroupWork.value = homeworkObject.isGroupWork ?? ""
+            editDueDate.value = homeworkObject.dueDate ?? ""
+            editPoints.value = homeworkObject.points ?? ""
+            editDescription.value = homeworkObject.description ?? ""
+            listItemIndex = listContents.indexOf(homeworkObject)
+        }
+    )
+    listItem.appendChild(editButton)
+    listItem.appendChild(editModal)
 
     //Details Modal
     const detailsModal = document.createElement("div")
@@ -159,7 +216,7 @@ function addListItem(homeworkObject) {
     closeDetailButton.classList.add("button")
     closeDetailButton.addEventListener(
         "click", function () {
-            closeModal(detailsModal)
+            closeModal(closeDetailButton.parentElement)
         }
     )
     detailsModal.classList.add("modal")
@@ -175,75 +232,20 @@ function addListItem(homeworkObject) {
     <p>${homeworkObject.description}</p><br>
         `
     detailsModal.appendChild(detailsDisplay)
+    detailsModal.appendChild(editButton)
+    detailsModal.appendChild(deleteButton)
     detailsModal.appendChild(closeDetailButton)
     listItem.appendChild(detailsModal)
+    listItem.appendChild(displayDiv)
 
-    //Details Button
-    detailsButton.type = "button"
-    detailsButton.classList.add("button")
-    detailsButton.value = "Details"
-    detailsButton.addEventListener(
-        "click", function () {
-            detailsModal.style.display = "flex"
+    //Clicking for Details
+    displayDiv.addEventListener("click", function (event) {
+        // Check if clicked element is the close button
+        if (event.target !== closeDetailButton) {
+          // Your desired action for clicking listItem (e.g., open details)
+          detailsModal.style.display = "flex";
         }
-    )
-    listItem.appendChild(detailsButton)
-
-    //Delete Button
-    deleteButton.type = "button"
-    deleteButton.classList.add("button")
-    deleteButton.value = "Delete"
-    deleteButton.addEventListener(
-        "click", function () {
-            ManageLocalStorage.delete(homeworkObject)
-            listItem.remove()
-        }
-    )
-    listItem.appendChild(deleteButton)
-
-    /*
-    //Edit Modal
-    editModal.addEventListener(
-        "submit", function (event) {
-            event.preventDefault();
-            if (editSubject.value != "") {
-                subjectName.textContent = editSubject.value
-                homeworkObject.subject.name = editSubject.value
-                homeworkObject.subject.id = editSubjectID.value
-                homeworkObject.subject.type = editSubjectType.value
-                homeworkObject.isGroupWork = editIsGroupWork.value
-                homeworkObject.dueDate = editDueDate.value
-                homeworkObject.points = editPoints.value
-                homeworkObject.description = editDescription.value
-                ManageLocalStorage.replace(previousEdit, homeworkObject)
-                previousEdit = homeworkObject
-                ManageLocalStorage.update()
-                editModal.style.display = "none"
-            }
-
-        }
-    )
-
-
-    //Edit Button
-    editButton.type = "button"
-    editButton.classList.add("button")
-    editButton.value = "Edit"
-    editButton.addEventListener(
-        "click", function () {
-            editModal.style.display = "flex"
-            editSubject.value = homeworkObject.subject.name
-            editSubjectID.value = homeworkObject.subject.id ?? ""
-            editSubjectType.value = homeworkObject.subject.type ?? ""
-            editIsGroupWork.value = homeworkObject.isGroupWork ?? ""
-            editDueDate.value = homeworkObject.dueDate ?? ""
-            editPoints.value = homeworkObject.points ?? ""
-            editDescription.value = homeworkObject.description ?? ""
-        }
-    )
-    listItem.appendChild(editButton)
-    listItem.appendChild(editModal)
-    */
+      });
 
     listContents.push(homeworkObject)
 
@@ -259,10 +261,10 @@ function clearList() {
 
 //To do: Changing the to-do list to a homework list
 class Homework {
-    constructor(subjectName, subjectID, subjectType, isGroupWork, dueDate, points, description) {
-        this._subjectName = subjectName ?? undefined
-        this._subjectID = subjectID ?? undefined
-        this._subjectType = subjectType ?? undefined
+    constructor(subjectName = null, subjectID, subjectType, isGroupWork, dueDate, points, description) {
+        this.subjectName = subjectName ?? undefined
+        this.subjectID = subjectID ?? undefined
+        this.subjectType = subjectType ?? undefined
         this.isGroupWork = isGroupWork ?? false
         this.dueDate = dueDate ?? "Unknown"
         this.description = description ?? ""
@@ -275,9 +277,9 @@ class Homework {
 
     get subject() {
         return {
-            id: this._subjectID,
-            name: this._subjectName,
-            type: this._subjectType,
+            id: this.subjectID,
+            name: this.subjectName,
+            type: this.subjectType,
         };
     }
 
@@ -302,9 +304,9 @@ class Homework {
     }
 
     set subject(obj) {
-        this._subjectID = obj.id
-        this._subjectName = obj.name
-        this._subjectType = obj.type
+        this.subjectID = obj.id
+        this.subjectName = obj.name
+        this.subjectType = obj.type
     }
 }
 

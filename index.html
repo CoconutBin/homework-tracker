@@ -2,11 +2,16 @@
 
 <head>
     <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
 
 <body>
-    <div id="list"></div>
-    <div id="inputform">
+    <div id="list" style="display: flex; flex-direction: row-reverse">
+    <div class="listItem"><span class="material-symbols-outlined">add</span></div>
+    
+    </div>
+    <button onclick="document.getElementById('inputform').hidden = !document.getElementById('inputform').hidden">Add</button>
+    <div id="inputform" hidden>
         <form>
             <label>
                 Subject:

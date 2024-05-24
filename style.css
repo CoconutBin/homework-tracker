@@ -1,15 +1,16 @@
 :root{
     --primary-color: rgb(255, 255, 255);
     --secondary-color: rgb(198, 250, 228);
-    --text-color: rgb(0, 0, 0)
+    --text-color: rgb(0, 0, 0);
+    font-family: sans-serif, system-ui;
 }
 
 .listItem{
    background: var(--secondary-color);
-   padding: 5px;
-   border: solid 2px black;
-   border-radius: 3px;
-   margin-bottom: 5px;
+   padding: 10px;
+   border-radius: 25px;
+   margin-bottom: 13px;
+   margin-left: 10px;
 }
 
 .button{
@@ -23,6 +24,8 @@
     background: color-mix(in srgb, var(--secondary-color), var(--primary-color))
 
 }
+
+/*cursor: pointer;*/
 
 input[type="text"], input[type="number"], textarea{
     border-radius: 10px;
@@ -60,10 +63,6 @@ body{
   transform: translate(-50%, -50%);
 }
 
-div{
-    display: flexbox;
-    width: max(30vw, 300px);
-}
 
 p{
     margin-bottom: -5px !important;
