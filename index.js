@@ -9,6 +9,7 @@ const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupW
 const inputDiv = document.getElementById("inputform")
 const list = document.getElementById("list")
 const listContents = []
+const addListItemButton = document.getElementById("addListItemButton")
 const storedlistContents = JSON.parse(localStorage.getItem("listContents")) ?? []
 const editModal = document.getElementById("editModal")
 const editSubject = document.getElementById("editSubject")
@@ -25,17 +26,15 @@ if (Storage == null) {
     alert("Your browser does not support local storage, so list items won't save when you exit the tab");
 }
 
-if (localStorage.getItem("version") !== "2.1b") {
-    localStorage.clear()
-}
-
-localStorage.setItem("version", "2.1b")
-
 if (storedlistContents != null && storedlistContents.length > 0) {
-    for (let i = 0; i < storedlistContents.length; i++) {
-        addListItem(storedlistContents[i]);
+    for (listItem of storedlistContents) {
+        addListItem(listItem);
     }
 }
+
+addListItemButton.addEventListener("click", function () {
+    inputDiv.style.display = "flex"
+})
 
 /**
  * Handles different types of input elements and returns the appropriate value.
@@ -57,10 +56,6 @@ function inputHandler(element) {
         default:
             console.error("Invalid Input")
     }
-}
-
-function closeModal(element) {
-    element.style.display = "none"
 }
 
 inputDiv.addEventListener(
@@ -86,21 +81,6 @@ inputDiv.addEventListener(
         }
     }
 )
-
-class ManageLocalStorage {
-    static update() {
-        localStorage.setItem("listContents", JSON.stringify(listContents))
-    }
-    static delete(listItem) {
-        listContents.splice(listContents.indexOf(listItem), 1)
-        ManageLocalStorage.update()
-    }
-
-    static replace(index, updatedListItem) {
-        listContents.splice(index, 1, updatedListItem)
-        ManageLocalStorage.update()
-    }
-}
 /**
  * 
  * @param {homework.homeworkObject} homeworkObject 
@@ -112,15 +92,7 @@ function addListItem(homeworkObject) {
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
     const subjectName = document.createElement("h1")
-    const subjectID = document.createElement("h2")
-    const subjectType = document.createElement("h2")
-    const dueDate = document.createElement("h3")
-    const points = document.createElement("h3")
-    const isGroupWork = document.createElement("h3")
-    const description = document.createElement("p")
-    const deleteButton = document.createElement("input")
     const editButton = document.createElement("input")
-    const closeDetailButton = document.createElement("input")
     let listItemIndex
 
     //Main Div
@@ -130,24 +102,6 @@ function addListItem(homeworkObject) {
     subjectName.textContent = homeworkObject.subject.name
     displayDiv.appendChild(subjectName)
     displayDiv.classList.add("listItem")
-    subjectID.textContent = homeworkObject.subject.id
-    subjectType.textContent = homeworkObject.subject.type
-    dueDate.textContent = homeworkObject.dueDate
-    points.textContent = homeworkObject.points
-    isGroupWork.textContent = homeworkObject.isGroupWork == true ? "Group Work" : "Not Group Work"
-    description.textContent = homeworkObject.description
-
-    //Delete Button
-    deleteButton.type = "button"
-    deleteButton.classList.add("button")
-    deleteButton.value = "Delete"
-    deleteButton.addEventListener(
-        "click", function () {
-            ManageLocalStorage.delete(homeworkObject)
-            listItem.remove()
-        }
-    )
-    listItem.appendChild(deleteButton)
 
     //Edit Modal
     editModal.addEventListener(
@@ -210,16 +164,8 @@ function addListItem(homeworkObject) {
         subjectSubData = null
     }
 
-    closeDetailButton.type = "button"
-    closeDetailButton.value = "Close"
-    closeDetailButton.classList.add("button")
-    closeDetailButton.addEventListener(
-        "click", function () {
-            closeModal(closeDetailButton.parentElement)
-        }
-    )
     detailsModal.classList.add("modal")
-    detailsDisplay.classList.add("listItem")
+    detailsDisplay.classList.add("detailsDisplay")
     detailsDisplay.innerHTML =
         `
     <h1>${homeworkObject.subject.name}</h1>
@@ -230,20 +176,24 @@ function addListItem(homeworkObject) {
     <p>Details:<p>
     <p>${homeworkObject.description}</p><br>
         `
-    detailsModal.appendChild(detailsDisplay)
-    detailsModal.appendChild(editButton)
-    detailsModal.appendChild(deleteButton)
-    detailsModal.appendChild(closeDetailButton)
+
+    detailsModal.addEventListener("click", () => {
+        detailsModal.style.display = "none";
+        detailsDisplay.style.display = "none";
+    })
+
+    detailsDisplay.appendChild(editButton)
+    detailsDisplay.appendChild(addButton("Delete", listItem))
+    detailsDisplay.appendChild(addButton("Close", detailsDisplay))
     listItem.appendChild(detailsModal)
     listItem.appendChild(displayDiv)
+    listItem.appendChild(detailsDisplay)
+    detailsModal.contentEditable = "true"
 
     //Clicking for Details
-    displayDiv.addEventListener("click", function (event) {
-        // Check if clicked element is the close button
-        if (event.target !== closeDetailButton) {
-          // Your desired action for clicking listItem (e.g., open details)
+    displayDiv.addEventListener("click", () => {
           detailsModal.style.display = "flex";
-        }
+          detailsDisplay.style.display = "block";
       });
 
     listContents.push(homeworkObject)
@@ -258,70 +208,25 @@ function clearList() {
     list.innerHTML = "";
 }
 
-//To do: Changing the to-do list to a homework list
-class Homework {
-    constructor(subjectName = null, subjectID, subjectType, isGroupWork, dueDate, points, description) {
-        this.subjectName = subjectName ?? undefined
-        this.subjectID = subjectID ?? undefined
-        this.subjectType = subjectType ?? undefined
-        this.isGroupWork = isGroupWork ?? false
-        this.dueDate = dueDate ?? "Unknown"
-        this.description = description ?? ""
-        this.points = points ?? undefined
+function addButton(type, affectedElement){
+    let button = document.createElement("input");
+    button.type = "button";
+    button.value = type;
+    switch(type) {
+        case "Close":
+            button.addEventListener("click", () => {
+                affectedElement.style.display = "none"
+            })
+        break;
+        case "Delete":
+            button.addEventListener("click", () => {
+                affectedElement.remove()
+                ManageLocalStorage.delete(affectedElement)
+            })
+        break;
+        default:
+            console.error("Invalid Input")
     }
-
-    start() {
-        this.timeStarted = Date.now()
-    }
-
-    get subject() {
-        return {
-            id: this.subjectID,
-            name: this.subjectName,
-            type: this.subjectType,
-        };
-    }
-
-    get homeworkObject() {
-        return {
-            subject: this.subject,
-            isGroupWork: this.isGroupWork,
-            dueDate: this.dueDate,
-            description: this.description,
-            points: this.points,
-            timeStarted: this.timeStarted
-        }
-    }
-
-    set homeworkObject(obj) {
-        this.subject = obj.subject
-        this.isGroupWork = obj.isGroupWork
-        this.dueDate = obj.dueDate
-        this.description = obj.description
-        this.points = obj.points
-        this.timeStarted = obj.timeStarted
-    }
-
-    set subject(obj) {
-        this.subjectID = obj.id
-        this.subjectName = obj.name
-        this.subjectType = obj.type
-    }
+    
+    return button
 }
-
-/*
-{
-    "subject": {
-        "id": "",
-        "name": "",
-        "type": "",
-    }
-    "isGroupWork": false,
-    "dueDate": "",
-    "description": "",
-    "points": ""
-}
-*/
-
-
-// To do: a lot

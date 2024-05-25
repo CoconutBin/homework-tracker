@@ -2,17 +2,16 @@
 
 <head>
     <link rel="stylesheet" href="./style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 </head>
 
 <body>
-    <div id="list" style="display: flex; flex-direction: row-reverse">
-    <div class="listItem"><span class="material-symbols-outlined">add</span></div>
+    <div id="list" class="list">
+    <div class="listItem" id="addListItemButton"><h1><span class="material-symbols-outlined">add</span></h1></div>
     
     </div>
-    <button onclick="document.getElementById('inputform').hidden = !document.getElementById('inputform').hidden">Add</button>
-    <div id="inputform" hidden>
-        <form>
+    <div id="inputform" class="modal"><div >
+        <form class="inputForm">
             <label>
                 Subject:
                 <input type="text" name="subject" id="inputSubject" autocomplete="off">
@@ -44,7 +43,8 @@
             <input type="submit" class="button">
             <input type="button" value="Clear List" onclick="clearList()" class="button">
         </form>
-    </div>
+    </div></div>
+    
     <div id="editModal" class="modal">
         <form class="listItem">
             <label>
@@ -80,6 +80,8 @@
         </form>
     </div>
 </body>
+<script src="localStorage.js"></script>
+<script src="homework.js"></script>
 <script src="index.js"></script>
 
 </html>

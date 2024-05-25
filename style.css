@@ -1,37 +1,43 @@
 :root{
-    --primary-color: rgb(255, 255, 255);
-    --secondary-color: rgb(198, 250, 228);
-    --text-color: rgb(0, 0, 0);
+    --primary-color: #BF90FC;
+    --secondary-color: #c7fae5;
+    --accent-color: #6fd8ae;
+    --background-color: #ffffff;
+    --background-secondary-color: #c5c5c5;
+    --text-color: #000000;
     font-family: sans-serif, system-ui;
 }
 
-.listItem{
-   background: var(--secondary-color);
+.listItem, .inputForm, .detailsDisplay{
+   background: var(--primary-color);
    padding: 10px;
    border-radius: 25px;
-   margin-bottom: 13px;
-   margin-left: 10px;
+   margin: 6px;
+   cursor: pointer;
+   justify-content: center;
+   align-items: center;
 }
 
-.button{
-    border-radius: 10px;
-    background: var(--secondary-color);
-    padding: 5px;
-    margin-left: 5px;
+.inputForm{
+    justify-content: center;
+    align-items: center;
+    width: 30vw;
+    height: max(40vh,auto);
 }
 
 .button:hover{
-    background: color-mix(in srgb, var(--secondary-color), var(--primary-color))
+    background: color-mix(in srgb, --secondary-color, --background-color)
 
 }
 
 /*cursor: pointer;*/
 
-input[type="text"], input[type="number"], textarea{
+input, textarea{
     border-radius: 10px;
     background: var(--secondary-color);
     padding: 5px;
     margin-bottom: 5px;
+    margin-left: 5px;
 }
 
 input[type="number"]{
@@ -63,7 +69,22 @@ body{
   transform: translate(-50%, -50%);
 }
 
-
 p{
     margin-bottom: -5px !important;
+}
+
+.list{
+    display: flex; 
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.detailsDisplay{
+    display: none;
+    position: fixed;
+    inset: 0px;
+    margin: auto;
+    max-width: 25vw;
+    max-height: 30vh;
+    z-index: 9999;
 }
