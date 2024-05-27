@@ -1,8 +1,16 @@
+class Subject {
+    constructor(name, id, type){
+        this.name = name
+        this.id = id
+        this.type = type
+    }
+}
+
 class Homework {
-    constructor(subjectName = null, subjectID, subjectType, isGroupWork, dueDate, points, description) {
-        this.subjectName = subjectName ?? undefined
-        this.subjectID = subjectID ?? undefined
-        this.subjectType = subjectType ?? undefined
+    constructor(subject, isGroupWork, dueDate, points, description) {
+        this.subjectName = subject.name ?? undefined
+        this.subjectID = subject.id ?? undefined
+        this.subjectType = subject.type ?? undefined
         this.isGroupWork = isGroupWork ?? false
         this.dueDate = dueDate ?? "Unknown"
         this.description = description ?? ""

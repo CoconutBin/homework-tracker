@@ -63,19 +63,21 @@ inputDiv.addEventListener(
         event.preventDefault();
         if (inputSubject.value) {
             const inputHomework = new Homework(
-                inputHandler(inputSubject),
-                inputHandler(inputSubjectID),
-                inputHandler(inputSubjectType),
+                { 
+                name: inputHandler(inputSubject),
+                id: inputHandler(inputSubjectID),
+                type: inputHandler(inputSubjectType)
+                },
                 inputHandler(inputIsGroupWork),
                 inputHandler(inputDueDate),
                 inputHandler(inputPoints),
                 inputHandler(inputDescription)
             )
+            listContents.push(inputHomework.homeworkObject)
             for (inputs of allInputs) {
                 inputs.value = ""
                 inputs.checked = false
             }
-            listContents.push(inputHomework.homeworkObject)
             ManageLocalStorage.update()
             addListItem(inputHomework.homeworkObject)
         }
@@ -91,18 +93,17 @@ inputDiv.addEventListener(
 function addListItem(homeworkObject) {
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
-    const subjectName = document.createElement("h1")
+    const subjectName = addElement("h1", homeworkObject.subject.name)
     const editButton = document.createElement("input")
-    let listItemIndex
 
     //Main Div
     listItem.classList.add("listItem")
 
     //Displaying Text Item
-    subjectName.textContent = homeworkObject.subject.name
     displayDiv.appendChild(subjectName)
     displayDiv.classList.add("listItem")
 
+    /*
     //Edit Modal
     editModal.addEventListener(
         "submit", function (event) {
@@ -144,6 +145,7 @@ function addListItem(homeworkObject) {
     )
     listItem.appendChild(editButton)
     listItem.appendChild(editModal)
+    */
 
     //Details Modal
     const detailsModal = document.createElement("div")
@@ -168,7 +170,7 @@ function addListItem(homeworkObject) {
     detailsDisplay.classList.add("detailsDisplay")
     detailsDisplay.innerHTML =
         `
-    <h1>${homeworkObject.subject.name}</h1>
+    <h1 contenteditable="true">${homeworkObject.subject.name}</h1>
     ${subjectSubData != undefined ? "<p>" + subjectSubData + "</p>" : ""}
     <p>Due: ${homeworkObject.dueDate}</p>
     <p>${homeworkObject.points > 0 ? homeworkObject.points : "No"} Points</p>
@@ -182,9 +184,15 @@ function addListItem(homeworkObject) {
         detailsDisplay.style.display = "none";
     })
 
-    detailsDisplay.appendChild(editButton)
+    const detailsCloseButton = addButton("Custom", null, "Close")
+
+    detailsCloseButton.addEventListener("click", () => {
+        detailsModal.style.display = "none";
+        detailsDisplay.style.display = "none";
+    })
+
     detailsDisplay.appendChild(addButton("Delete", listItem))
-    detailsDisplay.appendChild(addButton("Close", detailsDisplay))
+    detailsDisplay.appendChild(detailsCloseButton)
     listItem.appendChild(detailsModal)
     listItem.appendChild(displayDiv)
     listItem.appendChild(detailsDisplay)
@@ -208,7 +216,7 @@ function clearList() {
     list.innerHTML = "";
 }
 
-function addButton(type, affectedElement){
+function addButton(type, affectedElement, customValue){
     let button = document.createElement("input");
     button.type = "button";
     button.value = type;
@@ -224,9 +232,23 @@ function addButton(type, affectedElement){
                 ManageLocalStorage.delete(affectedElement)
             })
         break;
+        case "Custom":
+        break;
         default:
             console.error("Invalid Input")
     }
+
+    if(customValue != undefined) {
+        button.value = customValue
+    }
     
     return button
+}
+
+function addElement(elementType, innerText){
+    let element = document.createElement(elementType)
+    if(innerText != undefined){
+        element.textContent = innerText
+    }
+    return element
 }
