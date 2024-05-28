@@ -5,6 +5,7 @@
     --background-color: #ffffff;
     --background-secondary-color: #c5c5c5;
     --text-color: #000000;
+    --error-color: #da0000;
     font-family: sans-serif, system-ui;
     cursor: default;
     --font-size-title: 32px;

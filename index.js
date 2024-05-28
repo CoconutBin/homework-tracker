@@ -128,7 +128,8 @@ function addListItem(homeworkObject) {
         detailsDescriptionText = addElement("p", homeworkObject.description)
     } 
     else {
-        detailsDescriptionText = addElement("textarea", "type some details here..")
+        detailsDescriptionText = document.createElement("textarea")
+        detailsDescriptionText.placeholder = "type some details here.."
     }
     const detailsDescription = addElement("p", `Details:`)
     detailsDescription.appendChild(document.createElement("br"))
@@ -198,6 +199,34 @@ function addListItem(homeworkObject) {
         subjectName.textContent = homeworkObject.subject.name
         ManageLocalStorage.replace(index, homeworkObject)
     });
+
+    // isGroupWork
+    detailsIsGroupWork.addEventListener("click", () => {
+        detailsIsGroupWork.textContent = (detailsIsGroupWork.textContent == "Group Work")? "Not Group Work" : "Group Work"
+        homeworkObject.isGroupWork = !homeworkObject.isGroupWork
+        ManageLocalStorage.replace(index, homeworkObject)
+        if(homeworkObject.isGroupWork){
+            detailsIsGroupWork.style.color = "var(--secondary-color)"
+        }
+        else{
+            detailsIsGroupWork.style.color = "var(--error-color)";
+        }
+    })
+
+    // Description
+    if(detailsDescriptionText.nodeName == "TEXTAREA"){
+        detailsDescriptionText.addEventListener("input", () => {
+        homeworkObject.description = detailsDescriptionText.value
+        ManageLocalStorage.replace(index, homeworkObject)
+    })}
+    else{
+        detailsDescriptionText.contentEditable = "true"
+        detailsDescriptionText.addEventListener("input", () => {
+            homeworkObject.description = detailsDescriptionText.textContent
+            ManageLocalStorage.replace(index, homeworkObject)
+        });
+    }
+    
 
     //appending to list element
     list.appendChild(listItem)
