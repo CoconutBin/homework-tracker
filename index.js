@@ -105,7 +105,6 @@ function addListItem(homeworkObject) {
     listContents.push(homeworkObject)
     let index = listContents.indexOf(homeworkObject)
     ManageLocalStorage.update()
-    console.log("updated LocalStorage!")
 
     // Display Management (Initial)
 
@@ -191,6 +190,8 @@ function addListItem(homeworkObject) {
     });
 
     //Edit Functionality
+
+    // Subject Name
     detailsSubject.contentEditable = "true"
     detailsSubject.addEventListener("input", () => {
         homeworkObject.subject.name = detailsSubject.textContent

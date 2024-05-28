@@ -9,8 +9,6 @@ localStorage.setItem("version", "2.1b")
 class ManageLocalStorage {
     static update() {
         localStorage.setItem("listContents", JSON.stringify(listContents))
-        console.log("update ran")
-        console.log(listContents)
     }
     static delete(listItem) {
         listContents.splice(listContents.indexOf(listItem), 1)
