@@ -44,6 +44,10 @@ input[type="number"]{
     width: 5vw;
 }
 
+input[type="button"]{
+    cursor: pointer;
+}
+
 textarea{
     width: 25vw;
     height: 15vh;

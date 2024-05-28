@@ -96,8 +96,6 @@ function addListItem(homeworkObject) {
     const subjectName = addElement("h1", homeworkObject.subject.name)
     const editButton = document.createElement("input")
 
-    //Main Div
-    listItem.classList.add("listItem")
 
     //Displaying Text Item
     displayDiv.appendChild(subjectName)
