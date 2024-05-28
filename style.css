@@ -6,6 +6,14 @@
     --background-secondary-color: #c5c5c5;
     --text-color: #000000;
     font-family: sans-serif, system-ui;
+    cursor: default;
+    --font-size-title: 32px;
+    --font-size-body: 18px;
+    --font-size-small: 14px;
+}
+
+h1{
+    display: flex;
 }
 
 .listItem, .inputForm, .detailsDisplay{
@@ -18,11 +26,23 @@
    align-items: center;
 }
 
+.listItem{
+    width: 20vw;
+    height: 10vh;
+    justify-content: center;
+    align-items: center;
+}
+
 .inputForm{
+    display: block;
     justify-content: center;
     align-items: center;
     width: 30vw;
     height: max(40vh,auto);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .button:hover{
@@ -36,8 +56,7 @@ input, textarea{
     border-radius: 10px;
     background: var(--secondary-color);
     padding: 5px;
-    margin-bottom: 5px;
-    margin-left: 5px;
+    margin: 5px;
 }
 
 input[type="number"]{
@@ -59,7 +78,6 @@ body{
 }
 
 .modal{
-    display: none; /* Hidden by default */
     position: absolute; /* Stay in place */
     align-items: center;
     justify-content: center;
@@ -69,8 +87,8 @@ body{
     width: 100vw;
     height: 100vh;
     top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 p{
@@ -85,10 +103,9 @@ p{
 
 .detailsDisplay{
     display: none;
-    position: fixed;
-    inset: 0px;
-    margin: auto;
-    max-width: 25vw;
-    max-height: 30vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 9999;
 }

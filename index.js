@@ -9,8 +9,8 @@ const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupW
 const inputDiv = document.getElementById("inputform")
 const list = document.getElementById("list")
 const listContents = []
+const localStorageListContents = JSON.parse(localStorage.getItem("listContents"))
 const addListItemButton = document.getElementById("addListItemButton")
-const storedlistContents = JSON.parse(localStorage.getItem("listContents")) ?? []
 const editModal = document.getElementById("editModal")
 const editSubject = document.getElementById("editSubject")
 const editSubjectID = document.getElementById("editSubjectID")
@@ -20,21 +20,31 @@ const editDueDate = document.getElementById("editDueDate")
 const editPoints = document.getElementById("editPoints")
 const editDescription = document.getElementById("editDescription")
 const allEdits = [editSubject, editSubjectID, editSubjectType, editIsGroupWork, editDueDate, editPoints, editDescription]
-
+let localStorageLock = true
 
 if (Storage == null) {
     alert("Your browser does not support local storage, so list items won't save when you exit the tab");
 }
 
-if (storedlistContents != null && storedlistContents.length > 0) {
-    for (listItem of storedlistContents) {
-        addListItem(listItem);
+if(localStorageListContents != undefined && localStorageListContents.length > 0 && localStorageLock) {
+    localStorageLock = false
+    for (let listContent of localStorageListContents){
+        addListItem(listContent);
     }
 }
 
 addListItemButton.addEventListener("click", function () {
     inputDiv.style.display = "flex"
 })
+
+document.getElementById("inputFormCloseButton").addEventListener("click", function () {
+    inputDiv.style.display = "none"
+})
+
+document.getElementById("inputFormModalBackground").addEventListener("click", function () {
+    inputDiv.style.display = "none"
+})
+
 
 /**
  * Handles different types of input elements and returns the appropriate value.
@@ -73,13 +83,11 @@ inputDiv.addEventListener(
                 inputHandler(inputPoints),
                 inputHandler(inputDescription)
             )
-            listContents.push(inputHomework.homeworkObject)
             for (inputs of allInputs) {
                 inputs.value = ""
                 inputs.checked = false
             }
-            ManageLocalStorage.update()
-            addListItem(inputHomework.homeworkObject)
+                addListItem(inputHomework.homeworkObject)
         }
     }
 )
@@ -91,118 +99,104 @@ inputDiv.addEventListener(
  * 
  */
 function addListItem(homeworkObject) {
+
+    // List Management (Initial)
+
+    listContents.push(homeworkObject)
+    let index = listContents.indexOf(homeworkObject)
+    ManageLocalStorage.update()
+    console.log("updated LocalStorage!")
+
+    // Display Management (Initial)
+
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
     const subjectName = addElement("h1", homeworkObject.subject.name)
-    const editButton = document.createElement("input")
-
-
-    //Displaying Text Item
     displayDiv.appendChild(subjectName)
     displayDiv.classList.add("listItem")
 
-    /*
-    //Edit Modal
-    editModal.addEventListener(
-        "submit", function (event) {
-            event.preventDefault();
-            if (editSubject.value != "") {
-                subjectName.textContent = editSubject.value
-                homeworkObject.subject.name = editSubject.value
-                homeworkObject.subject.id = editSubjectID.value
-                homeworkObject.subject.type = editSubjectType.value
-                homeworkObject.isGroupWork = editIsGroupWork.value
-                homeworkObject.dueDate = editDueDate.value
-                homeworkObject.points = editPoints.value
-                homeworkObject.description = editDescription.value
-                ManageLocalStorage.replace(listItemIndex, homeworkObject)
-                ManageLocalStorage.update()
-                editModal.style.display = "none"
-            }
+    // Details Display Management
 
-        }
-    )
+    const detailsSubject = addElement("h1", homeworkObject.subject.name)
+    const detailsSubjectDetails = document.createElement("p")
+    const detailsSubjectID = addElement("span", homeworkObject.subject.id)
+    const detailsSubjectType = addElement("span", homeworkObject.subject.type)
+    const detailsIsGroupWork = addElement("p", homeworkObject.isGroupWork ? "Group Work" : "Not Group Work")
+    const detailsDueDate = addElement("p", `Due Date: ${homeworkObject.dueDate}`)
+    const detailsPoints = addElement("p", `${homeworkObject.points > 0 ? homeworkObject.points : "No"} Points`)
+    let detailsDescriptionText 
+    if(homeworkObject.description.length > 0){
+        detailsDescriptionText = addElement("p", homeworkObject.description)
+    } 
+    else {
+        detailsDescriptionText = addElement("textarea", "type some details here..")
+    }
+    const detailsDescription = addElement("p", `Details:`)
+    detailsDescription.appendChild(document.createElement("br"))
+    detailsDescription.appendChild(detailsDescriptionText)
 
-
-    //Edit Button
-    editButton.type = "button"
-    editButton.classList.add("button")
-    editButton.value = "Edit"
-    editButton.addEventListener(
-        "click", function () {
-            editModal.style.display = "flex"
-            editSubject.value = homeworkObject.subject.name
-            editSubjectID.value = homeworkObject.subject.id ?? ""
-            editSubjectType.value = homeworkObject.subject.type ?? ""
-            editIsGroupWork.value = homeworkObject.isGroupWork ?? ""
-            editDueDate.value = homeworkObject.dueDate ?? ""
-            editPoints.value = homeworkObject.points ?? ""
-            editDescription.value = homeworkObject.description ?? ""
-            listItemIndex = listContents.indexOf(homeworkObject)
-        }
-    )
-    listItem.appendChild(editButton)
-    listItem.appendChild(editModal)
-    */
-
-    //Details Modal
-    const detailsModal = document.createElement("div")
-    const detailsDisplay = document.createElement("div")
-    let subjectSubData
     if (homeworkObject.subject.id != undefined && homeworkObject.subject.type != undefined) {
-        subjectSubData = `${homeworkObject.subject.id}/${homeworkObject.subject.type}`
+        detailsSubjectDetails.innerHTML = `${detailsSubjectID}/${detailsSubjectType}`
     }
     else if (homeworkObject.subject.id || homeworkObject.subject.type) {
-        if (homeworkObject.subject.id) {
-            subjectSubData = homeworkObject.subject.id
+        if (detailsSubjectID) {
+            detailsSubjectDetails.innerHTML = detailsSubjectID.textContent
         }
         else {
-            subjectSubData = homeworkObject.subject.type
+            detailsSubjectDetails.innerHTML = detailsSubjectType.textContent
         }
     }
     else {
-        subjectSubData = null
+        detailsSubjectDetails.style.display = "none"
     }
+
+    //Details Modal
+
+    const detailsModal = document.createElement("div")
+    const detailsDisplay = document.createElement("div")
+    const detailsDiv = document.createElement("div")
 
     detailsModal.classList.add("modal")
     detailsDisplay.classList.add("detailsDisplay")
-    detailsDisplay.innerHTML =
-        `
-    <h1 contenteditable="true">${homeworkObject.subject.name}</h1>
-    ${subjectSubData != undefined ? "<p>" + subjectSubData + "</p>" : ""}
-    <p>Due: ${homeworkObject.dueDate}</p>
-    <p>${homeworkObject.points > 0 ? homeworkObject.points : "No"} Points</p>
-    <p>${homeworkObject.isGroupWork == true ? "Group Work" : "Not Group Work"}</p>
-    <p>Details:<p>
-    <p>${homeworkObject.description}</p><br>
-        `
+    detailsDisplay.appendChild(detailsSubject)
+    if(detailsSubjectDetails != undefined){
+        detailsDisplay.appendChild(detailsSubjectDetails)
+    }
+    detailsDisplay.appendChild(detailsDueDate)
+    detailsDisplay.appendChild(detailsIsGroupWork)
+    detailsDisplay.appendChild(detailsPoints)
+    detailsDisplay.appendChild(detailsDescription)
 
     detailsModal.addEventListener("click", () => {
         detailsModal.style.display = "none";
         detailsDisplay.style.display = "none";
+        detailsDiv.style.display = "none";
     })
 
-    const detailsCloseButton = addButton("Custom", null, "Close")
+    //Display Management (Final)
 
-    detailsCloseButton.addEventListener("click", () => {
-        detailsModal.style.display = "none";
-        detailsDisplay.style.display = "none";
-    })
-
+    detailsDiv.style.display = "none"
+    detailsDiv.appendChild(detailsDisplay)
+    detailsDiv.appendChild(detailsModal)
     detailsDisplay.appendChild(addButton("Delete", listItem))
-    detailsDisplay.appendChild(detailsCloseButton)
-    listItem.appendChild(detailsModal)
+    detailsDisplay.appendChild(addButton("Close", detailsDiv))
     listItem.appendChild(displayDiv)
-    listItem.appendChild(detailsDisplay)
-    detailsModal.contentEditable = "true"
+    listItem.appendChild(detailsDiv)
 
     //Clicking for Details
     displayDiv.addEventListener("click", () => {
+          detailsDiv.style.display = "flex";
           detailsModal.style.display = "flex";
           detailsDisplay.style.display = "block";
-      });
+    });
 
-    listContents.push(homeworkObject)
+    //Edit Functionality
+    detailsSubject.contentEditable = "true"
+    detailsSubject.addEventListener("input", () => {
+        homeworkObject.subject.name = detailsSubject.textContent
+        subjectName.textContent = homeworkObject.subject.name
+        ManageLocalStorage.replace(index, homeworkObject)
+    });
 
     //appending to list element
     list.appendChild(listItem)

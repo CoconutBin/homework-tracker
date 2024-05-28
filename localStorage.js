@@ -1,4 +1,4 @@
-if (localStorage.getItem("version") !== "2.1b") {
+if (localStorage.getItem("version") !== null && localStorage.getItem("version") !== "2.1b") {
     if(parseInt(localStorage.getItem("version").split(".")[0]) > 1) {
     }
     else {localStorage.clear()}
@@ -6,10 +6,11 @@ if (localStorage.getItem("version") !== "2.1b") {
 
 localStorage.setItem("version", "2.1b")
 
-
 class ManageLocalStorage {
     static update() {
         localStorage.setItem("listContents", JSON.stringify(listContents))
+        console.log("update ran")
+        console.log(listContents)
     }
     static delete(listItem) {
         listContents.splice(listContents.indexOf(listItem), 1)
