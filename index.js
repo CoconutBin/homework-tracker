@@ -111,6 +111,7 @@ function addListItem(homeworkObject) {
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
     const subjectName = addElement("h1", homeworkObject.subject.name)
+    subjectName.classList.add("subjectName")
     displayDiv.appendChild(subjectName)
     displayDiv.classList.add("listItem")
 
@@ -206,10 +207,12 @@ function addListItem(homeworkObject) {
         homeworkObject.isGroupWork = !homeworkObject.isGroupWork
         ManageLocalStorage.replace(index, homeworkObject)
         if(homeworkObject.isGroupWork){
-            detailsIsGroupWork.style.color = "var(--secondary-color)"
+            detailsIsGroupWork.style.color = "green"
+            detailsIsGroupWork.style.userSelect = "none"
         }
         else{
-            detailsIsGroupWork.style.color = "var(--error-color)";
+            detailsIsGroupWork.style.color = "var(--error)";
+            detailsIsGroupWork.style.userSelect = "none"
         }
     })
 

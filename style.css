@@ -1,16 +1,23 @@
 :root{
-    --primary-color: #BF90FC;
-    --secondary-color: #c7fae5;
-    --accent-color: #6fd8ae;
-    --background-color: #ffffff;
-    --background-secondary-color: #c5c5c5;
-    --text-color: #000000;
-    --error-color: #da0000;
-    font-family: sans-serif, system-ui;
-    cursor: default;
+    --text: #0f0420;
+    --background: #fcfded;
+    --primary: #eba161;
+    --secondary: #f79caa;
+    --accent: #f87d4a;
+    --background-secondary: #c5c5c5;
+    --error: #da0000;
     --font-size-title: 32px;
     --font-size-body: 18px;
     --font-size-small: 14px;
+}
+
+body, html{
+    font-size: larger;
+    font-family: "REM", sans-serif, system-ui;
+    cursor: default;
+    background: var(--background);
+    margin: 0;
+    padding: 0;
 }
 
 h1{
@@ -18,9 +25,9 @@ h1{
 }
 
 .listItem, .inputForm, .detailsDisplay{
-   background: var(--primary-color);
+   background: var(--primary);
    padding: 10px;
-   border-radius: 25px;
+   border-radius: 15px;
    margin: 6px;
    cursor: pointer;
    justify-content: center;
@@ -29,9 +36,15 @@ h1{
 
 .listItem{
     width: 20vw;
-    height: 10vh;
+    height: 15vh;
     justify-content: center;
     align-items: center;
+}
+
+.subjectName{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .inputForm{
@@ -47,7 +60,7 @@ h1{
 }
 
 .button:hover{
-    background: color-mix(in srgb, --secondary-color, --background-color)
+    background: color-mix(in srgb, --secondary, --background)
 
 }
 
@@ -55,7 +68,7 @@ h1{
 
 input, textarea{
     border-radius: 10px;
-    background: var(--secondary-color);
+    background: var(--background);
     padding: 5px;
     margin: 5px;
 }
@@ -75,7 +88,6 @@ textarea{
 
 body{
     align-items: center;
-    font-size: larger;
 }
 
 .modal{
@@ -109,4 +121,27 @@ p{
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
+}
+
+.navbar{
+    overflow: hidden;
+    background-color: var(--secondary);
+}
+
+.navbar h2{
+    padding: 0  0 0 5px;
+}
+
+.navbar a {
+    float: left; /* Align links to the left */
+    display: block; /* Make links fill the container */
+    color: var(--text);
+    text-align: center; /* Center text */
+    padding: 14px 20px; /* Padding for the links */
+    text-decoration: none; /* Remove underline */
+}
+
+.navbar a:hover {
+    background-color: #ddd; /* Change background on hover */
+    color: black; /* Change text color on hover */
 }
