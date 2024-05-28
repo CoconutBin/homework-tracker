@@ -32,6 +32,8 @@ h1{
    cursor: pointer;
    justify-content: center;
    align-items: center;
+   flex-grow: 1;
+   display: flex
 }
 
 .listItem{
@@ -144,4 +146,8 @@ p{
 .navbar a:hover {
     background-color: #ddd; /* Change background on hover */
     color: black; /* Change text color on hover */
+}
+
+div{
+    display: flex
 }

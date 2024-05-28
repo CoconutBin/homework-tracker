@@ -26,9 +26,9 @@ if (Storage == null) {
     alert("Your browser does not support local storage, so list items won't save when you exit the tab");
 }
 
-if(localStorageListContents != undefined && localStorageListContents.length > 0 && localStorageLock) {
+if (localStorageListContents != undefined && localStorageListContents.length > 0 && localStorageLock) {
     localStorageLock = false
-    for (let listContent of localStorageListContents){
+    for (let listContent of localStorageListContents) {
         addListItem(listContent);
     }
 }
@@ -73,10 +73,10 @@ inputDiv.addEventListener(
         event.preventDefault();
         if (inputSubject.value) {
             const inputHomework = new Homework(
-                { 
-                name: inputHandler(inputSubject),
-                id: inputHandler(inputSubjectID),
-                type: inputHandler(inputSubjectType)
+                {
+                    name: inputHandler(inputSubject),
+                    id: inputHandler(inputSubjectID),
+                    type: inputHandler(inputSubjectType)
                 },
                 inputHandler(inputIsGroupWork),
                 inputHandler(inputDueDate),
@@ -87,7 +87,7 @@ inputDiv.addEventListener(
                 inputs.value = ""
                 inputs.checked = false
             }
-                addListItem(inputHomework.homeworkObject)
+            addListItem(inputHomework.homeworkObject)
         }
     }
 )
@@ -124,10 +124,10 @@ function addListItem(homeworkObject) {
     const detailsIsGroupWork = addElement("p", homeworkObject.isGroupWork ? "Group Work" : "Not Group Work")
     const detailsDueDate = addElement("p", `Due Date: ${homeworkObject.dueDate}`)
     const detailsPoints = addElement("p", `${homeworkObject.points > 0 ? homeworkObject.points : "No"} Points`)
-    let detailsDescriptionText 
-    if(homeworkObject.description.length > 0){
+    let detailsDescriptionText
+    if (homeworkObject.description.length > 0) {
         detailsDescriptionText = addElement("p", homeworkObject.description)
-    } 
+    }
     else {
         detailsDescriptionText = document.createElement("textarea")
         detailsDescriptionText.placeholder = "type some details here.."
@@ -137,15 +137,13 @@ function addListItem(homeworkObject) {
     detailsDescription.appendChild(detailsDescriptionText)
 
     if (homeworkObject.subject.id != undefined && homeworkObject.subject.type != undefined) {
-        detailsSubjectDetails.innerHTML = `${detailsSubjectID}/${detailsSubjectType}`
+        detailsSubjectDetails.innerHTML = `${detailsSubjectID.textContent}/${detailsSubjectType.textContent}`
     }
-    else if (homeworkObject.subject.id || homeworkObject.subject.type) {
-        if (detailsSubjectID) {
-            detailsSubjectDetails.innerHTML = detailsSubjectID.textContent
-        }
-        else {
-            detailsSubjectDetails.innerHTML = detailsSubjectType.textContent
-        }
+    else if (detailsSubjectID) {
+        detailsSubjectDetails.innerHTML = detailsSubjectID.textContent
+    }
+    else if (detailsSubjectType) {
+        detailsSubjectDetails.innerHTML = detailsSubjectType.textContent
     }
     else {
         detailsSubjectDetails.style.display = "none"
@@ -160,7 +158,7 @@ function addListItem(homeworkObject) {
     detailsModal.classList.add("modal")
     detailsDisplay.classList.add("detailsDisplay")
     detailsDisplay.appendChild(detailsSubject)
-    if(detailsSubjectDetails != undefined){
+    if (detailsSubjectDetails != undefined) {
         detailsDisplay.appendChild(detailsSubjectDetails)
     }
     detailsDisplay.appendChild(detailsDueDate)
@@ -186,9 +184,9 @@ function addListItem(homeworkObject) {
 
     //Clicking for Details
     displayDiv.addEventListener("click", () => {
-          detailsDiv.style.display = "flex";
-          detailsModal.style.display = "flex";
-          detailsDisplay.style.display = "block";
+        detailsDiv.style.display = "flex";
+        detailsModal.style.display = "flex";
+        detailsDisplay.style.display = "block";
     });
 
     //Edit Functionality
@@ -203,33 +201,34 @@ function addListItem(homeworkObject) {
 
     // isGroupWork
     detailsIsGroupWork.addEventListener("click", () => {
-        detailsIsGroupWork.textContent = (detailsIsGroupWork.textContent == "Group Work")? "Not Group Work" : "Group Work"
+        detailsIsGroupWork.textContent = (detailsIsGroupWork.textContent == "Group Work") ? "Not Group Work" : "Group Work"
         homeworkObject.isGroupWork = !homeworkObject.isGroupWork
         ManageLocalStorage.replace(index, homeworkObject)
-        if(homeworkObject.isGroupWork){
+        if (homeworkObject.isGroupWork) {
             detailsIsGroupWork.style.color = "green"
             detailsIsGroupWork.style.userSelect = "none"
         }
-        else{
+        else {
             detailsIsGroupWork.style.color = "var(--error)";
             detailsIsGroupWork.style.userSelect = "none"
         }
     })
 
     // Description
-    if(detailsDescriptionText.nodeName == "TEXTAREA"){
+    if (detailsDescriptionText.nodeName == "TEXTAREA") {
         detailsDescriptionText.addEventListener("input", () => {
-        homeworkObject.description = detailsDescriptionText.value
-        ManageLocalStorage.replace(index, homeworkObject)
-    })}
-    else{
+            homeworkObject.description = detailsDescriptionText.value
+            ManageLocalStorage.replace(index, homeworkObject)
+        })
+    }
+    else {
         detailsDescriptionText.contentEditable = "true"
         detailsDescriptionText.addEventListener("input", () => {
             homeworkObject.description = detailsDescriptionText.textContent
             ManageLocalStorage.replace(index, homeworkObject)
         });
     }
-    
+
 
     //appending to list element
     list.appendChild(listItem)
@@ -241,38 +240,38 @@ function clearList() {
     list.innerHTML = "";
 }
 
-function addButton(type, affectedElement, customValue){
+function addButton(type, affectedElement, customValue) {
     let button = document.createElement("input");
     button.type = "button";
     button.value = type;
-    switch(type) {
+    switch (type) {
         case "Close":
             button.addEventListener("click", () => {
                 affectedElement.style.display = "none"
             })
-        break;
+            break;
         case "Delete":
             button.addEventListener("click", () => {
                 affectedElement.remove()
                 ManageLocalStorage.delete(affectedElement)
             })
-        break;
+            break;
         case "Custom":
-        break;
+            break;
         default:
             console.error("Invalid Input")
     }
 
-    if(customValue != undefined) {
+    if (customValue != undefined) {
         button.value = customValue
     }
-    
+
     return button
 }
 
-function addElement(elementType, innerText){
+function addElement(elementType, innerText) {
     let element = document.createElement(elementType)
-    if(innerText != undefined){
+    if (innerText != undefined) {
         element.textContent = innerText
     }
     return element
