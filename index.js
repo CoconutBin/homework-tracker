@@ -88,6 +88,7 @@ inputDiv.addEventListener(
                 inputs.checked = false
             }
             addListItem(inputHomework.homeworkObject)
+            inputDiv.style.display = "none"
         }
     }
 )
@@ -110,20 +111,23 @@ function addListItem(homeworkObject) {
 
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
-    const subjectName = addElement("h1", homeworkObject.subject.name)
+    const subjectName = addElement("h2", homeworkObject.subject.name)
     subjectName.classList.add("subjectName")
     displayDiv.appendChild(subjectName)
-    displayDiv.classList.add("listItem")
+    listItem.classList.add("listItem")
+    displayDiv.classList.add("listItemDisplay")
 
     // Details Display Management
 
-    const detailsSubject = addElement("h1", homeworkObject.subject.name)
+    const detailsSubject = addElement("h2", homeworkObject.subject.name)
     const detailsSubjectDetails = document.createElement("p")
     const detailsSubjectID = addElement("span", homeworkObject.subject.id)
     const detailsSubjectType = addElement("span", homeworkObject.subject.type)
     const detailsIsGroupWork = addElement("p", homeworkObject.isGroupWork ? "Group Work" : "Not Group Work")
     const detailsDueDate = addElement("p", `Due Date: ${homeworkObject.dueDate}`)
-    const detailsPoints = addElement("p", `${homeworkObject.points > 0 ? homeworkObject.points : "No"} Points`)
+    const detailsPointsNumber = addElement("span", `${homeworkObject.points > 0 ? homeworkObject.points : "None"}`)
+    const detailsPoints = addElement("p", `Points: `)
+    detailsPoints.appendChild(detailsPointsNumber)
     let detailsDescriptionText
     if (homeworkObject.description.length > 0) {
         detailsDescriptionText = addElement("p", homeworkObject.description)
@@ -192,7 +196,9 @@ function addListItem(homeworkObject) {
     //Edit Functionality
 
     // Subject Name
+    detailsSubject.classList.add("detailsSubjectText")
     detailsSubject.contentEditable = "true"
+    detailsSubject.spellCheck = "false"
     detailsSubject.addEventListener("input", () => {
         homeworkObject.subject.name = detailsSubject.textContent
         subjectName.textContent = homeworkObject.subject.name
@@ -213,6 +219,24 @@ function addListItem(homeworkObject) {
             detailsIsGroupWork.style.userSelect = "none"
         }
     })
+
+    // Points
+        detailsPointsNumber.contentEditable = true
+        detailsPointsNumber.addEventListener("input", () => {
+            if(detailsPointsNumber.textContent > 0){
+                homeworkObject.points = detailsPointsNumber.textContent
+                ManageLocalStorage.replace(index, homeworkObject)
+            }
+            else if(detailsPointsNumber.textContent == 0 || detailsPointsNumber.textContent == ""){
+                homeworkObject.points = "0"
+                ManageLocalStorage.replace(index, homeworkObject)
+            }
+            else{
+                detailsPointsNumber.textContent = homeworkObject.points
+            }
+            
+        })
+
 
     // Description
     if (detailsDescriptionText.nodeName == "TEXTAREA") {
