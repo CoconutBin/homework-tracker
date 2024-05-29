@@ -1,10 +1,13 @@
-if (localStorage.getItem("version") !== null && localStorage.getItem("version") !== "2.1b") {
+const version = "2.1b"
+
+if (localStorage.getItem("version") !== null && localStorage.getItem("version") !== version) {
     if(parseInt(localStorage.getItem("version").split(".")[0]) > 1) {
+        console.log("currently running version " + version)
     }
     else {localStorage.clear()}
 }
 
-localStorage.setItem("version", "2.1b")
+localStorage.setItem("version", version)
 
 class ManageLocalStorage {
     static update() {

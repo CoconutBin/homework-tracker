@@ -28,19 +28,20 @@ h1{
    background: var(--primary);
    padding: 10px;
    border-radius: 15px;
-   margin: 6px;
+   margin: 5px;
    cursor: pointer;
    justify-content: center;
    align-items: center;
-   flex-grow: 1;
    display: flex
 }
 
 .listItem{
-    width: 20vw;
+    width: max(250px, calc(20% - 100px)); /* 20% width minus spacing */
     height: 15vh;
-    justify-content: center;
     align-items: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+white-space: nowrap;
 }
 
 .subjectName{
@@ -128,6 +129,10 @@ p{
 .navbar{
     overflow: hidden;
     background-color: var(--secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
 }
 
 .navbar h2{
@@ -141,11 +146,8 @@ p{
     text-align: center; /* Center text */
     padding: 14px 20px; /* Padding for the links */
     text-decoration: none; /* Remove underline */
-}
-
-.navbar a:hover {
-    background-color: #ddd; /* Change background on hover */
-    color: black; /* Change text color on hover */
+    align-items: center; 
+    justify-content: center;
 }
 
 div{
