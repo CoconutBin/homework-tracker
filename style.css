@@ -11,6 +11,7 @@
 }
 
 body, html{
+    color: var(--text);
     font-size: larger;
     font-family: "Inter", sans-serif, system-ui;
     cursor: default;
@@ -24,13 +25,14 @@ input, textarea{
     background: var(--background);
     padding: 5px;
     margin: 5px;
+    color: var(--text);
 }
 
 input[type="number"]{
     width: 5vw;
 }
 
-input[type="button"], input[type="submit"]{
+input[type="button"], input[type="submit"], input[type="date"]{
     cursor: pointer;
 }
 
