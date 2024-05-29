@@ -1,73 +1,23 @@
 :root{
-    --text: #0f0420;
-    --background: #fcfded;
-    --primary: #eba161;
-    --secondary: #f79caa;
-    --accent: #f87d4a;
-    --background-secondary: #c5c5c5;
+    --text: #011206;
+    --background: #f2fef5;
+    --primary: #47c068;
+    --secondary: #92c3da;
+    --accent: #6982cb;
+    --text-dark: #faf7ff;
     --error: #da0000;
-    --font-size-title: 32px;
-    --font-size-body: 18px;
-    --font-size-small: 14px;
+
+    --standard-margin: 5px;
 }
 
 body, html{
     font-size: larger;
-    font-family: "REM", sans-serif, system-ui;
+    font-family: "Inter", sans-serif, system-ui;
     cursor: default;
     background: var(--background);
     margin: 0;
     padding: 0;
 }
-
-h1{
-    display: flex;
-}
-
-.listItem, .inputForm, .detailsDisplay{
-   background: var(--primary);
-   padding: 10px;
-   border-radius: 15px;
-   margin: 5px;
-   cursor: pointer;
-   justify-content: center;
-   align-items: center;
-   display: flex
-}
-
-.listItem{
-    width: max(250px, calc(20% - 100px)); /* 20% width minus spacing */
-    height: 15vh;
-    align-items: center;
-    text-overflow: ellipsis;
-    overflow: hidden;
-white-space: nowrap;
-}
-
-.subjectName{
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.inputForm{
-    display: block;
-    justify-content: center;
-    align-items: center;
-    width: 30vw;
-    height: max(40vh,auto);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.button:hover{
-    background: color-mix(in srgb, --secondary, --background)
-
-}
-
-/*cursor: pointer;*/
 
 input, textarea{
     border-radius: 10px;
@@ -80,17 +30,92 @@ input[type="number"]{
     width: 5vw;
 }
 
-input[type="button"]{
+input[type="button"], input[type="submit"]{
     cursor: pointer;
 }
 
 textarea{
-    width: 25vw;
+    width: 30vw;
     height: 15vh;
+    resize: none;
 }
 
-body{
+.navbar{
+    overflow: hidden;
+    background-color: var(--secondary);
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    padding: 10px;
+}
+
+.navbar p{
+    font-weight: bold;
+    font-size: larger;
+    padding: 0  0 0 5px;
+}
+
+.navbar a {
+    float: left; /* Align links to the left */
+    display: block; /* Make links fill the container */
+    color: var(--text);
+    text-align: center; /* Center text */
+    padding: 8px 10px; /* Padding for the links */
+    text-decoration: none; /* Remove underline */
+    align-items: center; 
+    justify-content: center;
+}
+
+.material-symbols-outlined{
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+    font-size: 48px !important;
+}
+
+.material-symbols-outlined.size-48{
+    font-size: 48px;
+}
+
+.list{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.listItem{
+    display: flex;
+    margin: var(--standard-margin);
+    width: calc(20% - calc(2*var(--standard-margin)) - 10px); /* 20% width minus spacing */
+    height: 15vh;
+    align-items: center;
+    padding: 5px;
+}
+
+.listItemDisplay, .detailsDisplay, .inputForm{
+    background: var(--primary);
+    border-radius: 10px;
+    padding: 0 10px;
+}
+
+.listItemDisplay{
+    height: 15vh;
+    width: auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    align-content: center;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.listItemDisplay h2, p{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#addListItemButton div{
+    background: var(--accent) !important;
 }
 
 .modal{
@@ -107,49 +132,25 @@ body{
     transform: translate(-50%, -50%);
 }
 
-p{
-    margin-bottom: -5px !important;
-}
-
-.list{
-    display: flex; 
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-.detailsDisplay{
-    display: none;
+.detailsDisplay, .inputForm{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
+    padding: 20px 20px
 }
 
-.navbar{
+.detailsDisplay{
+    display: none;
+}
+
+.detailsSubjectText{
+    text-wrap: wrap;
     overflow: hidden;
-    background-color: var(--secondary);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
+    width: 30vw;
 }
 
-.navbar h2{
-    padding: 0  0 0 5px;
-}
-
-.navbar a {
-    float: left; /* Align links to the left */
-    display: block; /* Make links fill the container */
-    color: var(--text);
-    text-align: center; /* Center text */
-    padding: 14px 20px; /* Padding for the links */
-    text-decoration: none; /* Remove underline */
-    align-items: center; 
-    justify-content: center;
-}
-
-div{
-    display: flex
+input[type="button"]:hover, input[type="submit"]:hover{
+    background: var(--accent)
 }
