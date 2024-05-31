@@ -128,9 +128,11 @@ function addListItem(homeworkObject) {
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
     const subjectName = addElement("h2", homeworkObject.subject.name)
+    const dueDate = addElement("p", homeworkObject.dueDate)
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`)
     subjectName.classList.add("subjectName")
     displayDiv.appendChild(subjectName)
+    displayDiv.appendChild(dueDate)
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
 
