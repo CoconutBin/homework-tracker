@@ -1,13 +1,31 @@
+<!DOCTYPE html>
 <html>
 
 <head>
     <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div id="list"></div>
-    <div id="inputform">
-        <form>
+    <div class="navbar">
+        <p>Homework Tracker</p>
+        <a>
+            <span class="material-symbols-outlined" style="font-size: 48px;" id="sort">sort</span>
+        <span class="material-symbols-outlined" style="font-size: 48px;" id="themes">palette</span>
+        <span class="material-symbols-outlined" style="font-size: 48px;" id="settings">settings</span>
+        </a>
+    </div>
+    <div id="list" class="list">
+        <div class="listItem" id="addListItemButton">
+            <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
+        </div>
+
+    </div>
+    <div id="inputform" style="display: none;">
+        <form class="inputForm" style="z-index: 9999">
             <label>
                 Subject:
                 <input type="text" name="subject" id="inputSubject" autocomplete="off">
@@ -34,47 +52,19 @@
             </label><br><br>
             <label>
                 Work Details:
-                <textarea name="description" id="inputDescription" autocomplete="off"></textarea>
+                <textarea name="description" id="inputDescription" autocomplete="off" placeholder="write here"></textarea>
             </label><br><br>
-            <input type="submit" class="button">
-            <input type="button" value="Clear List" onclick="clearList()" class="button">
+            <input type="submit">
+            <input type="button" value="Clear List" onclick="clearList()">
+            <input type="button" value="Close" id="inputFormCloseButton">
         </form>
-    </div>
-    <div id="editModal" class="modal">
-        <form class="listItem">
-            <label>
-                Subject:
-                <input type="text" name="subject" id="editSubject" autocomplete="off">
-            </label><br>
-            <label>
-                Subject ID:
-                <input type="text" name="subjectId" id="editSubjectID" autocomplete="off">
-            </label><br>
-            <label>
-                Subject Type:
-                <input type="text" name="subjectType" id="editSubjectType" autocomplete="off">
-            </label><br>
-            <label>
-                Is it a group work?
-                <input type="checkbox" name="isGroupWork" id="editIsGroupWork" autocomplete="off">
-            </label><br><br>
-            <label>
-                Due Date:
-                <input type="date" name="dueDate" id="editDueDate" autocomplete="off">
-            </label><br><br>
-            <label>
-                Points:
-                <input type="number" name="points" id="editPoints" autocomplete="off">
-            </label><br><br>
-            <label>
-                Work Details:
-                <textarea name="description" id="editDescription" autocomplete="off"></textarea>
-            </label><br><br>
-            <input type="submit" class="button">
-            <input type="button" value="Close" onclick="closeModal(editModal)" class="button">
-        </form>
+        <div class="modal" id="inputFormModalBackground"></div>
     </div>
 </body>
+<script src="themes.js"></script>
+<script src="settings.js"></script>
+<script src="localStorage.js"></script>
+<script src="homework.js"></script>
 <script src="index.js"></script>
 
 </html>

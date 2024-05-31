@@ -1,52 +1,127 @@
 :root{
-    --primary-color: rgb(255, 255, 255);
-    --secondary-color: rgb(198, 250, 228);
-    --text-color: rgb(0, 0, 0)
+    --text: #011206;
+    --background: #f2fef5;
+    --primary: #47c068;
+    --secondary: #92c3da;
+    --accent: #6982cb;
+    --text-dark: #faf7ff;
+    --error: #da0000;
+
+    --standard-margin: 5px;
 }
 
-.listItem{
-   background: var(--secondary-color);
-   padding: 5px;
-   border: solid 2px black;
-   border-radius: 3px;
-   margin-bottom: 5px;
+body, html{
+    color: var(--text);
+    font-size: larger;
+    font-family: "Inter", sans-serif, system-ui;
+    cursor: default;
+    background: var(--background);
+    margin: 0;
+    padding: 0;
 }
 
-.button{
+input, textarea{
     border-radius: 10px;
-    background: var(--secondary-color);
+    background: var(--background);
     padding: 5px;
-    margin-left: 5px;
-}
-
-.button:hover{
-    background: color-mix(in srgb, var(--secondary-color), var(--primary-color))
-
-}
-
-input[type="text"], input[type="number"], textarea{
-    border-radius: 10px;
-    background: var(--secondary-color);
-    padding: 5px;
-    margin-bottom: 5px;
+    margin: 5px;
+    color: var(--text);
 }
 
 input[type="number"]{
     width: 5vw;
 }
 
-textarea{
-    width: 25vw;
-    height: 15vh;
+input[type="button"], input[type="submit"], input[type="date"]{
+    cursor: pointer;
 }
 
-body{
+textarea{
+    width: 30vw;
+    height: 15vh;
+    resize: none;
+}
+
+.navbar{
+    overflow: hidden;
+    background-color: var(--secondary);
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    padding: 10px;
+}
+
+.navbar p{
+    font-weight: bold;
     font-size: larger;
+    padding: 0  0 0 5px;
+}
+
+.navbar a {
+    float: left; /* Align links to the left */
+    display: block; /* Make links fill the container */
+    color: var(--text);
+    text-align: center; /* Center text */
+    padding: 8px 10px; /* Padding for the links */
+    text-decoration: none; /* Remove underline */
+    align-items: center; 
+    justify-content: center;
+}
+
+.material-symbols-outlined{
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+    font-size: 48px !important;
+    user-select: none;
+}
+
+.material-symbols-outlined.size-48{
+    font-size: 48px;
+}
+
+.list{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.listItem{
+    display: flex;
+    margin: var(--standard-margin);
+    width: calc(20% - calc(2*var(--standard-margin)) - 10px); /* 20% width minus spacing */
+    height: 30vh;
+    align-items: center;
+    padding: 5px;
+}
+
+.listItemDisplay, .detailsDisplay, .inputForm{
+    background: var(--primary);
+    border-radius: 10px;
+    padding: 0 10px;
+}
+
+.listItemDisplay{
+    height: 30vh;
+    width: auto;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    align-content: center;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.listItemDisplay h2, p{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#addListItemButton div{
+    background: var(--accent) !important;
 }
 
 .modal{
-    display: none; /* Hidden by default */
     position: absolute; /* Stay in place */
     align-items: center;
     justify-content: center;
@@ -56,15 +131,35 @@ body{
     width: 100vw;
     height: 100vh;
     top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-div{
-    display: flexbox;
-    width: max(30vw, 300px);
+.detailsDisplay, .inputForm{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    padding: 20px 20px
 }
 
-p{
-    margin-bottom: -5px !important;
+.detailsDisplay{
+    display: none;
+}
+
+.detailsDisplay p,.detailsDisplay h2{
+    background-color: var(--secondary);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.detailsSubjectText{
+    text-wrap: wrap;
+    overflow: hidden;
+    width: 30vw;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover{
+    background: var(--accent)
 }
