@@ -37,6 +37,7 @@ themeButton.addEventListener('click', () => {
 const Themes = {
     fern: new Theme("#011206", "#f2fef5", "#47c068", "#92c3da", "#6982cb", "#faf7ff", "#da0000"),
     dark: new Theme("#e9f8ed", "#050f02", "#2e5f3b", "#26576e", "#344d98", "#011206", "#da0000"),
+    prakiao: new Theme("#130112", "#f8e7f8", "#26437e", "#fdafdf", "#5474bb", "#011206", "#da0000")
 }
 
 Themes[currentTheme].setCSS()
