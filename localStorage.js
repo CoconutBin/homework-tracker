@@ -4,7 +4,7 @@ if (localStorage.getItem("version") !== null && localStorage.getItem("version") 
     if(parseInt(localStorage.getItem("version").split(".")[0]) > 1) {
         console.log("currently running version " + version)
     }
-    else {localStorage.clear()}
+    else {localStorage.setItem("listContents", null)}
 }
 
 localStorage.setItem("version", version)
