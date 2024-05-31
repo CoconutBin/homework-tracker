@@ -28,12 +28,12 @@ if (Storage == null) {
 
 if (localStorageListContents != undefined && localStorageListContents.length > 0 && localStorageLock) {
     localStorageLock = false
-    try{
+    try {
         for (let listContent of localStorageListContents) {
             addListItem(listContent);
         }
     }
-    catch{
+    catch {
         localStorage.setItem("listContents", null)
     }
 }
@@ -114,9 +114,9 @@ function addListItem(homeworkObject) {
 
     */
 
-    let homeworkStarted = homeworkObject.timeStarted != undefined? true:false
+    let homeworkStarted = homeworkObject.timeStarted != undefined ? true : false
 
-    
+
     // List Management (Initial)
 
     listContents.push(homeworkObject)
@@ -128,7 +128,7 @@ function addListItem(homeworkObject) {
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
     const subjectName = addElement("h2", homeworkObject.subject.name)
-    const startHomeworkButton = addButton("Custom", null, `${homeworkStarted? "End":"Start"}` )
+    const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`)
     subjectName.classList.add("subjectName")
     displayDiv.appendChild(subjectName)
     listItem.classList.add("listItem")
@@ -144,7 +144,7 @@ function addListItem(homeworkObject) {
             ManageLocalStorage.update()
             startHomeworkButton.value = "End"
         }
-        else if(homeworkStarted == true) {
+        else if (homeworkStarted == true) {
         }
     })
 
@@ -179,13 +179,13 @@ function addListItem(homeworkObject) {
     detailsDescription.appendChild(detailsDescriptionText)
 
     if (homeworkObject.subject.id != undefined && homeworkObject.subject.type != undefined) {
-        detailsSubjectDetails.innerHTML = `${detailsSubjectID.textContent}/${detailsSubjectType.textContent}`
+        detailsSubjectDetails.append(detailsSubjectID, "/", detailsSubjectType)
     }
     else if (homeworkObject.subject.id != undefined) {
-        detailsSubjectDetails.innerHTML = detailsSubjectID.textContent
+        detailsSubjectDetails.appendChild(detailsSubjectID)
     }
     else if (homeworkObject.subject.type != undefined) {
-        detailsSubjectDetails.innerHTML = detailsSubjectType.textContent
+        detailsSubjectDetails.appendChild(detailsSubjectType)
     }
     else {
         detailsSubjectDetails.innerHTML = null
@@ -196,7 +196,7 @@ function addListItem(homeworkObject) {
     detailsModal.classList.add("modal")
     detailsDisplay.classList.add("detailsDisplay")
     detailsDisplay.appendChild(detailsSubject)
-    if(detailsSubjectDetails.innerHTML != null && detailsSubjectDetails.innerHTML.length > 0) {
+    if (detailsSubjectDetails.innerHTML != null && detailsSubjectDetails.innerHTML.length > 0) {
         detailsDisplay.appendChild(detailsSubjectDetails)
     }
     detailsDisplay.appendChild(detailsDueDate)
@@ -222,7 +222,7 @@ function addListItem(homeworkObject) {
 
     //Clicking for Details
     displayDiv.addEventListener("click", (event) => {
-        if(event.target != startHomeworkButton){
+        if (event.target != startHomeworkButton) {
             detailsDiv.style.display = "flex";
             detailsModal.style.display = "flex";
             detailsDisplay.style.display = "block";
@@ -238,6 +238,22 @@ function addListItem(homeworkObject) {
     detailsSubject.addEventListener("input", () => {
         homeworkObject.subject.name = detailsSubject.textContent
         subjectName.textContent = homeworkObject.subject.name
+        ManageLocalStorage.replace(index, homeworkObject)
+    });
+
+    //SubjectID
+    detailsSubjectID.contentEditable = "true"
+    detailsSubjectID.spellCheck = "false"
+    detailsSubjectID.addEventListener("input", () => {
+        homeworkObject.subject.id = detailsSubjectID.textContent
+        ManageLocalStorage.replace(index, homeworkObject)
+    });
+
+    //SubjectType
+    detailsSubjectType.contentEditable = "true"
+    detailsSubjectType.spellCheck = "false"
+    detailsSubjectType.addEventListener("input", () => {
+        homeworkObject.subject.type = detailsSubjectType.textContent
         ManageLocalStorage.replace(index, homeworkObject)
     });
 
