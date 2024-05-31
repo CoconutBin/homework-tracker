@@ -159,10 +159,13 @@ function addListItem(homeworkObject) {
     const detailsSubjectID = addElement("span", homeworkObject.subject.id)
     const detailsSubjectType = addElement("span", homeworkObject.subject.type)
     const detailsIsGroupWork = addElement("p", homeworkObject.isGroupWork ? "Group Work" : "Not Group Work")
-    const detailsDueDate = addElement("p", `Due Date: ${new Date(homeworkObject.dueDate).toDateString() == "Invalid Date" ? "None" : new Date(homeworkObject.dueDate).toDateString()}`)
+    const detailsDueDate = addElement("p", `Due Date: `)
+    const detailsDueDateTime = addElement("span", `${new Date(homeworkObject.dueDate).toDateString() == "Invalid Date" ? "None" : new Date(homeworkObject.dueDate).toDateString()}`)
     const detailsPointsNumber = addElement("span", `${homeworkObject.points > 0 ? homeworkObject.points : "None"}`)
     const detailsPoints = addElement("p", `Points: `)
     detailsPoints.appendChild(detailsPointsNumber)
+    detailsDueDate.appendChild(detailsDueDateTime)
+
     let detailsDescriptionText
     if (homeworkObject.description.length > 0) {
         detailsDescriptionText = addElement("p", homeworkObject.description)
@@ -239,6 +242,19 @@ function addListItem(homeworkObject) {
     });
 
     // Due Date
+    detailsDueDateTime.addEventListener("click", () => {
+        const dueDateInput = document.createElement("input")
+        dueDateInput.type = "date"
+        dueDateInput.style.display = "block"
+        detailsDueDateTime.parentElement.appendChild(dueDateInput)
+        dueDateInput.value = new Date(homeworkObject.dueDate).toDateString()
+        dueDateInput.addEventListener("change", () => {
+            homeworkObject.dueDate = new Date(dueDateInput.value).getTime()
+            detailsDueDateTime.textContent = new Date(homeworkObject.dueDate).toDateString()
+            ManageLocalStorage.replace(index, homeworkObject)
+            dueDateInput.style.display = "none"
+        })
+    })
 
     // isGroupWork
     detailsIsGroupWork.addEventListener("click", () => {
