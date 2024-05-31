@@ -71,6 +71,7 @@ textarea{
 .material-symbols-outlined{
     font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
     font-size: 48px !important;
+    user-select: none;
 }
 
 .material-symbols-outlined.size-48{
@@ -88,7 +89,7 @@ textarea{
     display: flex;
     margin: var(--standard-margin);
     width: calc(20% - calc(2*var(--standard-margin)) - 10px); /* 20% width minus spacing */
-    height: 15vh;
+    height: 30vh;
     align-items: center;
     padding: 5px;
 }
@@ -100,7 +101,7 @@ textarea{
 }
 
 .listItemDisplay{
-    height: 15vh;
+    height: 30vh;
     width: auto;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -145,6 +146,12 @@ textarea{
 
 .detailsDisplay{
     display: none;
+}
+
+.detailsDisplay p,.detailsDisplay h2{
+    background-color: var(--secondary);
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .detailsSubjectText{

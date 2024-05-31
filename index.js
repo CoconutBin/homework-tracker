@@ -28,8 +28,13 @@ if (Storage == null) {
 
 if (localStorageListContents != undefined && localStorageListContents.length > 0 && localStorageLock) {
     localStorageLock = false
-    for (let listContent of localStorageListContents) {
-        addListItem(listContent);
+    try{
+        for (let listContent of localStorageListContents) {
+            addListItem(listContent);
+        }
+    }
+    catch{
+        localStorage.setItem("listContents", null)
     }
 }
 
@@ -94,13 +99,24 @@ inputDiv.addEventListener(
 )
 /**
  * 
- * @param {homework.homeworkObject} homeworkObject 
+ * @param {Homework.homeworkObject} homeworkObject
  * 
  * @description adds a list item and attaches it with a details, delete and edit button
  * 
  */
 function addListItem(homeworkObject) {
 
+    // Homework Class Management
+    /*
+
+    const homeworkObject = homeworkClass.homeworkObject
+    console.log(homeworkObject)
+
+    */
+
+    let homeworkStarted = homeworkObject.timeStarted != undefined? true:false
+
+    
     // List Management (Initial)
 
     listContents.push(homeworkObject)
@@ -112,19 +128,38 @@ function addListItem(homeworkObject) {
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
     const subjectName = addElement("h2", homeworkObject.subject.name)
+    const startHomeworkButton = addButton("Custom", null, `${homeworkStarted? "End":"Start"}` )
     subjectName.classList.add("subjectName")
     displayDiv.appendChild(subjectName)
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
 
+    // Start Button Functionality
+
+    startHomeworkButton.addEventListener("click", () => {
+        console.log(homeworkStarted)
+        if (homeworkStarted == false) {
+            homeworkStarted = true
+            homeworkObject.timeStarted = Date.now()
+            ManageLocalStorage.update()
+            startHomeworkButton.value = "End"
+        }
+        else if(homeworkStarted == true) {
+        }
+    })
+
     // Details Display Management
+
+    const detailsModal = document.createElement("div")
+    const detailsDisplay = document.createElement("div")
+    const detailsDiv = document.createElement("div")
 
     const detailsSubject = addElement("h2", homeworkObject.subject.name)
     const detailsSubjectDetails = document.createElement("p")
     const detailsSubjectID = addElement("span", homeworkObject.subject.id)
     const detailsSubjectType = addElement("span", homeworkObject.subject.type)
     const detailsIsGroupWork = addElement("p", homeworkObject.isGroupWork ? "Group Work" : "Not Group Work")
-    const detailsDueDate = addElement("p", `Due Date: ${homeworkObject.dueDate}`)
+    const detailsDueDate = addElement("p", `Due Date: ${new Date(homeworkObject.dueDate).toDateString() == "Invalid Date" ? "None" : new Date(homeworkObject.dueDate).toDateString()}`)
     const detailsPointsNumber = addElement("span", `${homeworkObject.points > 0 ? homeworkObject.points : "None"}`)
     const detailsPoints = addElement("p", `Points: `)
     detailsPoints.appendChild(detailsPointsNumber)
@@ -143,26 +178,22 @@ function addListItem(homeworkObject) {
     if (homeworkObject.subject.id != undefined && homeworkObject.subject.type != undefined) {
         detailsSubjectDetails.innerHTML = `${detailsSubjectID.textContent}/${detailsSubjectType.textContent}`
     }
-    else if (detailsSubjectID) {
+    else if (homeworkObject.subject.id != undefined) {
         detailsSubjectDetails.innerHTML = detailsSubjectID.textContent
     }
-    else if (detailsSubjectType) {
+    else if (homeworkObject.subject.type != undefined) {
         detailsSubjectDetails.innerHTML = detailsSubjectType.textContent
     }
     else {
-        detailsSubjectDetails.style.display = "none"
+        detailsSubjectDetails.innerHTML = null
     }
 
     //Details Modal
 
-    const detailsModal = document.createElement("div")
-    const detailsDisplay = document.createElement("div")
-    const detailsDiv = document.createElement("div")
-
     detailsModal.classList.add("modal")
     detailsDisplay.classList.add("detailsDisplay")
     detailsDisplay.appendChild(detailsSubject)
-    if (detailsSubjectDetails != undefined) {
+    if(detailsSubjectDetails.innerHTML != null && detailsSubjectDetails.innerHTML.length > 0) {
         detailsDisplay.appendChild(detailsSubjectDetails)
     }
     detailsDisplay.appendChild(detailsDueDate)
@@ -187,10 +218,12 @@ function addListItem(homeworkObject) {
     listItem.appendChild(detailsDiv)
 
     //Clicking for Details
-    displayDiv.addEventListener("click", () => {
-        detailsDiv.style.display = "flex";
-        detailsModal.style.display = "flex";
-        detailsDisplay.style.display = "block";
+    displayDiv.addEventListener("click", (event) => {
+        if(event.target != startHomeworkButton){
+            detailsDiv.style.display = "flex";
+            detailsModal.style.display = "flex";
+            detailsDisplay.style.display = "block";
+        }
     });
 
     //Edit Functionality
@@ -204,6 +237,8 @@ function addListItem(homeworkObject) {
         subjectName.textContent = homeworkObject.subject.name
         ManageLocalStorage.replace(index, homeworkObject)
     });
+
+    // Due Date
 
     // isGroupWork
     detailsIsGroupWork.addEventListener("click", () => {
@@ -221,21 +256,21 @@ function addListItem(homeworkObject) {
     })
 
     // Points
-        detailsPointsNumber.contentEditable = true
-        detailsPointsNumber.addEventListener("input", () => {
-            if(detailsPointsNumber.textContent > 0){
-                homeworkObject.points = detailsPointsNumber.textContent
-                ManageLocalStorage.replace(index, homeworkObject)
-            }
-            else if(detailsPointsNumber.textContent == 0 || detailsPointsNumber.textContent == ""){
-                homeworkObject.points = "0"
-                ManageLocalStorage.replace(index, homeworkObject)
-            }
-            else{
-                detailsPointsNumber.textContent = homeworkObject.points
-            }
-            
-        })
+    detailsPointsNumber.contentEditable = true
+    detailsPointsNumber.addEventListener("input", () => {
+        if (detailsPointsNumber.textContent > 0) {
+            homeworkObject.points = detailsPointsNumber.textContent
+            ManageLocalStorage.replace(index, homeworkObject)
+        }
+        else if (detailsPointsNumber.textContent == 0 || detailsPointsNumber.textContent == "") {
+            homeworkObject.points = "0"
+            ManageLocalStorage.replace(index, homeworkObject)
+        }
+        else {
+            detailsPointsNumber.textContent = homeworkObject.points
+        }
+
+    })
 
 
     // Description
@@ -255,6 +290,7 @@ function addListItem(homeworkObject) {
 
 
     //appending to list element
+    displayDiv.appendChild(startHomeworkButton)
     list.appendChild(listItem)
 }
 

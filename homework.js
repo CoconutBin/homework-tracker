@@ -12,7 +12,7 @@ class Homework {
         this.subjectID = subject.id ?? undefined
         this.subjectType = subject.type ?? undefined
         this.isGroupWork = isGroupWork ?? false
-        this.dueDate = dueDate.toDateString() ?? "Unknown"
+        this.dueDate = dueDate ?? "Unknown"
         this.description = description ?? ""
         this.points = points ?? undefined
     }
