@@ -1,8 +1,16 @@
 const themeButton = document.getElementById('themes');
-const cssVariables = document.querySelector(':root')
+const cssVariables = document.querySelector(':root') as HTMLElement
 let currentTheme = localStorage.getItem("currentTheme") ?? "fern"
 
 class Theme {
+    textColor: string
+    backgroundColor: string
+    primaryColor: string
+    secondaryColor: string
+    accentColor: string
+    textDarkColor: string
+    alertColor: string
+
     constructor(textColor, backgroundColor, primaryColor, secondaryColor, accentColor, textDarkColor, alertColor) {
         this.textColor = textColor ?? "000000";
         this.backgroundColor = backgroundColor ?? "#ffffff";

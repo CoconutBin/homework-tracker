@@ -1,4 +1,8 @@
 class Subject {
+    name: string
+    id: string
+    type: string
+
     constructor(name, id, type){
         this.name = name
         this.id = id
@@ -7,6 +11,15 @@ class Subject {
 }
 
 class Homework {
+    subjectName: string
+    subjectID: string
+    subjectType: string
+    isGroupWork: boolean
+    dueDate: string
+    description: string
+    points: number
+    timeStarted: number
+
     constructor(subject, isGroupWork, dueDate, points, description) {
         this.subjectName = subject.name ?? undefined
         this.subjectID = subject.id ?? undefined

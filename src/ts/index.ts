@@ -1,10 +1,10 @@
-const inputSubject = document.getElementById("inputSubject")
-const inputSubjectID = document.getElementById("inputSubjectID")
-const inputSubjectType = document.getElementById("inputSubjectType")
-const inputIsGroupWork = document.getElementById("inputIsGroupWork")
-const inputDueDate = document.getElementById("inputDueDate")
-const inputPoints = document.getElementById("inputPoints")
-const inputDescription = document.getElementById("inputDescription")
+const inputSubject= document.getElementById("inputSubject") as HTMLInputElement;
+const inputSubjectID = document.getElementById("inputSubjectID") as HTMLInputElement;
+const inputSubjectType = document.getElementById("inputSubjectType") as HTMLInputElement;
+const inputIsGroupWork = document.getElementById("inputIsGroupWork") as HTMLInputElement;
+const inputDueDate = document.getElementById("inputDueDate") as HTMLInputElement;
+const inputPoints = document.getElementById("inputPoints") as HTMLInputElement;
+const inputDescription = document.getElementById("inputDescription") as HTMLTextAreaElement;
 const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupWork, inputDueDate, inputPoints, inputDescription]
 const inputDiv = document.getElementById("inputform")
 const list = document.getElementById("list")
@@ -12,14 +12,6 @@ const listContents = []
 const localStorageListContents = JSON.parse(localStorage.getItem("listContents"))
 const addListItemButton = document.getElementById("addListItemButton")
 const editModal = document.getElementById("editModal")
-const editSubject = document.getElementById("editSubject")
-const editSubjectID = document.getElementById("editSubjectID")
-const editSubjectType = document.getElementById("editSubjectType")
-const editIsGroupWork = document.getElementById("editIsGroupWork")
-const editDueDate = document.getElementById("editDueDate")
-const editPoints = document.getElementById("editPoints")
-const editDescription = document.getElementById("editDescription")
-const allEdits = [editSubject, editSubjectID, editSubjectType, editIsGroupWork, editDueDate, editPoints, editDescription]
 let localStorageLock = true
 
 if (Storage == null) {
@@ -88,9 +80,9 @@ inputDiv.addEventListener(
                 inputHandler(inputPoints),
                 inputHandler(inputDescription)
             )
-            for (inputs of allInputs) {
-                inputs.value = ""
-                inputs.checked = false
+            for (let inputs of allInputs) {
+                    inputs.value = "";
+                    (inputs as HTMLInputElement).checked = false
             }
             addListItem(inputHomework.homeworkObject)
             inputDiv.style.display = "none"
@@ -334,7 +326,7 @@ function clearList() {
     list.innerHTML = "";
 }
 
-function addButton(type, affectedElement, customValue) {
+function addButton(type: string, affectedElement?: HTMLElement, customValue?: string): HTMLInputElement {
     let button = document.createElement("input");
     button.type = "button";
     button.value = type;
@@ -363,7 +355,7 @@ function addButton(type, affectedElement, customValue) {
     return button
 }
 
-function addElement(elementType, innerText) {
+function addElement(elementType, innerText?) {
     let element = document.createElement(elementType)
     if (innerText != undefined) {
         element.textContent = innerText
