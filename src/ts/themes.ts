@@ -1,4 +1,4 @@
-const themeButton = document.getElementById('themes');
+const themeButton = document.getElementById('themes') as HTMLButtonElement;
 const cssVariables = document.querySelector(':root') as HTMLElement
 let currentTheme = localStorage.getItem("currentTheme") ?? "fern"
 

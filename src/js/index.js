@@ -127,7 +127,7 @@ function addListItem(homeworkObject) {
     const detailsIsGroupWork = addElement("p", homeworkObject.isGroupWork ? "Group Work" : "Not Group Work");
     const detailsDueDate = addElement("p", `Due Date: `);
     const detailsDueDateTime = addElement("span", `${new Date(homeworkObject.dueDate).toDateString() == "Invalid Date" ? "None" : new Date(homeworkObject.dueDate).toDateString()}`);
-    const detailsPointsNumber = addElement("span", `${homeworkObject.points > 0 ? homeworkObject.points : "None"}`);
+    const detailsPointsNumber = addElement("span", `${parseInt(homeworkObject.points) > 0 ? homeworkObject.points : "None"}`);
     const detailsPoints = addElement("p", `Points: `);
     detailsPoints.appendChild(detailsPointsNumber);
     detailsDueDate.appendChild(detailsDueDateTime);
@@ -190,7 +190,7 @@ function addListItem(homeworkObject) {
     // Subject Name
     detailsSubject.classList.add("detailsSubjectText");
     detailsSubject.contentEditable = "true";
-    detailsSubject.spellCheck = "false";
+    detailsSubject.spellcheck = false;
     detailsSubject.addEventListener("input", () => {
         homeworkObject.subject.name = detailsSubject.textContent;
         subjectName.textContent = homeworkObject.subject.name;
@@ -198,14 +198,14 @@ function addListItem(homeworkObject) {
     });
     //SubjectID
     detailsSubjectID.contentEditable = "true";
-    detailsSubjectID.spellCheck = "false";
+    detailsSubjectID.spellcheck = false;
     detailsSubjectID.addEventListener("input", () => {
         homeworkObject.subject.id = detailsSubjectID.textContent;
         ManageLocalStorage.replace(index, homeworkObject);
     });
     //SubjectType
     detailsSubjectType.contentEditable = "true";
-    detailsSubjectType.spellCheck = "false";
+    detailsSubjectType.spellcheck = false;
     detailsSubjectType.addEventListener("input", () => {
         homeworkObject.subject.type = detailsSubjectType.textContent;
         ManageLocalStorage.replace(index, homeworkObject);
@@ -218,7 +218,7 @@ function addListItem(homeworkObject) {
         detailsDueDateTime.parentElement.appendChild(dueDateInput);
         dueDateInput.value = new Date(homeworkObject.dueDate).toDateString();
         dueDateInput.addEventListener("change", () => {
-            homeworkObject.dueDate = new Date(dueDateInput.value).getTime();
+            homeworkObject.dueDate = new Date(dueDateInput.value).getTime().toString();
             detailsDueDateTime.textContent = new Date(homeworkObject.dueDate).toDateString();
             ManageLocalStorage.replace(index, homeworkObject);
             dueDateInput.style.display = "none";
@@ -239,13 +239,13 @@ function addListItem(homeworkObject) {
         }
     });
     // Points
-    detailsPointsNumber.contentEditable = true;
+    detailsPointsNumber.contentEditable = "true";
     detailsPointsNumber.addEventListener("input", () => {
-        if (detailsPointsNumber.textContent > 0) {
+        if (detailsPointsNumber.textContent.length > 0) {
             homeworkObject.points = detailsPointsNumber.textContent;
             ManageLocalStorage.replace(index, homeworkObject);
         }
-        else if (detailsPointsNumber.textContent == 0 || detailsPointsNumber.textContent == "") {
+        else if (detailsPointsNumber.textContent.length == 0 || detailsPointsNumber.textContent == "") {
             homeworkObject.points = "0";
             ManageLocalStorage.replace(index, homeworkObject);
         }

@@ -17,7 +17,7 @@ class Homework {
     isGroupWork: boolean
     dueDate: string
     description: string
-    points: number
+    points: string
     timeStarted: number
 
     constructor(subject, isGroupWork, dueDate, points, description) {
