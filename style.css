@@ -107,7 +107,6 @@ textarea{
     overflow: hidden;
     white-space: nowrap;
     align-content: center;
-    text-align: center;
     flex-grow: 1;
 }
 
@@ -115,10 +114,12 @@ textarea{
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    font-size: large
 }
 
 #addListItemButton div{
     background: var(--accent) !important;
+    text-align: center;
 }
 
 .modal{
@@ -149,7 +150,6 @@ textarea{
 }
 
 .detailsDisplay p,.detailsDisplay h2{
-    background-color: var(--secondary);
     padding: 5px;
     border-radius: 10px;
 }

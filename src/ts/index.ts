@@ -1,25 +1,17 @@
-const inputSubject = document.getElementById("inputSubject")
-const inputSubjectID = document.getElementById("inputSubjectID")
-const inputSubjectType = document.getElementById("inputSubjectType")
-const inputIsGroupWork = document.getElementById("inputIsGroupWork")
-const inputDueDate = document.getElementById("inputDueDate")
-const inputPoints = document.getElementById("inputPoints")
-const inputDescription = document.getElementById("inputDescription")
+const inputSubject= document.getElementById("inputSubject") as HTMLInputElement;
+const inputSubjectID = document.getElementById("inputSubjectID") as HTMLInputElement;
+const inputSubjectType = document.getElementById("inputSubjectType") as HTMLInputElement;
+const inputIsGroupWork = document.getElementById("inputIsGroupWork") as HTMLInputElement;
+const inputDueDate = document.getElementById("inputDueDate") as HTMLInputElement;
+const inputPoints = document.getElementById("inputPoints") as HTMLInputElement;
+const inputDescription = document.getElementById("inputDescription") as HTMLTextAreaElement;
 const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupWork, inputDueDate, inputPoints, inputDescription]
 const inputDiv = document.getElementById("inputform")
 const list = document.getElementById("list")
-const listContents = []
-const localStorageListContents = JSON.parse(localStorage.getItem("listContents"))
-const addListItemButton = document.getElementById("addListItemButton")
+const listContents: Object[] = []
+const localStorageListContents: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("listContents"))
+const addListItemButton = document.getElementById("addListItemButton") as HTMLElement;
 const editModal = document.getElementById("editModal")
-const editSubject = document.getElementById("editSubject")
-const editSubjectID = document.getElementById("editSubjectID")
-const editSubjectType = document.getElementById("editSubjectType")
-const editIsGroupWork = document.getElementById("editIsGroupWork")
-const editDueDate = document.getElementById("editDueDate")
-const editPoints = document.getElementById("editPoints")
-const editDescription = document.getElementById("editDescription")
-const allEdits = [editSubject, editSubjectID, editSubjectType, editIsGroupWork, editDueDate, editPoints, editDescription]
 let localStorageLock = true
 
 if (Storage == null) {
@@ -88,9 +80,9 @@ inputDiv.addEventListener(
                 inputHandler(inputPoints),
                 inputHandler(inputDescription)
             )
-            for (inputs of allInputs) {
-                inputs.value = ""
-                inputs.checked = false
+            for (let inputs of allInputs) {
+                    inputs.value = "";
+                    (inputs as HTMLInputElement).checked = false
             }
             addListItem(inputHomework.homeworkObject)
             inputDiv.style.display = "none"
@@ -104,7 +96,7 @@ inputDiv.addEventListener(
  * @description adds a list item and attaches it with a details, delete and edit button
  * 
  */
-function addListItem(homeworkObject) {
+function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     // Homework Class Management
     /*
@@ -128,9 +120,11 @@ function addListItem(homeworkObject) {
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
     const subjectName = addElement("h2", homeworkObject.subject.name)
+    const dueDate = addElement("p", homeworkObject.dueDate)
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`)
     subjectName.classList.add("subjectName")
     displayDiv.appendChild(subjectName)
+    displayDiv.appendChild(dueDate)
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
 
@@ -161,7 +155,7 @@ function addListItem(homeworkObject) {
     const detailsIsGroupWork = addElement("p", homeworkObject.isGroupWork ? "Group Work" : "Not Group Work")
     const detailsDueDate = addElement("p", `Due Date: `)
     const detailsDueDateTime = addElement("span", `${new Date(homeworkObject.dueDate).toDateString() == "Invalid Date" ? "None" : new Date(homeworkObject.dueDate).toDateString()}`)
-    const detailsPointsNumber = addElement("span", `${homeworkObject.points > 0 ? homeworkObject.points : "None"}`)
+    const detailsPointsNumber = addElement("span", `${parseInt(homeworkObject.points) > 0 ? homeworkObject.points : "None"}`)
     const detailsPoints = addElement("p", `Points: `)
     detailsPoints.appendChild(detailsPointsNumber)
     detailsDueDate.appendChild(detailsDueDateTime)
@@ -234,7 +228,7 @@ function addListItem(homeworkObject) {
     // Subject Name
     detailsSubject.classList.add("detailsSubjectText")
     detailsSubject.contentEditable = "true"
-    detailsSubject.spellCheck = "false"
+    detailsSubject.spellcheck = false
     detailsSubject.addEventListener("input", () => {
         homeworkObject.subject.name = detailsSubject.textContent
         subjectName.textContent = homeworkObject.subject.name
@@ -243,7 +237,7 @@ function addListItem(homeworkObject) {
 
     //SubjectID
     detailsSubjectID.contentEditable = "true"
-    detailsSubjectID.spellCheck = "false"
+    detailsSubjectID.spellcheck = false
     detailsSubjectID.addEventListener("input", () => {
         homeworkObject.subject.id = detailsSubjectID.textContent
         ManageLocalStorage.replace(index, homeworkObject)
@@ -251,7 +245,7 @@ function addListItem(homeworkObject) {
 
     //SubjectType
     detailsSubjectType.contentEditable = "true"
-    detailsSubjectType.spellCheck = "false"
+    detailsSubjectType.spellcheck = false
     detailsSubjectType.addEventListener("input", () => {
         homeworkObject.subject.type = detailsSubjectType.textContent
         ManageLocalStorage.replace(index, homeworkObject)
@@ -265,7 +259,7 @@ function addListItem(homeworkObject) {
         detailsDueDateTime.parentElement.appendChild(dueDateInput)
         dueDateInput.value = new Date(homeworkObject.dueDate).toDateString()
         dueDateInput.addEventListener("change", () => {
-            homeworkObject.dueDate = new Date(dueDateInput.value).getTime()
+            homeworkObject.dueDate = new Date(dueDateInput.value).getTime().toString()
             detailsDueDateTime.textContent = new Date(homeworkObject.dueDate).toDateString()
             ManageLocalStorage.replace(index, homeworkObject)
             dueDateInput.style.display = "none"
@@ -288,13 +282,13 @@ function addListItem(homeworkObject) {
     })
 
     // Points
-    detailsPointsNumber.contentEditable = true
+    detailsPointsNumber.contentEditable = "true"
     detailsPointsNumber.addEventListener("input", () => {
-        if (detailsPointsNumber.textContent > 0) {
+        if (detailsPointsNumber.textContent.length > 0) {
             homeworkObject.points = detailsPointsNumber.textContent
             ManageLocalStorage.replace(index, homeworkObject)
         }
-        else if (detailsPointsNumber.textContent == 0 || detailsPointsNumber.textContent == "") {
+        else if (detailsPointsNumber.textContent.length == 0 || detailsPointsNumber.textContent == "") {
             homeworkObject.points = "0"
             ManageLocalStorage.replace(index, homeworkObject)
         }
@@ -332,7 +326,7 @@ function clearList() {
     list.innerHTML = "";
 }
 
-function addButton(type, affectedElement, customValue) {
+function addButton(type: string, affectedElement?: HTMLElement, customValue?: string): HTMLInputElement {
     let button = document.createElement("input");
     button.type = "button";
     button.value = type;
@@ -361,7 +355,7 @@ function addButton(type, affectedElement, customValue) {
     return button
 }
 
-function addElement(elementType, innerText) {
+function addElement(elementType: string, innerText?: string): HTMLElement {
     let element = document.createElement(elementType)
     if (innerText != undefined) {
         element.textContent = innerText
