@@ -97,11 +97,17 @@ function addListItem(homeworkObject) {
     const listItem = document.createElement("div");
     const displayDiv = document.createElement("div");
     const subjectName = addElement("h2", homeworkObject.subject.name);
-    const dueDate = addElement("p", homeworkObject.dueDate);
+    const dueDate = addElement("p", new Date(homeworkObject.dueDate).toDateString());
+    const timeStarted = addElement("p", convertToTime(homeworkObject.timeStarted));
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`);
     subjectName.classList.add("subjectName");
     displayDiv.appendChild(subjectName);
-    displayDiv.appendChild(dueDate);
+    if (new Date(homeworkObject.dueDate).toDateString() != "Invalid Date") {
+        displayDiv.appendChild(dueDate);
+    }
+    if (homeworkObject.timeStarted > 0) {
+        displayDiv.appendChild(timeStarted);
+    }
     listItem.classList.add("listItem");
     displayDiv.classList.add("listItemDisplay");
     // Start Button Functionality
@@ -229,7 +235,7 @@ function addListItem(homeworkObject) {
         homeworkObject.isGroupWork = !homeworkObject.isGroupWork;
         ManageLocalStorage.replace(index, homeworkObject);
         if (homeworkObject.isGroupWork) {
-            detailsIsGroupWork.style.color = "green";
+            detailsIsGroupWork.style.color = "var(--success)";
             detailsIsGroupWork.style.userSelect = "none";
         }
         else {
@@ -307,4 +313,38 @@ function addElement(elementType, innerText) {
         element.textContent = innerText;
     }
     return element;
+}
+function convertToTime(time) {
+    let Days = 0, Hours = 0, Minutes = 0, Seconds = 0;
+    let returnedTime = "";
+    const now = Date.now();
+    let timeDifference = now - time;
+    if (timeDifference < 0) {
+        return "Started in the future";
+    }
+    Days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    timeDifference -= Days * (1000 * 60 * 60 * 24);
+    Hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    timeDifference -= Hours * (1000 * 60 * 60);
+    Minutes = Math.floor(timeDifference / (1000 * 60));
+    timeDifference -= Minutes * (1000 * 60);
+    Seconds = Math.floor(timeDifference / 1000);
+    // Build the returned time string with proper units
+    if (Days > 0) {
+        returnedTime += `${Days} Day${Days > 1 ? 's' : ''}, `;
+    }
+    if (Hours > 0) {
+        returnedTime += `${Hours} Hour${Hours > 1 ? 's' : ''}, `;
+    }
+    if (Minutes > 0) {
+        returnedTime += `${Minutes} Minute${Minutes > 1 ? 's' : ''}, `;
+    }
+    if (Seconds > 0) {
+        returnedTime += `${Seconds} Second${Seconds > 1 ? 's' : ''}`;
+    }
+    // Handle no time elapsed
+    if (returnedTime.length === 0) {
+        returnedTime = "Just started";
+    }
+    return returnedTime.trim();
 }
