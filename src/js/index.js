@@ -97,16 +97,22 @@ function addListItem(homeworkObject) {
     const listItem = document.createElement("div");
     const displayDiv = document.createElement("div");
     const subjectName = addElement("h2", homeworkObject.subject.name);
-    const dueDate = addElement("p", homeworkObject.dueDate);
+    const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`);
+    const timeStarted = addElement("p", `Started ${convertToTime(homeworkObject.timeStarted)} ago`);
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`);
+    const detailsButton = addButton("Custom", null, "Details");
     subjectName.classList.add("subjectName");
     displayDiv.appendChild(subjectName);
-    displayDiv.appendChild(dueDate);
+    if (new Date(homeworkObject.dueDate).toDateString() != "Invalid Date") {
+        displayDiv.appendChild(dueDate);
+    }
+    if (homeworkObject.timeStarted > 0) {
+        displayDiv.appendChild(timeStarted);
+    }
     listItem.classList.add("listItem");
     displayDiv.classList.add("listItemDisplay");
     // Start Button Functionality
     startHomeworkButton.addEventListener("click", () => {
-        console.log(homeworkStarted);
         if (homeworkStarted == false) {
             homeworkStarted = true;
             homeworkObject.timeStarted = Date.now();
@@ -186,6 +192,11 @@ function addListItem(homeworkObject) {
             detailsDisplay.style.display = "block";
         }
     });
+    detailsButton.addEventListener("click", () => {
+        detailsDiv.style.display = "flex";
+        detailsModal.style.display = "flex";
+        detailsDisplay.style.display = "block";
+    });
     //Edit Functionality
     // Subject Name
     detailsSubject.classList.add("detailsSubjectText");
@@ -218,10 +229,10 @@ function addListItem(homeworkObject) {
         detailsDueDateTime.parentElement.appendChild(dueDateInput);
         dueDateInput.value = new Date(homeworkObject.dueDate).toDateString();
         dueDateInput.addEventListener("change", () => {
-            homeworkObject.dueDate = new Date(dueDateInput.value).getTime().toString();
+            homeworkObject.dueDate = new Date(dueDateInput.value).toDateString();
             detailsDueDateTime.textContent = new Date(homeworkObject.dueDate).toDateString();
             ManageLocalStorage.replace(index, homeworkObject);
-            dueDateInput.style.display = "none";
+            dueDateInput.remove();
         });
     });
     // isGroupWork
@@ -230,7 +241,7 @@ function addListItem(homeworkObject) {
         homeworkObject.isGroupWork = !homeworkObject.isGroupWork;
         ManageLocalStorage.replace(index, homeworkObject);
         if (homeworkObject.isGroupWork) {
-            detailsIsGroupWork.style.color = "green";
+            detailsIsGroupWork.style.color = "var(--success)";
             detailsIsGroupWork.style.userSelect = "none";
         }
         else {
@@ -241,7 +252,7 @@ function addListItem(homeworkObject) {
     // Points
     detailsPointsNumber.contentEditable = "true";
     detailsPointsNumber.addEventListener("input", () => {
-        if (detailsPointsNumber.textContent.length > 0) {
+        if (detailsPointsNumber.textContent.length > 0 && !isNaN(parseInt(detailsPointsNumber.textContent))) {
             homeworkObject.points = detailsPointsNumber.textContent;
             ManageLocalStorage.replace(index, homeworkObject);
         }
@@ -269,6 +280,7 @@ function addListItem(homeworkObject) {
     }
     //appending to list element
     displayDiv.appendChild(startHomeworkButton);
+    displayDiv.appendChild(detailsButton);
     list.appendChild(listItem);
 }
 function clearList() {
@@ -308,4 +320,38 @@ function addElement(elementType, innerText) {
         element.textContent = innerText;
     }
     return element;
+}
+function convertToTime(time) {
+    let Days = 0, Hours = 0, Minutes = 0, Seconds = 0;
+    let returnedTime = "";
+    const now = Date.now();
+    let timeDifference = now - time;
+    if (timeDifference < 0) {
+        return "Started in the future";
+    }
+    Days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    timeDifference -= Days * (1000 * 60 * 60 * 24);
+    Hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    timeDifference -= Hours * (1000 * 60 * 60);
+    Minutes = Math.floor(timeDifference / (1000 * 60));
+    timeDifference -= Minutes * (1000 * 60);
+    Seconds = Math.floor(timeDifference / 1000);
+    // Build the returned time string with proper units
+    if (Days > 0) {
+        returnedTime += `${Days}d `;
+    }
+    if (Hours > 0) {
+        returnedTime += `${Hours}h `;
+    }
+    if (Minutes > 0) {
+        returnedTime += `${Minutes}m `;
+    }
+    if (Seconds > 0) {
+        returnedTime += `${Seconds}s`;
+    }
+    // Handle no time elapsed
+    if (returnedTime.length === 0) {
+        returnedTime = "Just started";
+    }
+    return returnedTime.trim();
 }
