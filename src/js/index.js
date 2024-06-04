@@ -106,7 +106,6 @@ function addListItem(homeworkObject) {
     displayDiv.classList.add("listItemDisplay");
     // Start Button Functionality
     startHomeworkButton.addEventListener("click", () => {
-        console.log(homeworkStarted);
         if (homeworkStarted == false) {
             homeworkStarted = true;
             homeworkObject.timeStarted = Date.now();
@@ -218,10 +217,10 @@ function addListItem(homeworkObject) {
         detailsDueDateTime.parentElement.appendChild(dueDateInput);
         dueDateInput.value = new Date(homeworkObject.dueDate).toDateString();
         dueDateInput.addEventListener("change", () => {
-            homeworkObject.dueDate = new Date(dueDateInput.value).getTime().toString();
+            homeworkObject.dueDate = new Date(dueDateInput.value).toDateString();
             detailsDueDateTime.textContent = new Date(homeworkObject.dueDate).toDateString();
             ManageLocalStorage.replace(index, homeworkObject);
-            dueDateInput.style.display = "none";
+            dueDateInput.remove();
         });
     });
     // isGroupWork
@@ -241,7 +240,7 @@ function addListItem(homeworkObject) {
     // Points
     detailsPointsNumber.contentEditable = "true";
     detailsPointsNumber.addEventListener("input", () => {
-        if (detailsPointsNumber.textContent.length > 0) {
+        if (detailsPointsNumber.textContent.length > 0 && !isNaN(parseInt(detailsPointsNumber.textContent))) {
             homeworkObject.points = detailsPointsNumber.textContent;
             ManageLocalStorage.replace(index, homeworkObject);
         }
