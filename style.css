@@ -110,6 +110,13 @@ textarea{
     flex-grow: 1;
 }
 
+.listItemDisplay:hover{
+    transform: scale(1.025);
+    cursor: pointer;
+    transition: all .05s ease-in-out;
+    filter: brightness(85%);
+}
+
 .listItemDisplay h2, p{
     text-overflow: ellipsis;
     overflow: hidden;
@@ -162,4 +169,14 @@ textarea{
 
 input[type="button"]:hover, input[type="submit"]:hover{
     background: var(--accent)
+}
+
+.clickable{
+    cursor: pointer;
+    transition: all .1s ease-in-out;
+}
+
+.clickable:hover{
+    color: var(--accent);
+    transform: scale(1.1);
 }
