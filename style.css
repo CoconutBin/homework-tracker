@@ -4,7 +4,7 @@
     --primary: #47c068;
     --secondary: #92c3da;
     --accent: #6982cb;
-    --text-dark: #faf7ff;
+    --success: #1ec726;
     --error: #da0000;
 
     --standard-margin: 5px;
@@ -94,9 +94,9 @@ textarea{
     padding: 5px;
 }
 
-.listItemDisplay, .detailsDisplay, .inputForm{
+.listItemDisplay, .detailsDisplay, .inputForm, .settingsDisplay{
     background: var(--primary);
-    border-radius: 10px;
+    border-radius: 20px;
     padding: 0 10px;
 }
 
@@ -114,7 +114,7 @@ textarea{
     transform: scale(1.025);
     cursor: pointer;
     transition: all .05s ease-in-out;
-    filter: brightness(85%);
+    filter: brightness(115%);
 }
 
 .listItemDisplay h2, p{
@@ -143,7 +143,7 @@ textarea{
     transform: translate(-50%, -50%);
 }
 
-.detailsDisplay, .inputForm{
+.detailsDisplay, .inputForm, .settingsDisplay{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -152,7 +152,7 @@ textarea{
     padding: 20px 20px
 }
 
-.detailsDisplay{
+.detailsDisplay, .settingsDisplay{
     display: none;
 }
 
