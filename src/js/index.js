@@ -97,9 +97,10 @@ function addListItem(homeworkObject) {
     const listItem = document.createElement("div");
     const displayDiv = document.createElement("div");
     const subjectName = addElement("h2", homeworkObject.subject.name);
-    const dueDate = addElement("p", new Date(homeworkObject.dueDate).toDateString());
-    const timeStarted = addElement("p", convertToTime(homeworkObject.timeStarted));
+    const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`);
+    const timeStarted = addElement("p", `Started ${convertToTime(homeworkObject.timeStarted)} ago`);
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`);
+    const detailsButton = addButton("Custom", null, "Details");
     subjectName.classList.add("subjectName");
     displayDiv.appendChild(subjectName);
     if (new Date(homeworkObject.dueDate).toDateString() != "Invalid Date") {
@@ -191,6 +192,11 @@ function addListItem(homeworkObject) {
             detailsDisplay.style.display = "block";
         }
     });
+    detailsButton.addEventListener("click", () => {
+        detailsDiv.style.display = "flex";
+        detailsModal.style.display = "flex";
+        detailsDisplay.style.display = "block";
+    });
     //Edit Functionality
     // Subject Name
     detailsSubject.classList.add("detailsSubjectText");
@@ -274,6 +280,7 @@ function addListItem(homeworkObject) {
     }
     //appending to list element
     displayDiv.appendChild(startHomeworkButton);
+    displayDiv.appendChild(detailsButton);
     list.appendChild(listItem);
 }
 function clearList() {
@@ -331,16 +338,16 @@ function convertToTime(time) {
     Seconds = Math.floor(timeDifference / 1000);
     // Build the returned time string with proper units
     if (Days > 0) {
-        returnedTime += `${Days} Day${Days > 1 ? 's' : ''}, `;
+        returnedTime += `${Days}d `;
     }
     if (Hours > 0) {
-        returnedTime += `${Hours} Hour${Hours > 1 ? 's' : ''}, `;
+        returnedTime += `${Hours}h `;
     }
     if (Minutes > 0) {
-        returnedTime += `${Minutes} Minute${Minutes > 1 ? 's' : ''}, `;
+        returnedTime += `${Minutes}m `;
     }
     if (Seconds > 0) {
-        returnedTime += `${Seconds} Second${Seconds > 1 ? 's' : ''}`;
+        returnedTime += `${Seconds}s`;
     }
     // Handle no time elapsed
     if (returnedTime.length === 0) {
