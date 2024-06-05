@@ -10,7 +10,7 @@ class Theme {
     successColor;
     errorColor;
     constructor(textColor, backgroundColor, primaryColor, secondaryColor, accentColor, successColor, errorColor) {
-        this.textColor = textColor ?? "000000";
+        this.textColor = textColor ?? "#000000";
         this.backgroundColor = backgroundColor ?? "#ffffff";
         this.primaryColor = primaryColor ?? "#000000";
         this.secondaryColor = secondaryColor ?? "#888888";
@@ -40,7 +40,8 @@ themeButton.addEventListener('click', () => {
 });
 const Themes = {
     fern: new Theme("#011206", "#f2fef5", "#47c068", "#92c3da", "#6982cb", "#faf7ff", "#da0000"),
-    dark: new Theme("#e9f8ed", "#050f02", "#2e5f3b", "#26576e", "#344d98", "#011206", "#da0000"),
+    dark: new Theme('#d6fbf2', '#032117', '#157c5e', '#0d5891', '#1968da'),
+    darkold: new Theme("#e9f8ed", "#050f02", "#2e5f3b", "#26576e", "#344d98", "#011206", "#da0000"),
     prakiao: new Theme("#130112", "#f8e7f8", "#26437e", "#fdafdf", "#5474bb", "#011206", "#da0000"),
     matcha: new Theme("#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098"),
     choco: new Theme("#f6dae0", "#150507", "#caa5ac", "#bca667", "#afb078"),
