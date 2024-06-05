@@ -264,17 +264,17 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     });
 
     // Due Date
+    const dueDateInput = document.createElement("input")
+    dueDateInput.type = "date"
+    dueDateInput.style.display = "none"
+    detailsDueDateTime.parentElement.appendChild(dueDateInput)
     detailsDueDateTime.addEventListener("click", () => {
-        const dueDateInput = document.createElement("input")
-        dueDateInput.type = "date"
         dueDateInput.style.display = "block"
-        detailsDueDateTime.parentElement.appendChild(dueDateInput)
-        dueDateInput.value = new Date(homeworkObject.dueDate).toDateString()
         dueDateInput.addEventListener("change", () => {
             homeworkObject.dueDate = new Date(dueDateInput.value).toDateString()
             detailsDueDateTime.textContent = new Date(homeworkObject.dueDate).toDateString()
             ManageLocalStorage.replace(index, homeworkObject)
-            dueDateInput.remove()
+            dueDateInput.style.display = "none"
         })
     })
 
