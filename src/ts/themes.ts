@@ -3,13 +3,13 @@ const cssVariables = document.querySelector(':root') as HTMLElement
 let currentTheme = localStorage.getItem("currentTheme") ?? "matcha"
 
 class Theme {
-    textColor: string
-    backgroundColor: string
-    primaryColor: string
-    secondaryColor: string
-    accentColor: string
-    successColor: string
-    errorColor: string
+    textColor = "#000000";
+    backgroundColor = "#ffffff";
+    primaryColor = "#000000";
+    secondaryColor = "#888888";
+    accentColor = "#aaaaaa";
+    successColor = "#00ff00";
+    errorColor = "#da0000";
 
     constructor(textColor, backgroundColor, primaryColor, secondaryColor, accentColor, successColor?, errorColor?) {
         this.textColor = textColor ?? "#000000";
