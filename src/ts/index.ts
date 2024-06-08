@@ -9,6 +9,7 @@ const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupW
 const inputDiv = document.getElementById("inputform")
 const list = document.getElementById("list")
 const listContents: Object[] = []
+const archivedHomeworks: Object[] = []
 const localStorageListContents: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("listContents"))
 const addListItemButton = document.getElementById("addListItemButton") as HTMLElement;
 const editModal = document.getElementById("editModal")
@@ -146,19 +147,22 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     // Start Button Functionality
 
     startHomeworkButton.addEventListener("click", () => {
-        if (homeworkStarted == false) {
+        if (homeworkStarted == false && startHomeworkButton.value != "Archive") {
             homeworkStarted = true
             homeworkObject.timeStarted = Date.now()
             ManageLocalStorage.update()
             startHomeworkButton.value = "End"
             timeStarted.style.display = "block"
         }
-        else if (homeworkStarted == true) {
+        else if (homeworkStarted == true && startHomeworkButton.value != "Archive") {
             homeworkObject.timeEnded = Date.now()
             clearInterval(liveUpdateTimer)
             ManageLocalStorage.update()
             timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`
             startHomeworkButton.value = "Archive"
+        }
+        else if (startHomeworkButton.value == "Archive") {
+            ManageLocalStorage.delete(homeworkObject)
         }
     })
 

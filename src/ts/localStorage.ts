@@ -18,7 +18,7 @@ class ManageLocalStorage {
         ManageLocalStorage.update()
     }
 
-    static replace(index, updatedListItem) {
+    static replace(index: number, updatedListItem: Homework["homeworkObject"]) {
         listContents.splice(index, 1, updatedListItem)
         ManageLocalStorage.update()
     }
