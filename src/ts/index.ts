@@ -8,11 +8,12 @@ const inputDescription = document.getElementById("inputDescription") as HTMLText
 const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupWork, inputDueDate, inputPoints, inputDescription]
 const inputDiv = document.getElementById("inputform")
 const list = document.getElementById("list")
-const listContents: Object[] = []
-const archivedHomeworks: Object[] = []
+const listContents: Homework["homeworkObject"][] = []
+const archivedHomeworks: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("archivedHomeworks")) != undefined? JSON.parse(localStorage.getItem("archivedHomeworks")):[]
 const localStorageListContents: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("listContents"))
 const addListItemButton = document.getElementById("addListItemButton") as HTMLElement;
 const editModal = document.getElementById("editModal")
+const logo = document.getElementById("logo")
 let localStorageLock = true
 
 if (Storage == null) {
@@ -163,6 +164,9 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         }
         else if (startHomeworkButton.value == "Archive") {
             ManageLocalStorage.delete(homeworkObject)
+            archivedHomeworks.push(homeworkObject)
+            listItem.remove()
+            ManageLocalStorage.update()
         }
     })
 
