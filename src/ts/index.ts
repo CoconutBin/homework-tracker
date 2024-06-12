@@ -431,7 +431,7 @@ function convertToTime(time: number): string {
     if (Minutes > 0) {
         returnedTime += `${Minutes}m `;
     }
-    if (Seconds > 0) {
+    if (Seconds >= 0) {
         returnedTime += `${Seconds}s`;
     }
     
