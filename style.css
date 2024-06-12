@@ -115,7 +115,8 @@ textarea{
     width: calc(20% - calc(2*var(--standard-margin)) - 10px);
     text-overflow: clip;
     overflow: hidden;
-    overflow-wrap: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
     white-space: break-spaces;
     align-content: center;
     text-wrap: wrap;
