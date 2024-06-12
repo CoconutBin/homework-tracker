@@ -50,8 +50,8 @@ const Themes = {
     darkold: new Theme('dark', "#e9f8ed", "#050f02", "#2e5f3b", "#26576e", "#344d98", "#011206", "#da0000"),
     prakiao: new Theme('light', "#130112", "#f8e7f8", "#7995cd", "#fdafdf", "#5474bb", "#011206", "#da0000"),
     matcha: new Theme('light', "#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098"),
-    choco: new Theme('dark', "#f6dae0", "#150507", "#caa5ac", "#bca667", "#afb078"),
-    pneuma: new Theme('dark', "fcfdfc", "#2c2b40", "#4e5eda", "#779bf2", "#35a9fc"),
+    choco: new Theme('dark', "#fff8ff", "#150507", "#caa5ac", "#bca667", "#afb078"),
+    pneuma: new Theme('dark', "#fcfdfc", "#2c2b40", "#4e5eda", "#779bf2", "#35a9fc"),
     paper: new Theme('light', null, null, null, null, null)
 }
 
