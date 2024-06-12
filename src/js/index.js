@@ -9,10 +9,11 @@ const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupW
 const inputDiv = document.getElementById("inputform");
 const list = document.getElementById("list");
 const listContents = [];
-const archivedHomeworks = [];
+const archivedHomeworks = JSON.parse(localStorage.getItem("archivedHomeworks")) != undefined ? JSON.parse(localStorage.getItem("archivedHomeworks")) : [];
 const localStorageListContents = JSON.parse(localStorage.getItem("listContents"));
 const addListItemButton = document.getElementById("addListItemButton");
 const editModal = document.getElementById("editModal");
+const logo = document.getElementById("logo");
 let localStorageLock = true;
 if (Storage == null) {
     alert("Your browser does not support local storage, so list items won't save when you exit the tab");
@@ -137,6 +138,9 @@ function addListItem(homeworkObject) {
         }
         else if (startHomeworkButton.value == "Archive") {
             ManageLocalStorage.delete(homeworkObject);
+            archivedHomeworks.push(homeworkObject);
+            listItem.remove();
+            ManageLocalStorage.update();
         }
     });
     // Details Display Management
