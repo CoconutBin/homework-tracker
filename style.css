@@ -117,7 +117,6 @@ textarea{
     overflow: hidden;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    white-space: break-spaces;
     align-content: center;
     text-wrap: wrap;
     flex-grow: 1;
@@ -133,7 +132,6 @@ textarea{
 .listItemDisplay h2, p{
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: nowrap;
     font-size: large
 }
 
@@ -172,6 +170,10 @@ textarea{
 .detailsDisplay p,.detailsDisplay h2, .settingsDisplay p, .settingsDisplay label{
     padding: 5px;
     border-radius: 10px;
+}
+
+.detailsDisplay{
+    width: 30vw;
 }
 
 .detailsSubjectText{
