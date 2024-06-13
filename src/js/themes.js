@@ -42,11 +42,11 @@ themeButton.addEventListener('click', () => {
 });
 const Themes = {
     fern: new Theme('light', "#011206", "#f2fef5", "#47c068", "#92c3da", "#6982cb", "#faf7ff", "#da0000"),
-    dark: new Theme('dark', '#d6fbf2', '#032117', '#157c5e', '#0d5891', '#1968da'),
+    dark: new Theme('dark', '#d6fbf2', '#000a06', '#125e48', '#115385', '#1968da'),
     darkold: new Theme('dark', "#e9f8ed", "#050f02", "#2e5f3b", "#26576e", "#344d98", "#011206", "#da0000"),
     prakiao: new Theme('light', "#130112", "#f8e7f8", "#7995cd", "#fdafdf", "#5474bb", "#011206", "#da0000"),
     matcha: new Theme('light', "#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098"),
-    choco: new Theme('dark', "#fff8ff", "#150507", "#caa5ac", "#bca667", "#afb078"),
+    choco: new Theme('dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32"),
     pneuma: new Theme('dark', "#fcfdfc", "#2c2b40", "#4e5eda", "#779bf2", "#35a9fc"),
     paper: new Theme('light', null, null, null, null, null)
 };
