@@ -1,4 +1,4 @@
-const version: string = "2.1b"
+const version: string = "2.1"
 
 if (localStorage.getItem("version") !== null && localStorage.getItem("version") !== version) {
     if(parseInt(localStorage.getItem("version").split(".")[0]) > 1) {

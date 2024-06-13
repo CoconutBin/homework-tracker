@@ -381,6 +381,7 @@ function addButton(type: string, affectedElement?: HTMLElement, customValue?: st
             break;
         case "Delete":
             button.addEventListener("click", () => {
+                if(!confirm("Are you sure???????????????")) return;
                 affectedElement.remove()
                 ManageLocalStorage.delete(affectedElement)
             })

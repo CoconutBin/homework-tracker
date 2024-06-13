@@ -1,9 +1,9 @@
 :root{
     --text: #011206;
-    --background: #f2fef5;
-    --primary: #47c068;
-    --secondary: #92c3da;
-    --accent: #6982cb;
+    --background: #ffffff;
+    --primary: #ffffff;
+    --secondary: #ffffff;
+    --accent: #ffffff;
     --success: #1ec726;
     --error: #da0000;
 
@@ -18,6 +18,10 @@ body, html{
     background: var(--background);
     margin: 0;
     padding: 0;
+}
+
+body>*{
+    transition: all .2s ease-in-out;
 }
 
 label{

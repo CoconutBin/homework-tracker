@@ -328,6 +328,8 @@ function addButton(type, affectedElement, customValue) {
             break;
         case "Delete":
             button.addEventListener("click", () => {
+                if (!confirm("Are you sure???????????????"))
+                    return;
                 affectedElement.remove();
                 ManageLocalStorage.delete(affectedElement);
             });
