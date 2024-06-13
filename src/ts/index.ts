@@ -8,10 +8,12 @@ const inputDescription = document.getElementById("inputDescription") as HTMLText
 const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupWork, inputDueDate, inputPoints, inputDescription]
 const inputDiv = document.getElementById("inputform")
 const list = document.getElementById("list")
-const listContents: Object[] = []
+const listContents: Homework["homeworkObject"][] = []
+const archivedHomeworks: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("archivedHomeworks")) != undefined? JSON.parse(localStorage.getItem("archivedHomeworks")):[]
 const localStorageListContents: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("listContents"))
 const addListItemButton = document.getElementById("addListItemButton") as HTMLElement;
 const editModal = document.getElementById("editModal")
+const logo = document.getElementById("logo")
 let localStorageLock = true
 
 if (Storage == null) {
@@ -121,16 +123,24 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     const displayDiv = document.createElement("div")
     const subjectName = addElement("h2", homeworkObject.subject.name)
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`)
-    const timeStarted = addElement("p", `Started ${convertToTime(homeworkObject.timeStarted)} ago`)
+    const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`)
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`)
     const detailsButton = addButton("Custom", null, "Details")
     subjectName.classList.add("subjectName")
     displayDiv.appendChild(subjectName)
+    displayDiv.appendChild(timeStarted)
+    timeStarted.style.display = "none"
     if (new Date(homeworkObject.dueDate).toDateString() != "Invalid Date") {
         displayDiv.appendChild(dueDate)
     }
-    if (homeworkObject.timeStarted > 0) {
-        displayDiv.appendChild(timeStarted)
+    if (homeworkObject.timeStarted > 0 && homeworkObject.timeEnded == undefined) {
+        timeStarted.style.display = "block"
+    }
+    if (homeworkObject.timeEnded > 0){
+        timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`
+        startHomeworkButton.value = "Archive"
+        
+            timeStarted.style.display = "block"
     }
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
@@ -138,13 +148,25 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     // Start Button Functionality
 
     startHomeworkButton.addEventListener("click", () => {
-        if (homeworkStarted == false) {
+        if (homeworkStarted == false && startHomeworkButton.value != "Archive") {
             homeworkStarted = true
             homeworkObject.timeStarted = Date.now()
             ManageLocalStorage.update()
             startHomeworkButton.value = "End"
+            timeStarted.style.display = "block"
         }
-        else if (homeworkStarted == true) {
+        else if (homeworkStarted == true && startHomeworkButton.value != "Archive") {
+            homeworkObject.timeEnded = Date.now()
+            clearInterval(liveUpdateTimer)
+            ManageLocalStorage.update()
+            timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`
+            startHomeworkButton.value = "Archive"
+        }
+        else if (startHomeworkButton.value == "Archive") {
+            ManageLocalStorage.delete(homeworkObject)
+            archivedHomeworks.push(homeworkObject)
+            listItem.remove()
+            ManageLocalStorage.update()
         }
     })
 
@@ -264,17 +286,17 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     });
 
     // Due Date
+    const dueDateInput = document.createElement("input")
+    dueDateInput.type = "date"
+    dueDateInput.style.display = "none"
+    detailsDueDateTime.parentElement.appendChild(dueDateInput)
     detailsDueDateTime.addEventListener("click", () => {
-        const dueDateInput = document.createElement("input")
-        dueDateInput.type = "date"
         dueDateInput.style.display = "block"
-        detailsDueDateTime.parentElement.appendChild(dueDateInput)
-        dueDateInput.value = new Date(homeworkObject.dueDate).toDateString()
         dueDateInput.addEventListener("change", () => {
             homeworkObject.dueDate = new Date(dueDateInput.value).toDateString()
             detailsDueDateTime.textContent = new Date(homeworkObject.dueDate).toDateString()
             ManageLocalStorage.replace(index, homeworkObject)
-            dueDateInput.remove()
+            dueDateInput.style.display = "none"
         })
     })
 
@@ -326,6 +348,14 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         });
     }
 
+    //updating time
+    const liveUpdateTimer = setInterval(() => {
+        timeStarted.innerText = `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`
+    }, 1000)
+
+    if(homeworkObject.timeEnded != undefined){
+        clearInterval(liveUpdateTimer)
+    }
 
     //appending to list element
     displayDiv.appendChild(startHomeworkButton)
@@ -380,23 +410,16 @@ function convertToTime(time: number): string {
     let Days = 0, Hours = 0, Minutes = 0, Seconds = 0;
     let returnedTime = "";
 
-    const now = Date.now();
-    let timeDifference = now - time;
+    Days = Math.floor(time / (1000 * 60 * 60 * 24));
+    time -= Days * (1000 * 60 * 60 * 24);
 
-    if (timeDifference < 0) {
-        return "Started in the future";
-    }
+    Hours = Math.floor(time / (1000 * 60 * 60));
+    time -= Hours * (1000 * 60 * 60);
 
-    Days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    timeDifference -= Days * (1000 * 60 * 60 * 24);
+    Minutes = Math.floor(time / (1000 * 60));
+    time -= Minutes * (1000 * 60);
 
-    Hours = Math.floor(timeDifference / (1000 * 60 * 60));
-    timeDifference -= Hours * (1000 * 60 * 60);
-
-    Minutes = Math.floor(timeDifference / (1000 * 60));
-    timeDifference -= Minutes * (1000 * 60);
-
-    Seconds = Math.floor(timeDifference / 1000);
+    Seconds = Math.floor(time / 1000);
 
     // Build the returned time string with proper units
     if (Days > 0) {
@@ -408,14 +431,9 @@ function convertToTime(time: number): string {
     if (Minutes > 0) {
         returnedTime += `${Minutes}m `;
     }
-    if (Seconds > 0) {
+    if (Seconds >= 0) {
         returnedTime += `${Seconds}s`;
     }
-
-    // Handle no time elapsed
-    if (returnedTime.length === 0) {
-        returnedTime = "Just started";
-    }
-
+    
     return returnedTime.trim();
 }

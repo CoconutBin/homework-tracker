@@ -17,6 +17,7 @@ class Homework {
     description;
     points;
     timeStarted;
+    timeEnded;
     constructor(subject, isGroupWork, dueDate, points, description) {
         this.subjectName = subject.name ?? undefined;
         this.subjectID = subject.id ?? undefined;
@@ -43,7 +44,8 @@ class Homework {
             dueDate: this.dueDate,
             description: this.description,
             points: this.points,
-            timeStarted: this.timeStarted
+            timeStarted: this.timeStarted,
+            timeEnded: this.timeEnded
         };
     }
     set homeworkObject(obj) {

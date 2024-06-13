@@ -19,6 +19,7 @@ class Homework {
     description: string
     points: string
     timeStarted: number
+    timeEnded: number
 
     constructor(subject, isGroupWork, dueDate, points, description) {
         this.subjectName = subject.name ?? undefined
@@ -49,7 +50,8 @@ class Homework {
             dueDate: this.dueDate,
             description: this.description,
             points: this.points,
-            timeStarted: this.timeStarted
+            timeStarted: this.timeStarted,
+            timeEnded: this.timeEnded
         }
     }
 

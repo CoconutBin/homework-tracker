@@ -11,9 +11,9 @@
 
 <body>
     <div class="navbar">
-        <p>Homework Tracker</p>
+        <p id="logo">Homework Tracker</p>
         <a>
-            <span class="material-symbols-outlined clickable" style="font-size: 48px;" id="sort">sort</span>
+            <!--<span class="material-symbols-outlined clickable" style="font-size: 48px;" id="sort">sort</span> -->
         <span class="material-symbols-outlined clickable" style="font-size: 48px;" id="themes">palette</span>
         <span class="material-symbols-outlined clickable" style="font-size: 48px;" id="settings">settings</span>
         </a>
@@ -23,6 +23,29 @@
             <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
         </div>
 
+    </div>
+    <div id="settingsContainer" style="display: none;">
+        <div id="settingsModal" class="modal"></div>
+        <div id="settingsScreen" class="settingsDisplay">
+            <p class="settingsCategory">Themes</p>
+            <label for="defaultLight">Default Light Theme:</label>
+            <select name="defaultLight" id="defaultLight">
+                <option value="matcha">Matcha</option>
+                <option value="fern">Fern</option>
+                <option value="prakiao">Prakiao</option>
+                <option value="paper">Paper</option>
+            </select><br>
+            <label for="defaultDark">Default Dark Theme:</label>
+            <select name="defaultDark" id="defaultDark">
+                <option value="dark">Dark</option>
+                <option value="darkold">Dark (Old)</option>
+                <option value="choco">Choco</option>
+                <option value="pneuma">Pneuma</option>
+              </select><br>
+              <p class="settingsCategory">Beta</p>
+              <label for="export">No new beta features</label><br><br>
+            <input type="button" value="Close" id="settingsCloseButton">
+        </div>
     </div>
     <div id="inputform" style="display: none;">
         <form class="inputForm" style="z-index: 9999">
@@ -61,10 +84,11 @@
         <div class="modal" id="inputFormModalBackground"></div>
     </div>
 </body>
-<script src="./src/js/themes.js"></script>
-<script src="./src/js/settings.js"></script>
 <script src="./src/js/localStorage.js"></script>
 <script src="./src/js/homework.js"></script>
 <script src="./src/js/index.js"></script>
+<script src="./src/js/settings.js"></script>
+<script src="./src/js/themes.js"></script>
+
 
 </html>
