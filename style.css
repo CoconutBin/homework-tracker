@@ -20,6 +20,10 @@ body, html{
     padding: 0;
 }
 
+body>*{
+    transition: all .2s ease-in-out;
+}
+
 label{
     font-size: medium !important;
 }
