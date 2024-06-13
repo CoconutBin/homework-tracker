@@ -41,7 +41,7 @@ input[type="button"], input[type="submit"], input[type="date"], button{
 }
 
 textarea{
-    width: 30vw;
+    width: calc(30vw - 40px);
     height: 15vh;
     resize: none;
 }
