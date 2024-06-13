@@ -13,6 +13,7 @@ class Homework {
     subjectID;
     subjectType;
     isGroupWork;
+    isImportant;
     dueDate;
     description;
     points;

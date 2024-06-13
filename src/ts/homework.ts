@@ -15,6 +15,7 @@ class Homework {
     subjectID: string
     subjectType: string
     isGroupWork: boolean
+    isImportant: boolean
     dueDate: string
     description: string
     points: string
