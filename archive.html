@@ -11,21 +11,17 @@
 
 <body>
     <div class="navbar">
-        <p id="logo">Homework Tracker</p>
+        <p id="logo">Homework Tracker (Archived Homeworks)</p>
         <div>
             <a id="navbarButtons">
                 <!--<span class="material-symbols-outlined clickable" style="font-size: 48px;" id="sort">sort</span> -->
-            <a class="material-symbols-outlined clickable" style="font-size: 48px; text-decoration: none;" href="./archive.html">history</a>
+            <a class="material-symbols-outlined clickable" style="font-size: 48px; text-decoration: none;" href="./index.html">history</a>
             <span class="material-symbols-outlined clickable" style="font-size: 48px;" id="themes">palette</span>
             <span class="material-symbols-outlined clickable" style="font-size: 48px;" id="settings">settings</span>
         </a>
         </div>
     </div>
     <div id="list" class="list">
-        <div class="listItem" id="addListItemButton">
-            <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
-        </div>
-
     </div>
     <div id="settingsContainer" style="display: none;">
         <div id="settingsModal" class="modal"></div>
@@ -49,42 +45,6 @@
               <label for="export">No new beta features</label><br><br>
             <input type="button" value="Close" id="settingsCloseButton">
         </div>
-    </div>
-    <div id="inputform" style="display: none;">
-        <form class="inputForm" style="z-index: 9999">
-            <label>
-                Subject:
-                <input type="text" name="subject" id="inputSubject" autocomplete="off">
-            </label><br>
-            <label>
-                Subject ID:
-                <input type="text" name="subjectId" id="inputSubjectID" autocomplete="off">
-            </label><br>
-            <label>
-                Subject Type:
-                <input type="text" name="subjectType" id="inputSubjectType" autocomplete="off">
-            </label><br>
-            <label>
-                Is it a group work?
-                <input type="checkbox" name="isGroupWork" id="inputIsGroupWork" autocomplete="off">
-            </label><br><br>
-            <label>
-                Due Date:
-                <input type="date" name="dueDate" id="inputDueDate" autocomplete="off">
-            </label><br><br>
-            <label>
-                Points:
-                <input type="number" name="points" id="inputPoints" autocomplete="off">
-            </label><br><br>
-            <label>
-                Work Details:
-                <textarea name="description" id="inputDescription" autocomplete="off" placeholder="write here"></textarea>
-            </label><br><br>
-            <input type="submit">
-            <input type="button" value="Clear List" onclick="clearList()">
-            <input type="button" value="Close" id="inputFormCloseButton">
-        </form>
-        <div class="modal" id="inputFormModalBackground"></div>
     </div>
 </body>
 <script src="./src/js/localStorage.js"></script>

@@ -65,7 +65,7 @@ textarea{
     padding: 0  0 0 5px;
 }
 
-.navbar a {
+#navbarButtons{
     float: left; /* Align links to the left */
     display: block; /* Make links fill the container */
     color: var(--text);
