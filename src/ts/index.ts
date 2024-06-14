@@ -9,7 +9,6 @@ const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupW
 const inputDiv = document.getElementById("inputform")
 const list = document.getElementById("list")
 const listContents: Homework["homeworkObject"][] = []
-const archivedHomeworks: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("archivedHomeworks")) != undefined? JSON.parse(localStorage.getItem("archivedHomeworks")):[]
 const localStorageListContents: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("listContents"))
 const addListItemButton = document.getElementById("addListItemButton") as HTMLElement;
 const editModal = document.getElementById("editModal")
@@ -366,75 +365,8 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 function clearList() {
     listContents.splice(0, listContents.length);
     localStorage.setItem("listContents", JSON.stringify(listContents));
-    list.innerHTML = "";
+    list.innerHTML = `<div class="listItem" id="addListItemButton">
+            <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
+        </div>`;
 }
 
-function addButton(type: string, affectedElement?: HTMLElement, customValue?: string): HTMLInputElement {
-    let button = document.createElement("input");
-    button.type = "button";
-    button.value = type;
-    switch (type) {
-        case "Close":
-            button.addEventListener("click", () => {
-                affectedElement.style.display = "none"
-            })
-            break;
-        case "Delete":
-            button.addEventListener("click", () => {
-                if(!confirm("Are you sure???????????????")) return;
-                affectedElement.remove()
-                ManageLocalStorage.delete(affectedElement)
-            })
-            break;
-        case "Custom":
-            break;
-        default:
-            console.error("Invalid Input")
-    }
-
-    if (customValue != undefined) {
-        button.value = customValue
-    }
-
-    return button
-}
-
-function addElement(elementType: string, innerText?: string): HTMLElement {
-    let element = document.createElement(elementType)
-    if (innerText != undefined) {
-        element.textContent = innerText
-    }
-    return element
-}
-
-function convertToTime(time: number): string {
-    let Days = 0, Hours = 0, Minutes = 0, Seconds = 0;
-    let returnedTime = "";
-
-    Days = Math.floor(time / (1000 * 60 * 60 * 24));
-    time -= Days * (1000 * 60 * 60 * 24);
-
-    Hours = Math.floor(time / (1000 * 60 * 60));
-    time -= Hours * (1000 * 60 * 60);
-
-    Minutes = Math.floor(time / (1000 * 60));
-    time -= Minutes * (1000 * 60);
-
-    Seconds = Math.floor(time / 1000);
-
-    // Build the returned time string with proper units
-    if (Days > 0) {
-        returnedTime += `${Days}d `;
-    }
-    if (Hours > 0) {
-        returnedTime += `${Hours}h `;
-    }
-    if (Minutes > 0) {
-        returnedTime += `${Minutes}m `;
-    }
-    if (Seconds >= 0) {
-        returnedTime += `${Seconds}s`;
-    }
-    
-    return returnedTime.trim();
-}
