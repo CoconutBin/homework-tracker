@@ -2,6 +2,7 @@ const inputSubject = document.getElementById("inputSubject") as HTMLInputElement
 const inputSubjectID = document.getElementById("inputSubjectID") as HTMLInputElement;
 const inputSubjectType = document.getElementById("inputSubjectType") as HTMLInputElement;
 const inputIsGroupWork = document.getElementById("inputIsGroupWork") as HTMLInputElement;
+const inputIsImportant = document.getElementById("inputIsImportant") as HTMLInputElement;
 const inputDueDate = document.getElementById("inputDueDate") as HTMLInputElement;
 const inputPoints = document.getElementById("inputPoints") as HTMLInputElement;
 const inputDescription = document.getElementById("inputDescription") as HTMLTextAreaElement;
@@ -81,6 +82,7 @@ inputDiv.addEventListener(
                 inputHandler(inputPoints),
                 inputHandler(inputDescription)
             )
+            inputHomework.isImportant = inputHandler(inputIsImportant)
             for (let inputs of allInputs) {
                 inputs.value = "";
                 (inputs as HTMLInputElement).checked = false
@@ -120,6 +122,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
+    const isImportant = addElement("span", " ⭐")
     const subjectName = addElement("h2", homeworkObject.subject.name)
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`)
     const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`)
@@ -184,6 +187,9 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     const detailsDueDateTime = addElement("span", `${new Date(homeworkObject.dueDate).toDateString() == "Invalid Date" ? "None" : new Date(homeworkObject.dueDate).toDateString()}`)
     const detailsPointsNumber = addElement("span", `${parseInt(homeworkObject.points) > 0 ? homeworkObject.points : "None"}`)
     const detailsPoints = addElement("p", `Points: `)
+    if(homeworkObject.isImportant){
+        subjectName.appendChild(isImportant)
+    }
     detailsPoints.appendChild(detailsPointsNumber)
     detailsDueDate.appendChild(detailsDueDateTime)
 

@@ -42,6 +42,7 @@ class Homework {
         return {
             subject: this.subject,
             isGroupWork: this.isGroupWork,
+            isImportant: this.isImportant,
             dueDate: this.dueDate,
             description: this.description,
             points: this.points,
@@ -52,6 +53,7 @@ class Homework {
     set homeworkObject(obj) {
         this.subject = obj.subject;
         this.isGroupWork = obj.isGroupWork;
+        this.isImportant = obj.isImportant;
         this.dueDate = obj.dueDate;
         this.description = obj.description;
         this.points = obj.points;

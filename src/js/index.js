@@ -2,6 +2,7 @@ const inputSubject = document.getElementById("inputSubject");
 const inputSubjectID = document.getElementById("inputSubjectID");
 const inputSubjectType = document.getElementById("inputSubjectType");
 const inputIsGroupWork = document.getElementById("inputIsGroupWork");
+const inputIsImportant = document.getElementById("inputIsImportant");
 const inputDueDate = document.getElementById("inputDueDate");
 const inputPoints = document.getElementById("inputPoints");
 const inputDescription = document.getElementById("inputDescription");
@@ -66,6 +67,7 @@ inputDiv.addEventListener("submit", function (event) {
             id: inputHandler(inputSubjectID),
             type: inputHandler(inputSubjectType)
         }, inputHandler(inputIsGroupWork), inputHandler(inputDueDate), inputHandler(inputPoints), inputHandler(inputDescription));
+        inputHomework.isImportant = inputHandler(inputIsImportant);
         for (let inputs of allInputs) {
             inputs.value = "";
             inputs.checked = false;
@@ -97,6 +99,7 @@ function addListItem(homeworkObject) {
     // Display Management (Initial)
     const listItem = document.createElement("div");
     const displayDiv = document.createElement("div");
+    const isImportant = addElement("span", " ⭐");
     const subjectName = addElement("h2", homeworkObject.subject.name);
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`);
     const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`);
@@ -155,6 +158,9 @@ function addListItem(homeworkObject) {
     const detailsDueDateTime = addElement("span", `${new Date(homeworkObject.dueDate).toDateString() == "Invalid Date" ? "None" : new Date(homeworkObject.dueDate).toDateString()}`);
     const detailsPointsNumber = addElement("span", `${parseInt(homeworkObject.points) > 0 ? homeworkObject.points : "None"}`);
     const detailsPoints = addElement("p", `Points: `);
+    if (homeworkObject.isImportant) {
+        subjectName.appendChild(isImportant);
+    }
     detailsPoints.appendChild(detailsPointsNumber);
     detailsDueDate.appendChild(detailsDueDateTime);
     let detailsDescriptionText;
