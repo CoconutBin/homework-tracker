@@ -139,7 +139,7 @@ function addListItem(homeworkObject) {
             startHomeworkButton.value = "Archive";
         }
         else if (startHomeworkButton.value == "Archive") {
-            ManageLocalStorage.delete(homeworkObject);
+            ManageLocalStorage.deleteListItem(homeworkObject);
             archivedHomeworks.push(homeworkObject);
             listItem.remove();
             ManageLocalStorage.update();
@@ -203,10 +203,17 @@ function addListItem(homeworkObject) {
         detailsDiv.style.display = "none";
     });
     //Display Management (Final)
+    const detailsDeleteButton = addButton("Custom", null, "Delete");
+    detailsDeleteButton.addEventListener("click", () => {
+        if (!confirm("Are you sure?"))
+            return;
+        ManageLocalStorage.deleteListItem(homeworkObject);
+        listItem.remove();
+    });
     detailsDiv.style.display = "none";
     detailsDiv.appendChild(detailsDisplay);
     detailsDiv.appendChild(detailsModal);
-    detailsDisplay.appendChild(addButton("Delete", listItem));
+    detailsDisplay.appendChild(detailsDeleteButton);
     detailsDisplay.appendChild(addButton("Close", detailsDiv));
     listItem.appendChild(displayDiv);
     listItem.appendChild(detailsDiv);

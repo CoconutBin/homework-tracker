@@ -10,13 +10,6 @@ function addButton(type: string, affectedElement?: HTMLElement, customValue?: st
                 affectedElement.style.display = "none"
             })
             break;
-        case "Delete":
-            button.addEventListener("click", () => {
-                if(!confirm("Are you sure???????????????")) return;
-                affectedElement.remove()
-                ManageLocalStorage.delete(affectedElement)
-            })
-            break;
         case "Custom":
             break;
         default:

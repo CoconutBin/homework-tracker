@@ -68,15 +68,22 @@ function addArchiveListItem(homeworkObject) {
         detailsDiv.style.display = "none";
     });
     //Display Management (Final)
+    const detailsDeleteButton = addButton("Custom", null, "Delete");
+    detailsDeleteButton.addEventListener("click", () => {
+        if (!confirm("Are you sure?"))
+            return;
+        ManageLocalStorage.deleteArchived(homeworkObject);
+        listItem.remove();
+    });
     detailsDiv.style.display = "none";
     detailsDiv.appendChild(detailsDisplay);
     detailsDiv.appendChild(detailsModal);
-    detailsDisplay.appendChild(addButton("Delete", listItem));
+    detailsDisplay.appendChild(detailsDeleteButton);
     detailsDisplay.appendChild(addButton("Close", detailsDiv));
     listItem.appendChild(displayDiv);
     listItem.appendChild(detailsDiv);
     //Clicking for Details
-    displayDiv.addEventListener("click", (event) => {
+    displayDiv.addEventListener("click", () => {
         detailsDiv.style.display = "flex";
         detailsModal.style.display = "flex";
         detailsDisplay.style.display = "block";
