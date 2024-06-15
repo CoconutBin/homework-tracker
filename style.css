@@ -13,7 +13,7 @@
 body,
 html {
     color: var(--text);
-    font-size: larger;
+    font-size: 1.2vw;
     font-family: "Inter", sans-serif, system-ui;
     cursor: default;
     background: var(--background);
@@ -68,7 +68,7 @@ textarea {
 
 .navbar p {
     font-weight: bold;
-    font-size: larger;
+    font-size: max(1.2vw, 25px);
     padding: 0 0 0 5px;
 }
 
@@ -92,10 +92,6 @@ textarea {
     font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
     font-size: 48px !important;
     user-select: none;
-}
-
-.material-symbols-outlined.size-48 {
-    font-size: 48px;
 }
 
 .settingsCategory {
