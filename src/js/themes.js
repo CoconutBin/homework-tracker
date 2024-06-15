@@ -48,7 +48,8 @@ const Themes = {
     matcha: new Theme('light', "#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098"),
     choco: new Theme('dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32"),
     pneuma: new Theme('dark', "#fcfdfc", "#2c2b40", "#4e5eda", "#779bf2", "#35a9fc"),
-    paper: new Theme('light', null, null, null, null, null)
+    phutopia: new Theme('dark', '#ffffff', '#313131', '#490F66', '#2c0544', '#000000'),
+    paper: new Theme('light', null, null, null, null, null),
 };
 try {
     Themes[currentTheme].setCSS();
