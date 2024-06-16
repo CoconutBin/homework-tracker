@@ -11,6 +11,7 @@ const settingsDiv = document.getElementById("settingsScreen");
 const settingsCloseButton = document.getElementById("settingsCloseButton");
 const defaultDarkThemeSetting = document.getElementById("defaultDark");
 const defaultLightThemeSetting = document.getElementById("defaultLight");
+const rightToLeft = document.getElementById("rightToLeft");
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block";
     settingsDiv.style.display = "block";
@@ -39,12 +40,35 @@ defaultLightThemeSetting.addEventListener("change", () => {
         localStorage.setItem("currentTheme", settings.defaultThemes.light);
     }
 });
+rightToLeft.addEventListener("input", () => {
+    settings.betaFeatures.rightToLeft = rightToLeft.checked;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    if (settings.betaFeatures.rightToLeft) {
+        list.style.flexDirection = "row-reverse";
+    }
+    else {
+        list.style.flexDirection = "row";
+    }
+});
 class Settings {
     defaultThemes;
-    constructor(defaultLightTheme, defautDarkTheme) {
+    betaFeatures;
+    reset() {
         this.defaultThemes = {
-            light: defaultLightTheme,
-            dark: defautDarkTheme
+            light: "matcha",
+            dark: "dark"
+        };
+        this.betaFeatures = {
+            rightToLeft: false
+        };
+    }
+    constructor(defaultLightTheme, defautDarkTheme, rightToLeft) {
+        this.betaFeatures = {
+            rightToLeft: rightToLeft ?? false
+        };
+        this.defaultThemes = {
+            light: defaultLightTheme ?? "matcha",
+            dark: defautDarkTheme ?? "dark"
         };
     }
     get settingsObject() {
@@ -52,19 +76,32 @@ class Settings {
             defaultThemes: {
                 light: defaultLightThemeSetting.value,
                 dark: defaultDarkThemeSetting.value
+            },
+            betaFeatures: {
+                rightToLeft: rightToLeft.checked
             }
         };
     }
     set settingsObject(obj) {
         this.defaultThemes = obj.defaultThemes;
+        this.betaFeatures = obj.betaFeatures;
     }
 }
 const settings = new Settings();
 if (localStorage.getItem("settings") != null) {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"));
 }
-else {
-    settings.defaultThemes = { light: "matcha", dark: "dark" };
+try {
+    defaultDarkThemeSetting.value = settings.defaultThemes.dark;
+    defaultLightThemeSetting.value = settings.defaultThemes.light;
+    rightToLeft.checked = settings.betaFeatures.rightToLeft;
 }
-defaultDarkThemeSetting.value = settings.defaultThemes.dark;
-defaultLightThemeSetting.value = settings.defaultThemes.light;
+catch {
+    localStorage.removeItem("settings");
+    defaultDarkThemeSetting.value = settings.defaultThemes.dark;
+    defaultLightThemeSetting.value = settings.defaultThemes.light;
+    rightToLeft.checked = settings.betaFeatures.rightToLeft;
+}
+if (rightToLeft.checked) {
+    list.style.flexDirection = "row-reverse";
+}
