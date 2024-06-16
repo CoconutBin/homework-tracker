@@ -123,7 +123,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
     const isImportant = addElement("span", " ⭐")
-    const subjectName = addElement("h2", homeworkObject.subject.name)
+    let subjectName = addElement("h2", homeworkObject.subject.name)
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`)
     const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`)
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`)
@@ -138,14 +138,45 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     if (homeworkObject.timeStarted > 0 && homeworkObject.timeEnded == undefined) {
         timeStarted.style.display = "block"
     }
-    if (homeworkObject.timeEnded > 0){
+    if (homeworkObject.timeEnded > 0) {
         timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`
         startHomeworkButton.value = "Archive"
-        
-            timeStarted.style.display = "block"
+
+        timeStarted.style.display = "block"
     }
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
+
+    // Display Subject Name Clicking
+
+    //Unknown Bug: homeworkObject keeps resetting
+
+    // switch (settings.betaFeatures.subjectNameClick) {
+    //     case "markImportant":
+    //         subjectName = subjectName.cloneNode() as HTMLElement
+    //         subjectName.addEventListener("click", () => {
+    //             if (homeworkObject.isImportant) {
+    //                 homeworkObject.isImportant = false
+    //                 subjectName.removeChild(isImportant)
+    //             } else {
+    //                 homeworkObject.isImportant = true
+    //                 subjectName.appendChild(isImportant)
+    //             }
+    //         })
+    //         break;
+    //     case "editSubjectName":
+    //         subjectName = subjectName.cloneNode() as HTMLElement
+    //         subjectName.contentEditable = "true"
+    //         subjectName.spellcheck = false
+    //         subjectName.addEventListener("input", function editSubjectNameFunctionality() {
+    //             homeworkObject.subject.name = subjectName.textContent
+    //             detailsSubject.textContent = homeworkObject.subject.name
+    //             ManageLocalStorage.replace(index, homeworkObject)
+    //         });
+    //         break;
+    //     default:
+    //         break;
+    // }
 
     // Start Button Functionality
 
@@ -187,7 +218,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     const detailsDueDateTime = addElement("span", `${new Date(homeworkObject.dueDate).toDateString() == "Invalid Date" ? "None" : new Date(homeworkObject.dueDate).toDateString()}`)
     const detailsPointsNumber = addElement("span", `${parseInt(homeworkObject.points) > 0 ? homeworkObject.points : "None"}`)
     const detailsPoints = addElement("p", `Points: `)
-    if(homeworkObject.isImportant){
+    if (homeworkObject.isImportant) {
         subjectName.appendChild(isImportant)
     }
     detailsPoints.appendChild(detailsPointsNumber)
@@ -241,7 +272,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     const detailsDeleteButton = addButton("Custom", null, "Delete")
     detailsDeleteButton.addEventListener("click", () => {
-        if(!confirm("Are you sure?")) return
+        if (!confirm("Are you sure?")) return
         ManageLocalStorage.deleteListItem(homeworkObject)
         listItem.remove();
     })
@@ -364,7 +395,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         timeStarted.innerText = `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`
     }, 1000)
 
-    if(homeworkObject.timeEnded != undefined){
+    if (homeworkObject.timeEnded != undefined) {
         clearInterval(liveUpdateTimer)
     }
 

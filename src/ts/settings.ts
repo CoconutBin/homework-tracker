@@ -14,6 +14,7 @@ const settingsCloseButton = document.getElementById("settingsCloseButton");
 const defaultDarkThemeSetting = document.getElementById("defaultDark") as HTMLSelectElement;
 const defaultLightThemeSetting = document.getElementById("defaultLight") as HTMLSelectElement;
 const rightToLeft = document.getElementById("rightToLeft") as HTMLInputElement;
+const subjectNameClick = document.getElementById("subjectNameClick") as HTMLSelectElement;
 
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block"
@@ -50,13 +51,26 @@ defaultLightThemeSetting.addEventListener("change", () => {
     }
 })
 
-rightToLeft.addEventListener("input", () => {
+rightToLeft.addEventListener("change", () => {
     settings.betaFeatures.rightToLeft = rightToLeft.checked
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
     if(settings.betaFeatures.rightToLeft){
         list.style.flexDirection = "row-reverse"
     } else{
         list.style.flexDirection = "row"
+    }
+})
+
+subjectNameClick.addEventListener("change", () => {
+    settings.betaFeatures.subjectNameClick = subjectNameClick.value
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    switch(settings.betaFeatures.subjectNameClick){
+        case "markImportant":
+            break;
+        case "editSubjectName":
+            break;
+        default:
+            break;
     }
 })
 
@@ -67,7 +81,8 @@ class Settings{
         dark: string
     }
     betaFeatures: {
-        rightToLeft: boolean
+        rightToLeft: boolean,
+        subjectNameClick: string
     }
 
     reset(){
@@ -76,28 +91,31 @@ class Settings{
             dark: "dark"
         }
         this.betaFeatures = {
-            rightToLeft: false
+            rightToLeft: false,
+            subjectNameClick: ""
         }
     }
 
-    constructor(defaultLightTheme?, defautDarkTheme?, rightToLeft?) {
+    constructor() {
         this.betaFeatures = {
-            rightToLeft: rightToLeft ?? false
+            rightToLeft: false,
+            subjectNameClick: ""
         }
         this.defaultThemes = {
-            light: defaultLightTheme ?? "matcha",
-            dark: defautDarkTheme ?? "dark"
+            light: "matcha",
+            dark: "dark"
         }
     }
 
     get settingsObject(){
         return {
             defaultThemes: {
-                light: defaultLightThemeSetting.value,
-                dark: defaultDarkThemeSetting.value
+                light: this.defaultThemes.light,
+                dark: this.defaultThemes.dark
             },
             betaFeatures: {
-                rightToLeft: rightToLeft.checked
+                rightToLeft: this.betaFeatures.rightToLeft,
+                subjectNameClick: this.betaFeatures.subjectNameClick
             }
         }
     }
@@ -118,12 +136,14 @@ try{
     defaultDarkThemeSetting.value = settings.defaultThemes.dark
     defaultLightThemeSetting.value = settings.defaultThemes.light
     rightToLeft.checked = settings.betaFeatures.rightToLeft
+    subjectNameClick.value = settings.betaFeatures.subjectNameClick
 }
 catch{
     localStorage.removeItem("settings")
     defaultDarkThemeSetting.value = settings.defaultThemes.dark
     defaultLightThemeSetting.value = settings.defaultThemes.light
     rightToLeft.checked = settings.betaFeatures.rightToLeft
+    subjectNameClick.value = settings.betaFeatures.subjectNameClick
 }
 
 if(rightToLeft.checked){

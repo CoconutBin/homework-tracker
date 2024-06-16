@@ -100,7 +100,7 @@ function addListItem(homeworkObject) {
     const listItem = document.createElement("div");
     const displayDiv = document.createElement("div");
     const isImportant = addElement("span", " ⭐");
-    const subjectName = addElement("h2", homeworkObject.subject.name);
+    let subjectName = addElement("h2", homeworkObject.subject.name);
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`);
     const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`);
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`);
@@ -122,6 +122,34 @@ function addListItem(homeworkObject) {
     }
     listItem.classList.add("listItem");
     displayDiv.classList.add("listItemDisplay");
+    // Display Subject Name Clicking
+    //Unknown Bug: homeworkObject keeps resetting
+    // switch (settings.betaFeatures.subjectNameClick) {
+    //     case "markImportant":
+    //         subjectName = subjectName.cloneNode() as HTMLElement
+    //         subjectName.addEventListener("click", () => {
+    //             if (homeworkObject.isImportant) {
+    //                 homeworkObject.isImportant = false
+    //                 subjectName.removeChild(isImportant)
+    //             } else {
+    //                 homeworkObject.isImportant = true
+    //                 subjectName.appendChild(isImportant)
+    //             }
+    //         })
+    //         break;
+    //     case "editSubjectName":
+    //         subjectName = subjectName.cloneNode() as HTMLElement
+    //         subjectName.contentEditable = "true"
+    //         subjectName.spellcheck = false
+    //         subjectName.addEventListener("input", function editSubjectNameFunctionality() {
+    //             homeworkObject.subject.name = subjectName.textContent
+    //             detailsSubject.textContent = homeworkObject.subject.name
+    //             ManageLocalStorage.replace(index, homeworkObject)
+    //         });
+    //         break;
+    //     default:
+    //         break;
+    // }
     // Start Button Functionality
     startHomeworkButton.addEventListener("click", () => {
         if (homeworkStarted == false && startHomeworkButton.value != "Archive") {
