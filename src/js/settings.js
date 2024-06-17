@@ -5,6 +5,47 @@ sortButton.addEventListener("click", () => {
     alert("Sort Function is currently not avaliable")
 })
 */
+class Settings {
+    defaultThemes;
+    betaFeatures;
+    reset() {
+        this.defaultThemes = {
+            light: "matcha",
+            dark: "dark"
+        };
+        this.betaFeatures = {
+            rightToLeft: false,
+            subjectNameClick: ""
+        };
+    }
+    constructor() {
+        this.betaFeatures = {
+            rightToLeft: false,
+            subjectNameClick: ""
+        };
+        this.defaultThemes = {
+            light: "matcha",
+            dark: "dark"
+        };
+    }
+    get settingsObject() {
+        return {
+            defaultThemes: {
+                light: this.defaultThemes.light,
+                dark: this.defaultThemes.dark
+            },
+            betaFeatures: {
+                rightToLeft: this.betaFeatures.rightToLeft,
+                subjectNameClick: this.betaFeatures.subjectNameClick
+            }
+        };
+    }
+    set settingsObject(obj) {
+        this.defaultThemes = obj.defaultThemes;
+        this.betaFeatures = obj.betaFeatures;
+    }
+}
+const settings = new Settings();
 const settingsContainer = document.getElementById("settingsContainer");
 const settingsModal = document.getElementById("settingsModal");
 const settingsDiv = document.getElementById("settingsScreen");
@@ -51,51 +92,12 @@ rightToLeft.addEventListener("change", () => {
         list.style.flexDirection = "row";
     }
 });
-subjectNameClick.addEventListener("change", () => {
-    settings.betaFeatures.subjectNameClick = subjectNameClick.value;
-    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
-});
-class Settings {
-    defaultThemes;
-    betaFeatures;
-    reset() {
-        this.defaultThemes = {
-            light: "matcha",
-            dark: "dark"
-        };
-        this.betaFeatures = {
-            rightToLeft: false,
-            subjectNameClick: ""
-        };
-    }
-    constructor() {
-        this.betaFeatures = {
-            rightToLeft: false,
-            subjectNameClick: ""
-        };
-        this.defaultThemes = {
-            light: "matcha",
-            dark: "dark"
-        };
-    }
-    get settingsObject() {
-        return {
-            defaultThemes: {
-                light: this.defaultThemes.light,
-                dark: this.defaultThemes.dark
-            },
-            betaFeatures: {
-                rightToLeft: this.betaFeatures.rightToLeft,
-                subjectNameClick: this.betaFeatures.subjectNameClick
-            }
-        };
-    }
-    set settingsObject(obj) {
-        this.defaultThemes = obj.defaultThemes;
-        this.betaFeatures = obj.betaFeatures;
-    }
+if (subjectNameClick != undefined) {
+    subjectNameClick.addEventListener("change", () => {
+        settings.betaFeatures.subjectNameClick = subjectNameClick.value;
+        localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    });
 }
-const settings = new Settings();
 if (localStorage.getItem("settings") != null) {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"));
 }
