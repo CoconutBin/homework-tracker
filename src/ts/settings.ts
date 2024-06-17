@@ -7,12 +7,68 @@ sortButton.addEventListener("click", () => {
 })
 */
 
+class Settings{
+    
+    defaultThemes: {
+        light: string,
+        dark: string
+    }
+    betaFeatures: {
+        rightToLeft: boolean,
+        subjectNameClick: string
+    }
+
+    reset(){
+        this.defaultThemes = {
+            light: "matcha",
+            dark: "dark"
+        }
+        this.betaFeatures = {
+            rightToLeft: false,
+            subjectNameClick: ""
+        }
+    }
+
+    constructor() {
+        this.betaFeatures = {
+            rightToLeft: false,
+            subjectNameClick: ""
+        }
+        this.defaultThemes = {
+            light: "matcha",
+            dark: "dark"
+        }
+    }
+
+    get settingsObject(){
+        return {
+            defaultThemes: {
+                light: this.defaultThemes.light,
+                dark: this.defaultThemes.dark
+            },
+            betaFeatures: {
+                rightToLeft: this.betaFeatures.rightToLeft,
+                subjectNameClick: this.betaFeatures.subjectNameClick
+            }
+        }
+    }
+
+    set settingsObject(obj){
+        this.defaultThemes = obj.defaultThemes
+        this.betaFeatures = obj.betaFeatures
+    }
+}
+
+const settings = new Settings()
+
 const settingsContainer = document.getElementById("settingsContainer");
 const settingsModal = document.getElementById("settingsModal");
 const settingsDiv = document.getElementById("settingsScreen");
 const settingsCloseButton = document.getElementById("settingsCloseButton");
 const defaultDarkThemeSetting = document.getElementById("defaultDark") as HTMLSelectElement;
 const defaultLightThemeSetting = document.getElementById("defaultLight") as HTMLSelectElement;
+const rightToLeft = document.getElementById("rightToLeft") as HTMLInputElement;
+const subjectNameClick = document.getElementById("subjectNameClick") as HTMLSelectElement;
 
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block"
@@ -49,41 +105,41 @@ defaultLightThemeSetting.addEventListener("change", () => {
     }
 })
 
-class Settings{
-    
-    defaultThemes: {
-        light: string,
-        dark: string
+rightToLeft.addEventListener("change", () => {
+    settings.betaFeatures.rightToLeft = rightToLeft.checked
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    if(settings.betaFeatures.rightToLeft){
+        list.style.flexDirection = "row-reverse"
+    } else{
+        list.style.flexDirection = "row"
     }
+})
 
-    constructor(defaultLightTheme?, defautDarkTheme?){
-        this.defaultThemes = {
-            light: defaultLightTheme,
-            dark: defautDarkTheme
-        }
-    }
-
-    get settingsObject(){
-        return {
-            defaultThemes: {
-                light: defaultLightThemeSetting.value,
-                dark: defaultDarkThemeSetting.value
-            }
-        }
-    }
-
-    set settingsObject(obj){
-        this.defaultThemes = obj.defaultThemes
-    }
+if(subjectNameClick != undefined){
+    subjectNameClick.addEventListener("change", () => {
+        settings.betaFeatures.subjectNameClick = subjectNameClick.value
+        localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    })
 }
-
-const settings = new Settings()
 
 if(localStorage.getItem("settings") != null){
 settings.settingsObject = JSON.parse(localStorage.getItem("settings"))
-} else{
-    settings.defaultThemes = {light: "matcha", dark: "dark"}
 }
 
-defaultDarkThemeSetting.value = settings.defaultThemes.dark
-defaultLightThemeSetting.value = settings.defaultThemes.light
+try{
+    defaultDarkThemeSetting.value = settings.defaultThemes.dark
+    defaultLightThemeSetting.value = settings.defaultThemes.light
+    rightToLeft.checked = settings.betaFeatures.rightToLeft
+    if(subjectNameClick != undefined) subjectNameClick.value = settings.betaFeatures.subjectNameClick
+}
+catch{
+    settings.settingsObject = JSON.parse(localStorage.getItem("settings"))
+    defaultDarkThemeSetting.value = settings.defaultThemes.dark
+    defaultLightThemeSetting.value = settings.defaultThemes.light
+    rightToLeft.checked = settings.betaFeatures.rightToLeft
+    subjectNameClick.value = settings.betaFeatures.subjectNameClick
+}
+
+if(rightToLeft.checked){
+    list.style.flexDirection = "row-reverse"
+}

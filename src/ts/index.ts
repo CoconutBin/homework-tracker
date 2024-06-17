@@ -2,6 +2,7 @@ const inputSubject = document.getElementById("inputSubject") as HTMLInputElement
 const inputSubjectID = document.getElementById("inputSubjectID") as HTMLInputElement;
 const inputSubjectType = document.getElementById("inputSubjectType") as HTMLInputElement;
 const inputIsGroupWork = document.getElementById("inputIsGroupWork") as HTMLInputElement;
+const inputIsImportant = document.getElementById("inputIsImportant") as HTMLInputElement;
 const inputDueDate = document.getElementById("inputDueDate") as HTMLInputElement;
 const inputPoints = document.getElementById("inputPoints") as HTMLInputElement;
 const inputDescription = document.getElementById("inputDescription") as HTMLTextAreaElement;
@@ -9,7 +10,6 @@ const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupW
 const inputDiv = document.getElementById("inputform")
 const list = document.getElementById("list")
 const listContents: Homework["homeworkObject"][] = []
-const archivedHomeworks: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("archivedHomeworks")) != undefined? JSON.parse(localStorage.getItem("archivedHomeworks")):[]
 const localStorageListContents: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("listContents"))
 const addListItemButton = document.getElementById("addListItemButton") as HTMLElement;
 const editModal = document.getElementById("editModal")
@@ -82,6 +82,7 @@ inputDiv.addEventListener(
                 inputHandler(inputPoints),
                 inputHandler(inputDescription)
             )
+            inputHomework.isImportant = inputHandler(inputIsImportant)
             for (let inputs of allInputs) {
                 inputs.value = "";
                 (inputs as HTMLInputElement).checked = false
@@ -121,6 +122,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
+    const isImportant = addElement("span", " ⭐")
     const subjectName = addElement("h2", homeworkObject.subject.name)
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`)
     const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`)
@@ -136,14 +138,53 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     if (homeworkObject.timeStarted > 0 && homeworkObject.timeEnded == undefined) {
         timeStarted.style.display = "block"
     }
-    if (homeworkObject.timeEnded > 0){
+    if (homeworkObject.timeEnded > 0) {
         timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`
         startHomeworkButton.value = "Archive"
-        
-            timeStarted.style.display = "block"
+
+        timeStarted.style.display = "block"
     }
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
+
+    // Display Subject Name Clicking
+
+    //Unknown Bug: homeworkObject keeps resetting
+
+
+
+    subjectName.addEventListener("click", () => {
+        switch (settings.betaFeatures.subjectNameClick) {
+            case "markImportant":
+                subjectName.contentEditable = "false"
+                if (homeworkObject.isImportant) {
+                    homeworkObject.isImportant = false
+                    subjectName.removeChild(isImportant)
+                    ManageLocalStorage.replace(index, homeworkObject)
+                } else {
+                    homeworkObject.isImportant = true
+                    subjectName.appendChild(isImportant)
+                    ManageLocalStorage.replace(index, homeworkObject)
+                }
+                break;
+            case "editSubjectName":
+                subjectName.contentEditable = "true"
+                subjectName.spellcheck = false
+                subjectName.addEventListener("input", function editSubjectNameFunctionality() {
+                    homeworkObject.subject.name = subjectName.textContent
+                    detailsSubject.textContent = homeworkObject.subject.name
+                    ManageLocalStorage.replace(index, homeworkObject)
+                });
+                break;
+            default:
+                subjectName.contentEditable = "false"
+                detailsDiv.style.display = "flex";
+                detailsModal.style.display = "flex";
+                detailsDisplay.style.display = "block";
+                break;
+        }
+    })
+
 
     // Start Button Functionality
 
@@ -163,7 +204,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
             startHomeworkButton.value = "Archive"
         }
         else if (startHomeworkButton.value == "Archive") {
-            ManageLocalStorage.delete(homeworkObject)
+            ManageLocalStorage.deleteListItem(homeworkObject)
             archivedHomeworks.push(homeworkObject)
             listItem.remove()
             ManageLocalStorage.update()
@@ -185,6 +226,9 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     const detailsDueDateTime = addElement("span", `${new Date(homeworkObject.dueDate).toDateString() == "Invalid Date" ? "None" : new Date(homeworkObject.dueDate).toDateString()}`)
     const detailsPointsNumber = addElement("span", `${parseInt(homeworkObject.points) > 0 ? homeworkObject.points : "None"}`)
     const detailsPoints = addElement("p", `Points: `)
+    if (homeworkObject.isImportant) {
+        subjectName.appendChild(isImportant)
+    }
     detailsPoints.appendChild(detailsPointsNumber)
     detailsDueDate.appendChild(detailsDueDateTime)
 
@@ -234,17 +278,23 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //Display Management (Final)
 
+    const detailsDeleteButton = addButton("Custom", null, "Delete")
+    detailsDeleteButton.addEventListener("click", () => {
+        if (!confirm("Are you sure?")) return
+        ManageLocalStorage.deleteListItem(homeworkObject)
+        listItem.remove();
+    })
     detailsDiv.style.display = "none"
     detailsDiv.appendChild(detailsDisplay)
     detailsDiv.appendChild(detailsModal)
-    detailsDisplay.appendChild(addButton("Delete", listItem))
+    detailsDisplay.appendChild(detailsDeleteButton)
     detailsDisplay.appendChild(addButton("Close", detailsDiv))
     listItem.appendChild(displayDiv)
     listItem.appendChild(detailsDiv)
 
     //Clicking for Details
     displayDiv.addEventListener("click", (event) => {
-        if (event.target != startHomeworkButton) {
+        if (event.target != subjectName && event.target != startHomeworkButton) {
             detailsDiv.style.display = "flex";
             detailsModal.style.display = "flex";
             detailsDisplay.style.display = "block";
@@ -353,7 +403,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         timeStarted.innerText = `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`
     }, 1000)
 
-    if(homeworkObject.timeEnded != undefined){
+    if (homeworkObject.timeEnded != undefined) {
         clearInterval(liveUpdateTimer)
     }
 
@@ -366,75 +416,8 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 function clearList() {
     listContents.splice(0, listContents.length);
     localStorage.setItem("listContents", JSON.stringify(listContents));
-    list.innerHTML = "";
+    list.innerHTML = `<div class="listItem" id="addListItemButton">
+            <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
+        </div>`;
 }
 
-function addButton(type: string, affectedElement?: HTMLElement, customValue?: string): HTMLInputElement {
-    let button = document.createElement("input");
-    button.type = "button";
-    button.value = type;
-    switch (type) {
-        case "Close":
-            button.addEventListener("click", () => {
-                affectedElement.style.display = "none"
-            })
-            break;
-        case "Delete":
-            button.addEventListener("click", () => {
-                if(!confirm("Are you sure???????????????")) return;
-                affectedElement.remove()
-                ManageLocalStorage.delete(affectedElement)
-            })
-            break;
-        case "Custom":
-            break;
-        default:
-            console.error("Invalid Input")
-    }
-
-    if (customValue != undefined) {
-        button.value = customValue
-    }
-
-    return button
-}
-
-function addElement(elementType: string, innerText?: string): HTMLElement {
-    let element = document.createElement(elementType)
-    if (innerText != undefined) {
-        element.textContent = innerText
-    }
-    return element
-}
-
-function convertToTime(time: number): string {
-    let Days = 0, Hours = 0, Minutes = 0, Seconds = 0;
-    let returnedTime = "";
-
-    Days = Math.floor(time / (1000 * 60 * 60 * 24));
-    time -= Days * (1000 * 60 * 60 * 24);
-
-    Hours = Math.floor(time / (1000 * 60 * 60));
-    time -= Hours * (1000 * 60 * 60);
-
-    Minutes = Math.floor(time / (1000 * 60));
-    time -= Minutes * (1000 * 60);
-
-    Seconds = Math.floor(time / 1000);
-
-    // Build the returned time string with proper units
-    if (Days > 0) {
-        returnedTime += `${Days}d `;
-    }
-    if (Hours > 0) {
-        returnedTime += `${Hours}h `;
-    }
-    if (Minutes > 0) {
-        returnedTime += `${Minutes}m `;
-    }
-    if (Seconds >= 0) {
-        returnedTime += `${Seconds}s`;
-    }
-    
-    return returnedTime.trim();
-}
