@@ -130,10 +130,10 @@ try{
     defaultDarkThemeSetting.value = settings.defaultThemes.dark
     defaultLightThemeSetting.value = settings.defaultThemes.light
     rightToLeft.checked = settings.betaFeatures.rightToLeft
-    subjectNameClick.value = settings.betaFeatures.subjectNameClick
+    if(subjectNameClick != undefined) subjectNameClick.value = settings.betaFeatures.subjectNameClick
 }
 catch{
-    localStorage.removeItem("settings")
+    settings.settingsObject = JSON.parse(localStorage.getItem("settings"))
     defaultDarkThemeSetting.value = settings.defaultThemes.dark
     defaultLightThemeSetting.value = settings.defaultThemes.light
     rightToLeft.checked = settings.betaFeatures.rightToLeft
