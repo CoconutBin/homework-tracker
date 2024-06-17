@@ -64,14 +64,6 @@ rightToLeft.addEventListener("change", () => {
 subjectNameClick.addEventListener("change", () => {
     settings.betaFeatures.subjectNameClick = subjectNameClick.value
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
-    switch(settings.betaFeatures.subjectNameClick){
-        case "markImportant":
-            break;
-        case "editSubjectName":
-            break;
-        default:
-            break;
-    }
 })
 
 class Settings{

@@ -136,6 +136,7 @@ textarea {
     align-content: center;
     text-wrap: wrap;
     flex-grow: 1;
+    user-select: none;
 }
 
 .listItemDisplay:hover {

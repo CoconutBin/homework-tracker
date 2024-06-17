@@ -123,7 +123,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
     const isImportant = addElement("span", " ⭐")
-    let subjectName = addElement("h2", homeworkObject.subject.name)
+    const subjectName = addElement("h2", homeworkObject.subject.name)
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`)
     const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`)
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`)
@@ -151,32 +151,40 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //Unknown Bug: homeworkObject keeps resetting
 
-    // switch (settings.betaFeatures.subjectNameClick) {
-    //     case "markImportant":
-    //         subjectName = subjectName.cloneNode() as HTMLElement
-    //         subjectName.addEventListener("click", () => {
-    //             if (homeworkObject.isImportant) {
-    //                 homeworkObject.isImportant = false
-    //                 subjectName.removeChild(isImportant)
-    //             } else {
-    //                 homeworkObject.isImportant = true
-    //                 subjectName.appendChild(isImportant)
-    //             }
-    //         })
-    //         break;
-    //     case "editSubjectName":
-    //         subjectName = subjectName.cloneNode() as HTMLElement
-    //         subjectName.contentEditable = "true"
-    //         subjectName.spellcheck = false
-    //         subjectName.addEventListener("input", function editSubjectNameFunctionality() {
-    //             homeworkObject.subject.name = subjectName.textContent
-    //             detailsSubject.textContent = homeworkObject.subject.name
-    //             ManageLocalStorage.replace(index, homeworkObject)
-    //         });
-    //         break;
-    //     default:
-    //         break;
-    // }
+
+
+    subjectName.addEventListener("click", () => {
+        switch (settings.betaFeatures.subjectNameClick) {
+            case "markImportant":
+                subjectName.contentEditable = "false"
+                if (homeworkObject.isImportant) {
+                    homeworkObject.isImportant = false
+                    subjectName.removeChild(isImportant)
+                    ManageLocalStorage.replace(index, homeworkObject)
+                } else {
+                    homeworkObject.isImportant = true
+                    subjectName.appendChild(isImportant)
+                    ManageLocalStorage.replace(index, homeworkObject)
+                }
+                break;
+            case "editSubjectName":
+                subjectName.contentEditable = "true"
+                subjectName.spellcheck = false
+                subjectName.addEventListener("input", function editSubjectNameFunctionality() {
+                    homeworkObject.subject.name = subjectName.textContent
+                    detailsSubject.textContent = homeworkObject.subject.name
+                    ManageLocalStorage.replace(index, homeworkObject)
+                });
+                break;
+            default:
+                subjectName.contentEditable = "false"
+                detailsDiv.style.display = "flex";
+                detailsModal.style.display = "flex";
+                detailsDisplay.style.display = "block";
+                break;
+        }
+    })
+
 
     // Start Button Functionality
 
@@ -286,7 +294,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //Clicking for Details
     displayDiv.addEventListener("click", (event) => {
-        if (event.target != startHomeworkButton) {
+        if (event.target != subjectName && event.target != startHomeworkButton) {
             detailsDiv.style.display = "flex";
             detailsModal.style.display = "flex";
             detailsDisplay.style.display = "block";

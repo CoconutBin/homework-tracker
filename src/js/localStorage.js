@@ -9,6 +9,8 @@ if (localStorage.getItem("version") !== null && localStorage.getItem("version") 
 }
 localStorage.setItem("version", version);
 class ManageLocalStorage {
+    static listContents = [];
+    static archivedHomeworks = [];
     static update() {
         localStorage.setItem("listContents", JSON.stringify(listContents));
         localStorage.setItem("archivedHomeworks", JSON.stringify(archivedHomeworks));
@@ -22,7 +24,7 @@ class ManageLocalStorage {
         localStorage.setItem("archivedHomeworks", JSON.stringify(archivedHomeworks));
     }
     static replace(index, updatedListItem) {
-        listContents.splice(index, 1, updatedListItem);
+        listContents[index] = updatedListItem;
         ManageLocalStorage.update();
     }
 }
