@@ -90,7 +90,6 @@ textarea {
 
 .material-symbols-outlined {
     font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
-    font-size: 48px !important;
     user-select: none;
 }
 
@@ -217,7 +216,7 @@ button:hover {
 .clickable {
     cursor: pointer;
     transition: all .1s ease-in-out;
-    font-size: 48px;
+    font-size: 48px !important;
     text-decoration: none;
     color: var(--text);
 }
@@ -225,4 +224,18 @@ button:hover {
 .clickable:hover {
     color: var(--accent);
     transform: scale(1.1);
+}
+
+.isImportantIsGroupWork{
+    color: var(--text);
+    padding: 0 5px;
+    display: inline-block;
+    font-size: larger;
+}
+
+.subjectNameContainer{
+    overflow: hidden;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    align-content: center;
 }
