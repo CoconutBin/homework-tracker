@@ -105,7 +105,6 @@ function addListItem(homeworkObject) {
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`);
     const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`);
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`);
-    const detailsButton = addButton("Custom", null, "Details");
     subjectNameContainer.classList.add("subjectNameContainer");
     subjectName.classList.add("subjectNameText");
     isImportant.classList.add("isImportantIsGroupWork");
@@ -271,11 +270,6 @@ function addListItem(homeworkObject) {
             detailsDisplay.style.display = "block";
         }
     });
-    detailsButton.addEventListener("click", () => {
-        detailsDiv.style.display = "flex";
-        detailsModal.style.display = "flex";
-        detailsDisplay.style.display = "block";
-    });
     //Edit Functionality
     // Subject Name
     detailsSubject.classList.add("detailsSubjectText");
@@ -366,7 +360,6 @@ function addListItem(homeworkObject) {
     }
     //appending to list element
     displayDiv.appendChild(startHomeworkButton);
-    displayDiv.appendChild(detailsButton);
     list.appendChild(listItem);
 }
 function clearList() {

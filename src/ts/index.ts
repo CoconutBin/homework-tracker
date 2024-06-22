@@ -128,7 +128,6 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`)
     const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`)
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`)
-    const detailsButton = addButton("Custom", null, "Details")
     subjectNameContainer.classList.add("subjectNameContainer")
     subjectName.classList.add("subjectNameText")
     isImportant.classList.add("isImportantIsGroupWork")
@@ -313,12 +312,6 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         }
     });
 
-    detailsButton.addEventListener("click", () => {
-        detailsDiv.style.display = "flex";
-        detailsModal.style.display = "flex";
-        detailsDisplay.style.display = "block";
-    })
-
     //Edit Functionality
 
     // Subject Name
@@ -421,7 +414,6 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //appending to list element
     displayDiv.appendChild(startHomeworkButton)
-    displayDiv.appendChild(detailsButton)
     list.appendChild(listItem)
 }
 
