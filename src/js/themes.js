@@ -46,6 +46,7 @@ const Themes = {
     choco: new Theme('choco', 'dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32"),
     pneuma: new Theme('pneuma', 'dark', "#fcfdfc", "#2c2b40", "#4e5eda", "#779bf2", "#35a9fc"),
     phutopia: new Theme('phutopia', 'dark', '#ffffff', '#313131', '#490F66', '#2c0544', '#000000'),
+    peach: new Theme('peach', 'light', "#14120a", "#f7f4e2", "#ffb7b7", "#ffe679", "#fbd2d2"),
     paper: new Theme('paper', 'light', null, null, null, null, null),
 };
 if (Themes[currentTheme].themeType == "light") {
