@@ -122,16 +122,26 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
-    const isImportant = addElement("span", " ⭐")
-    const subjectName = addElement("h2", homeworkObject.subject.name)
+    const subjectNameContainer = document.createElement("div")
+    const isImportant = addElement("p")
+    const subjectName = addElement("p", homeworkObject.subject.name)
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`)
     const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`)
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`)
     const detailsButton = addButton("Custom", null, "Details")
-    subjectName.classList.add("subjectName")
-    displayDiv.appendChild(subjectName)
+    subjectName.classList.add("subjectNameText")
+    isImportant.classList.add("isImportantIsGroupWork")
+    isImportant.classList.add("material-symbols-outlined")
+    subjectNameContainer.appendChild(isImportant)
+    subjectNameContainer.appendChild(subjectName)
+    displayDiv.appendChild(subjectNameContainer)
     displayDiv.appendChild(timeStarted)
     timeStarted.style.display = "none"
+    if(homeworkObject.isGroupWork){
+        isImportant.innerText = "group"
+    } else{
+        isImportant.innerText = "person"
+    }
     if (new Date(homeworkObject.dueDate).toDateString() != "Invalid Date") {
         displayDiv.appendChild(dueDate)
     }
@@ -146,6 +156,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     }
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
+    
 
     // Display Subject Name Clicking
 
@@ -159,11 +170,11 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
                 subjectName.contentEditable = "false"
                 if (homeworkObject.isImportant) {
                     homeworkObject.isImportant = false
-                    subjectName.removeChild(isImportant)
+                    isImportant.style.color = "var(--text)"
                     ManageLocalStorage.replace(index, homeworkObject)
                 } else {
                     homeworkObject.isImportant = true
-                    subjectName.appendChild(isImportant)
+                    isImportant.style.color = "gold"
                     ManageLocalStorage.replace(index, homeworkObject)
                 }
                 break;
