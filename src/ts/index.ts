@@ -365,10 +365,12 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         if (homeworkObject.isGroupWork) {
             detailsIsGroupWork.style.color = "var(--success)"
             detailsIsGroupWork.style.userSelect = "none"
+            isImportant.textContent = "group"
         }
         else {
             detailsIsGroupWork.style.color = "var(--error)";
             detailsIsGroupWork.style.userSelect = "none"
+            isImportant.textContent = "person"
         }
     })
 
