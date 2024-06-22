@@ -12,12 +12,24 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     const listItem = document.createElement("div")
     const displayDiv = document.createElement("div")
-    const subjectName = addElement("h2", homeworkObject.subject.name)
+    const subjectNameContainer = document.createElement("div")
+    const isImportant = addElement("p")
+    const subjectName = addElement("p", homeworkObject.subject.name)
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`)
     const timeUsed = addElement("p", `Homework finished in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`)
-    subjectName.classList.add("subjectName")
-    displayDiv.appendChild(subjectName)
+    subjectNameContainer.classList.add("subjectNameContainer")
+    subjectName.classList.add("subjectNameText")
+    isImportant.classList.add("isImportantIsGroupWork")
+    isImportant.classList.add("material-symbols-outlined")
+    subjectNameContainer.appendChild(isImportant)
+    subjectNameContainer.appendChild(subjectName)
+    displayDiv.appendChild(subjectNameContainer)
     displayDiv.appendChild(timeUsed)
+    if(homeworkObject.isGroupWork){
+        isImportant.innerText = "group"
+    } else{
+        isImportant.innerText = "person"
+    }
     if (new Date(homeworkObject.dueDate).toDateString() != "Invalid Date") {
         displayDiv.appendChild(dueDate)
     }

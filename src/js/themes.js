@@ -30,7 +30,7 @@ class Theme {
         cssVariables.style.setProperty('--primary', this.primaryColor);
         cssVariables.style.setProperty('--secondary', this.secondaryColor);
         cssVariables.style.setProperty('--accent', this.accentColor);
-        cssVariables.style.setProperty('--text-dark', this.successColor);
+        cssVariables.style.setProperty('--success', this.successColor);
         cssVariables.style.setProperty('--error', this.errorColor);
         if (settings.pureBlackDarkMode && this.themeType === 'dark') {
             cssVariables.style.setProperty('--background', "#000000");
