@@ -64,6 +64,7 @@ textarea {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+    border-radius: 0 0 20px 20px;
 }
 
 .navbar p {
@@ -111,7 +112,7 @@ textarea {
     margin: var(--standard-margin);
     width: calc(20% - calc(2*var(--standard-margin)) - 10px);
     /* 20% width minus spacing */
-    height: 30vh;
+    height: max(325px, 30vh);
     align-items: center;
     padding: 5px;
 }
@@ -126,7 +127,7 @@ textarea {
 }
 
 .listItemDisplay {
-    height: 30vh;
+    height: max(325px, 30vh);
     width: calc(20% - calc(2*var(--standard-margin)) - 10px);
     text-overflow: clip;
     overflow: hidden;

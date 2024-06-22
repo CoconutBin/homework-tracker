@@ -1,0 +1,31 @@
+@media (max-width: 1200px) {
+    .listItem {
+        width: calc(25vw - calc(2*var(--standard-margin)) - 10px);
+    }
+}
+
+@media (max-width: 900px) {
+    .listItem {
+        width: calc(33vw - calc(2*var(--standard-margin)) - 10px);
+    }
+}
+
+@media (max-width: 700px) {
+    .listItem {
+        width: calc(50vw - calc(2*var(--standard-margin)) - 10px);
+    }
+
+    .clickable{
+        font-size: 36px !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .listItem {
+        width: calc(100vw - calc(2*var(--standard-margin)) - 10px);
+    }
+
+    .clickable{
+        font-size: 36px !important;
+    }
+}
