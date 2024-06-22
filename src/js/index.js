@@ -106,6 +106,7 @@ function addListItem(homeworkObject) {
     const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`);
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`);
     const detailsButton = addButton("Custom", null, "Details");
+    subjectNameContainer.classList.add("subjectNameContainer");
     subjectName.classList.add("subjectNameText");
     isImportant.classList.add("isImportantIsGroupWork");
     isImportant.classList.add("material-symbols-outlined");
@@ -119,6 +120,9 @@ function addListItem(homeworkObject) {
     }
     else {
         isImportant.innerText = "person";
+    }
+    if (homeworkObject.isImportant) {
+        isImportant.style.color = "var(--accent)";
     }
     if (new Date(homeworkObject.dueDate).toDateString() != "Invalid Date") {
         displayDiv.appendChild(dueDate);
@@ -146,7 +150,7 @@ function addListItem(homeworkObject) {
                 }
                 else {
                     homeworkObject.isImportant = true;
-                    isImportant.style.color = "gold";
+                    isImportant.style.color = "var(--accent)";
                     ManageLocalStorage.replace(index, homeworkObject);
                 }
                 break;
@@ -203,9 +207,6 @@ function addListItem(homeworkObject) {
     const detailsDueDateTime = addElement("span", `${new Date(homeworkObject.dueDate).toDateString() == "Invalid Date" ? "None" : new Date(homeworkObject.dueDate).toDateString()}`);
     const detailsPointsNumber = addElement("span", `${parseInt(homeworkObject.points) > 0 ? homeworkObject.points : "None"}`);
     const detailsPoints = addElement("p", `Points: `);
-    if (homeworkObject.isImportant) {
-        subjectName.appendChild(isImportant);
-    }
     detailsPoints.appendChild(detailsPointsNumber);
     detailsDueDate.appendChild(detailsDueDateTime);
     let detailsDescriptionText;
