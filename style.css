@@ -14,7 +14,7 @@ body,
 html {
     color: var(--text);
     font-size: 1.2vw;
-    font-family: "Inter", sans-serif, system-ui;
+    font-family: "Roboto", sans-serif, system-ui;
     cursor: default;
     background: var(--background);
     margin: 0;
@@ -64,12 +64,15 @@ textarea {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+    border-radius: 0 0 20px 20px;
+    background: radial-gradient(circle at top left, var(--accent) 10%, var(--secondary) 75%)
 }
 
 .navbar p {
     font-weight: bold;
     font-size: max(1.2vw, 25px);
     padding: 0 0 0 5px;
+    margin: 2vh
 }
 
 #navbarButtons {
@@ -89,15 +92,14 @@ textarea {
 }
 
 .material-symbols-outlined {
-    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
-    font-size: 48px !important;
+    font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 48;
     user-select: none;
 }
 
 .settingsCategory {
     font-weight: bold;
     font-size: large;
-    margin: 5px 0
+    margin: 10px 0
 }
 
 .list {
@@ -112,7 +114,7 @@ textarea {
     margin: var(--standard-margin);
     width: calc(20% - calc(2*var(--standard-margin)) - 10px);
     /* 20% width minus spacing */
-    height: 30vh;
+    height: max(250px, 20vh);
     align-items: center;
     padding: 5px;
 }
@@ -122,12 +124,12 @@ textarea {
 .inputForm,
 .settingsDisplay {
     background: var(--primary);
-    border-radius: calc((1vh + 1vw)/2);
+    border-radius: calc((2vh + 2vw)/2);
     padding: 0 10px;
 }
 
 .listItemDisplay {
-    height: 30vh;
+    height: max(250px, 20vh);
     width: calc(20% - calc(2*var(--standard-margin)) - 10px);
     text-overflow: clip;
     overflow: hidden;
@@ -137,6 +139,7 @@ textarea {
     text-wrap: wrap;
     flex-grow: 1;
     user-select: none;
+    box-shadow: 2px 2px 2px rgb(85, 85, 85);
 }
 
 .listItemDisplay:hover {
@@ -146,11 +149,11 @@ textarea {
     filter: brightness(115%);
 }
 
-.listItemDisplay h2,
 p {
     text-overflow: ellipsis;
     overflow: hidden;
-    font-size: large
+    font-size: large;
+    margin: 8px
 }
 
 #addListItemButton div {
@@ -166,7 +169,7 @@ p {
     overflow: hidden;
     /* Enable scroll if needed */
     background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
+    z-index: 9998;
     width: 100vw;
     height: 100vh;
     top: 50%;
@@ -217,12 +220,42 @@ button:hover {
 .clickable {
     cursor: pointer;
     transition: all .1s ease-in-out;
-    font-size: 48px;
+    font-size: 36px !important;
     text-decoration: none;
     color: var(--text);
+    
+    padding: 0 5px !important;
 }
 
 .clickable:hover {
     color: var(--accent);
     transform: scale(1.1);
+}
+
+.isImportantIsGroupWork{
+    color: var(--text);
+    padding: 0 5px;
+    display: inline-block;
+    font-size: larger;
+    margin: 0;
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+    z-index: 2;
+}
+
+.subjectNameContainer{
+    overflow: hidden;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    align-content: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+}
+
+.subjectNameText{
+    font-size: large;
+    font-weight: bold;
+    transform: translate(10px);
+    z-index: 1
 }
