@@ -11,7 +11,6 @@ function addArchiveListItem(homeworkObject) {
     const subjectName = addElement("h2", homeworkObject.subject.name);
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`);
     const timeUsed = addElement("p", `Homework finished in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`);
-    const detailsButton = addButton("Custom", null, "Details");
     subjectName.classList.add("subjectName");
     displayDiv.appendChild(subjectName);
     displayDiv.appendChild(timeUsed);
@@ -66,6 +65,7 @@ function addArchiveListItem(homeworkObject) {
         detailsModal.style.display = "none";
         detailsDisplay.style.display = "none";
         detailsDiv.style.display = "none";
+        enableScroll();
     });
     //Display Management (Final)
     const detailsDeleteButton = addButton("Custom", null, "Delete");
@@ -87,13 +87,8 @@ function addArchiveListItem(homeworkObject) {
         detailsDiv.style.display = "flex";
         detailsModal.style.display = "flex";
         detailsDisplay.style.display = "block";
-    });
-    detailsButton.addEventListener("click", () => {
-        detailsDiv.style.display = "flex";
-        detailsModal.style.display = "flex";
-        detailsDisplay.style.display = "block";
+        disableScroll();
     });
     //appending to list element
-    displayDiv.appendChild(detailsButton);
     list.appendChild(listItem);
 }

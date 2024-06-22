@@ -246,6 +246,7 @@ function addListItem(homeworkObject) {
         detailsModal.style.display = "none";
         detailsDisplay.style.display = "none";
         detailsDiv.style.display = "none";
+        enableScroll();
     });
     //Display Management (Final)
     const detailsDeleteButton = addButton("Custom", null, "Delete");
@@ -268,6 +269,7 @@ function addListItem(homeworkObject) {
             detailsDiv.style.display = "flex";
             detailsModal.style.display = "flex";
             detailsDisplay.style.display = "block";
+            disableScroll();
         }
     });
     //Edit Functionality
