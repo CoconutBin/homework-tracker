@@ -139,7 +139,7 @@ function addListItem(homeworkObject) {
     // Display Subject Name Clicking
     //Unknown Bug: homeworkObject keeps resetting
     subjectName.addEventListener("click", () => {
-        switch (settings.betaFeatures.subjectNameClick) {
+        switch (settings.subjectNameClick) {
             case "markImportant":
                 subjectName.contentEditable = "false";
                 if (homeworkObject.isImportant) {

@@ -168,7 +168,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
 
     subjectName.addEventListener("click", () => {
-        switch (settings.betaFeatures.subjectNameClick) {
+        switch (settings.subjectNameClick) {
             case "markImportant":
                 subjectName.contentEditable = "false"
                 if (homeworkObject.isImportant) {
