@@ -148,11 +148,10 @@ textarea {
     filter: brightness(115%);
 }
 
-.listItemDisplay h2,
 p {
     text-overflow: ellipsis;
     overflow: hidden;
-    font-size: large
+    font-size: large;
 }
 
 #addListItemButton div {
