@@ -491,7 +491,7 @@ function clearList() {
         const dataURL = "data:text/plain;charset=utf-8," + encodeURIComponent(getEncodedData());
         let element = document.createElement("a");
         element.setAttribute("href", dataURL);
-        element.setAttribute("download", "exported data.txt");
+        element.setAttribute("download", "exported homework tracker data.txt");
 
         element.style.display = "none";
 
