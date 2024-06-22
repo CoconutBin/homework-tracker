@@ -34,16 +34,6 @@ class Theme {
     }
 }
 
-themeButton.addEventListener('click', () => {
-    if (currentTheme == settings.defaultThemes.light) {
-        currentTheme = settings.defaultThemes.dark;
-    } else {
-        currentTheme = settings.defaultThemes.light
-    }
-    localStorage.setItem("currentTheme", currentTheme)
-    Themes[currentTheme].setCSS()
-})
-
 const Themes = {
     fern: new Theme('light', "#011206", "#f2fef5", "#47c068", "#92c3da", "#6982cb", "#faf7ff", "#da0000"),
     dark: new Theme('dark', '#d6fbf2', '#000a06', '#125e48', '#115385', '#1968da'),
@@ -56,6 +46,24 @@ const Themes = {
     paper: new Theme('light', null, null, null, null, null),
 }
 
+
+if(Themes[currentTheme].themeType == "light"){
+    themeButton.innerText = "light_mode"
+} else{
+    themeButton.innerText = "dark_mode"
+}
+
+themeButton.addEventListener('click', () => {
+    if (currentTheme == settings.defaultThemes.light) {
+        currentTheme = settings.defaultThemes.dark;
+        themeButton.innerText = "dark_mode"
+    } else {
+        currentTheme = settings.defaultThemes.light
+        themeButton.innerText = "light_mode"
+    }
+    localStorage.setItem("currentTheme", currentTheme)
+    Themes[currentTheme].setCSS()
+})
 try{
     Themes[currentTheme].setCSS()
 }

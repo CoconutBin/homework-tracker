@@ -89,7 +89,7 @@ textarea {
 }
 
 .material-symbols-outlined {
-    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+    font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 48;
     user-select: none;
 }
 
@@ -231,6 +231,7 @@ button:hover {
     padding: 0 5px;
     display: inline-block;
     font-size: larger;
+    margin: 0;
 }
 
 .subjectNameContainer{
@@ -238,4 +239,9 @@ button:hover {
     overflow-wrap: break-word;
     word-wrap: break-word;
     align-content: center;
+}
+
+.subjectNameText{
+    font-size: large;
+    font-weight: bold;
 }
