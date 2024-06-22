@@ -73,7 +73,6 @@ defaultDarkThemeSetting.addEventListener("change", () => {
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
     if (Themes[currentTheme].themeType == "dark") {
         Themes[settings.defaultThemes.dark].setCSS();
-        console.log(currentTheme);
     }
 });
 defaultLightThemeSetting.addEventListener("change", () => {

@@ -90,7 +90,6 @@ defaultDarkThemeSetting.addEventListener("change", () => {
     
     if(Themes[currentTheme].themeType == "dark"){
         Themes[settings.defaultThemes.dark].setCSS()
-        console.log(currentTheme)
     }
 })
 
