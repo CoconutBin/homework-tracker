@@ -1,10 +1,9 @@
 @media (max-width: 1280px) {
     .listItem {
         width: calc(25vw - calc(2*var(--standard-margin)) - 10px);
-        height: max(250px, 30vh)
     }
 
-    .listItemDisplay{
+    .listItemDisplay {
         height: max(250px, 30vh)
     }
 }
@@ -12,10 +11,9 @@
 @media (max-width: 900px) {
     .listItem {
         width: calc(33vw - calc(2*var(--standard-margin)) - 10px);
-        height: max(250px, 30vh)
     }
 
-    .listItemDisplay{
+    .listItemDisplay {
         height: max(250px, 30vh)
     }
 }
@@ -23,10 +21,9 @@
 @media (max-width: 700px) {
     .listItem {
         width: calc(50vw - calc(2*var(--standard-margin)) - 10px);
-        height: max(300px, 30vh)
     }
 
-    .listItemDisplay{
+    .listItemDisplay {
         height: max(300px, 30vh)
     }
 
@@ -36,7 +33,7 @@
         font-size: medium;
     }
 
-    .clickable{
+    .clickable {
         font-size: 36px !important;
     }
 }
@@ -44,10 +41,9 @@
 @media (max-width: 400px) {
     .listItem {
         width: calc(100vw - calc(2*var(--standard-margin)) - 10px);
-        height: max(200px, 30vh)
     }
 
-    .listItemDisplay{
+    .listItemDisplay {
         height: max(200px, 30vh)
     }
 
@@ -57,21 +53,23 @@
         font-size: medium;
     }
 
-    .clickable{
+    .clickable {
         font-size: 36px !important;
     }
 
-    .navbar p{
+    .navbar p {
         font-size: 24px;
+    }
+
+    .detailsDisplay,
+    .inputForm,
+    .settingsDisplay {
+        width: 100vw;
     }
 }
 
 @media (max-height: 500px) {
-    .listItem {
-        height: max(225px, 30vh)
-    }
-
-    .listItemDisplay{
+    .listItemDisplay {
         height: max(225px, 30vh)
     }
 
@@ -81,11 +79,17 @@
         font-size: medium;
     }
 
-    .clickable{
+    .clickable {
         font-size: 24px !important;
     }
 
-    .navbar p{
+    .navbar p {
         font-size: 16px;
+    }
+
+    .detailsDisplay,
+    .inputForm,
+    .settingsDisplay {
+        height: 100vh;
     }
 }

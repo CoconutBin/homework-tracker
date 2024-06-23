@@ -50,7 +50,7 @@ button {
 }
 
 textarea {
-    width: calc(30vw - 40px);
+    width: max(calc(30vw - 40px), 300px);
     height: 15vh;
     resize: none;
 }
@@ -112,7 +112,7 @@ textarea {
     margin: var(--standard-margin);
     width: calc(20% - calc(2*var(--standard-margin)) - 10px);
     /* 20% width minus spacing */
-    height: max(250px, 20vh);
+    height: auto;
     align-items: center;
     padding: 5px;
 }
@@ -128,7 +128,7 @@ textarea {
 
 .listItemDisplay {
     height: max(250px, 20vh);
-    width: calc(20% - calc(2*var(--standard-margin)) - 10px);
+    width: auto;
     text-overflow: clip;
     overflow: hidden;
     overflow-wrap: break-word;
@@ -183,7 +183,10 @@ p {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
-    padding: 20px 20px
+    padding: 20px 20px;
+    width: max(30vw,350px);
+    height: auto;
+    align-content: center;
 }
 
 .detailsDisplay,
@@ -199,14 +202,10 @@ p {
     border-radius: 10px;
 }
 
-.detailsDisplay {
-    width: 30vw;
-}
-
 .detailsSubjectText {
     text-wrap: wrap;
     overflow: hidden;
-    width: 30vw;
+    width: auto;
 }
 
 input[type="button"]:hover,
@@ -256,4 +255,10 @@ button:hover {
     font-weight: bold;
     transform: translate(10px);
     z-index: 1
+}
+
+.detailsSubjectNameText{
+    font-size: clamp(20px, 1.45vw, 28px);
+    font-weight: bold;
+    margin-bottom: 20px;
 }
