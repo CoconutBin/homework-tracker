@@ -65,6 +65,7 @@
     .inputForm,
     .settingsDisplay {
         width: 100vw;
+        margin-left: 15px;
     }
 }
 
