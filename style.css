@@ -236,6 +236,7 @@ button:hover {
     font-size: larger;
     margin: 0;
     font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+    overflow: visible;
     z-index: 2;
 }
 
@@ -253,7 +254,6 @@ button:hover {
 .subjectNameText{
     font-size: large;
     font-weight: bold;
-    transform: translate(10px);
     z-index: 1
 }
 
