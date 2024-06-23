@@ -51,6 +51,7 @@ const settingsContainer = document.getElementById("settingsContainer");
 const settingsModal = document.getElementById("settingsModal");
 const settingsDiv = document.getElementById("settingsScreen");
 const settingsCloseButton = document.getElementById("settingsCloseButton");
+const settingsresetButton = document.getElementById('settingsResetButton');
 const defaultDarkThemeSetting = document.getElementById("defaultDark");
 const defaultLightThemeSetting = document.getElementById("defaultLight");
 const rightToLeft = document.getElementById("rightToLeft");
@@ -70,6 +71,21 @@ settingsCloseButton.addEventListener("click", () => {
     settingsContainer.style.display = "none";
     settingsDiv.style.display = "none";
     enableScroll();
+});
+settingsresetButton.addEventListener("click", () => {
+    if (confirm("Are you sure you want to reset settings?")) {
+        settings.reset();
+        localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+        Themes[currentTheme].setCSS();
+        defaultDarkThemeSetting.value = settings.defaultThemes.dark;
+        defaultLightThemeSetting.value = settings.defaultThemes.light;
+        rightToLeft.checked = settings.rightToLeft;
+        if (subjectNameClick != undefined)
+            subjectNameClick.value = settings.subjectNameClick;
+        if (pureBlackDarkMode != undefined)
+            pureBlackDarkMode.checked = settings.pureBlackDarkMode;
+        list.style.flexDirection = "row";
+    }
 });
 defaultDarkThemeSetting.addEventListener("change", () => {
     settings.defaultThemes.dark = defaultDarkThemeSetting.value;
