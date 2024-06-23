@@ -137,12 +137,12 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     displayDiv.appendChild(subjectNameContainer)
     displayDiv.appendChild(timeStarted)
     timeStarted.style.display = "none"
-    if(homeworkObject.isGroupWork){
+    if (homeworkObject.isGroupWork) {
         isImportant.innerText = "group"
-    } else{
+    } else {
         isImportant.innerText = "person"
     }
-    if(homeworkObject.isImportant){
+    if (homeworkObject.isImportant) {
         isImportant.style.color = "var(--accent)"
     }
     if (new Date(homeworkObject.dueDate).toDateString() != "Invalid Date") {
@@ -159,7 +159,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     }
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
-    
+
 
     // Display Subject Name Clicking
 
@@ -430,3 +430,74 @@ function clearList() {
         </div>`;
 }
 
+//data transfer button setup
+//i cant be bothered finding a good place to put this, so it goes here, move if you want.
+//wrapped in its own block so i dont accidentally modify anything that has the same name.
+{
+    const dataTransferTextArea = document.getElementById("dataTransferTextArea") as HTMLTextAreaElement;
+
+    const dataTransferExportButton = document.getElementById("dataTransferExportButton") as HTMLButtonElement;
+    const dataTransferImportButton = document.getElementById("dataTransferImportButton") as HTMLButtonElement;
+    const dataTransferDownloadButton = document.getElementById("dataTransferDownloadButton") as HTMLButtonElement;
+
+    type data = {
+        listContents: typeof listContents
+        archivedHomeworks: typeof archivedHomeworks
+    }
+
+    function getEncodedData() {
+        const listContents = JSON.parse(localStorage.getItem("listContents"));
+        const archivedHomeworks = JSON.parse(localStorage.getItem("archivedHomeworks"));
+
+        //see https://developer.mozilla.org/en-US/docs/Glossary/Base64
+        return btoa(JSON.stringify({ listContents: listContents, archivedHomeworks: archivedHomeworks }));
+    }
+
+    dataTransferExportButton.addEventListener("click", (e) => {
+        const encodedData = getEncodedData();
+        dataTransferTextArea.value = encodedData;
+        dataTransferTextArea.select();
+        navigator.clipboard.writeText(encodedData);
+    })
+
+    dataTransferImportButton.addEventListener("click", (e) => {
+        const encodedData = dataTransferTextArea.value;
+        console.log(encodedData)
+        let decodedJSONString: string;
+
+        //validation
+        try {
+            //see https://developer.mozilla.org/en-US/docs/Glossary/Base64
+            decodedJSONString = atob(encodedData);
+        } catch (e) {
+            alert("invalid data")
+            return
+        }
+
+        let data: data
+        try {
+            data = JSON.parse(decodedJSONString);
+        } catch (e) {
+            alert("invalid data")
+            return
+        }
+
+        localStorage.setItem("listContents", JSON.stringify(data.listContents));
+        localStorage.setItem("archivedHomeworks", JSON.stringify(data.archivedHomeworks));
+
+        location.reload();
+    })
+
+    dataTransferDownloadButton.addEventListener("click", (e) => {
+        const dataURL = "data:text/plain;charset=utf-8," + encodeURIComponent(getEncodedData());
+        let element = document.createElement("a");
+        element.setAttribute("href", dataURL);
+        element.setAttribute("download", "exported homework tracker data.txt");
+
+        element.style.display = "none";
+
+        document.body.append(element);
+        element.click();
+        document.body.removeChild(element);
+    })
+}
