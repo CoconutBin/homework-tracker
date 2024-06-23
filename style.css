@@ -44,9 +44,7 @@ input[type="number"] {
     width: 5vw;
 }
 
-input[type="button"],
-input[type="submit"],
-input[type="date"],
+input,
 button {
     cursor: pointer;
 }
