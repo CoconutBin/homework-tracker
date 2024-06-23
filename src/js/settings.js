@@ -59,14 +59,17 @@ const pureBlackDarkMode = document.getElementById('pureBlackDarkMode');
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block";
     settingsDiv.style.display = "block";
+    disableScroll();
 });
 settingsModal.addEventListener("click", () => {
     settingsContainer.style.display = "none";
     settingsDiv.style.display = "none";
+    enableScroll();
 });
 settingsCloseButton.addEventListener("click", () => {
     settingsContainer.style.display = "none";
     settingsDiv.style.display = "none";
+    enableScroll();
 });
 defaultDarkThemeSetting.addEventListener("change", () => {
     settings.defaultThemes.dark = defaultDarkThemeSetting.value;
