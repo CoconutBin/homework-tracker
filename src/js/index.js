@@ -197,7 +197,7 @@ function addListItem(homeworkObject) {
     const detailsModal = document.createElement("div");
     const detailsDisplay = document.createElement("div");
     const detailsDiv = document.createElement("div");
-    const detailsSubject = addElement("h2", homeworkObject.subject.name);
+    const detailsSubject = addElement("p", homeworkObject.subject.name);
     const detailsSubjectDetails = document.createElement("p");
     const detailsSubjectID = addElement("span", homeworkObject.subject.id);
     const detailsSubjectType = addElement("span", homeworkObject.subject.type);
@@ -207,6 +207,7 @@ function addListItem(homeworkObject) {
     const detailsPointsNumber = addElement("span", `${parseInt(homeworkObject.points) > 0 ? homeworkObject.points : "None"}`);
     const detailsPoints = addElement("p", `Points: `);
     detailsPoints.appendChild(detailsPointsNumber);
+    detailsSubject.classList.add("detailsSubjectNameText");
     detailsDueDate.appendChild(detailsDueDateTime);
     let detailsDescriptionText;
     if (homeworkObject.description.length > 0) {

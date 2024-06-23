@@ -48,6 +48,8 @@ const Themes = {
     phutopia: new Theme('phutopia', 'dark', '#ffffff', '#313131', '#490F66', '#2c0544', '#000000'),
     peach: new Theme('peach', 'light', "#14120a", "#f7f4e2", "#ffb7b7", "#ffe679", "#fbd2d2"),
     paper: new Theme('paper', 'light', null, null, null, null, null),
+    ice: insertTheme('ice', 'light', { 'text': '#081921', 'background': '#e2f1f8', 'primary': '#bae5fd', 'secondary': '#c5aeea', 'accent': '#d09be4', }),
+    icedark: insertTheme('icedark', 'dark', { 'text': '#deeff7', 'background': '#07161d', 'primary': '#022e45', 'secondary': '#2c1551', 'accent': '#511b64' }),
 };
 if (Themes[currentTheme].themeType == "light") {
     themeButton.innerText = "light_mode";
@@ -73,4 +75,7 @@ try {
 catch {
     Themes[settings.defaultThemes.light].setCSS();
     localStorage.setItem("currentTheme", settings.defaultThemes.light);
+}
+function insertTheme(name, type, tailwindObj) {
+    return new Theme(name, type, tailwindObj['text'], tailwindObj['background'], tailwindObj['primary'], tailwindObj['secondary'], tailwindObj['accent']);
 }

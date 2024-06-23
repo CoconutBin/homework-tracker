@@ -25,7 +25,7 @@ class Theme {
         this.errorColor = errorColor ?? "#da0000";
     }
 
-    setCSS(){
+    setCSS() {
         localStorage.setItem("currentTheme", this.name)
         currentTheme = this.name
         cssVariables.style.setProperty('--text', this.textColor);
@@ -36,7 +36,7 @@ class Theme {
         cssVariables.style.setProperty('--success', this.successColor);
         cssVariables.style.setProperty('--error', this.errorColor);
 
-        if(settings.pureBlackDarkMode && this.themeType === 'dark'){
+        if (settings.pureBlackDarkMode && this.themeType === 'dark') {
             cssVariables.style.setProperty('--background', "#000000");
         }
     }
@@ -48,16 +48,18 @@ const Themes = {
     darkold: new Theme('darkold', 'dark', "#e9f8ed", "#050f02", "#2e5f3b", "#26576e", "#344d98", "#011206", "#da0000"),
     prakiao: new Theme('prakiao', 'light', "#130112", "#f8e7f8", "#7995cd", "#fdafdf", "#5474bb", "#011206", "#da0000"),
     matcha: new Theme('matcha', 'light', "#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098"),
-    choco: new Theme('choco', 'dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32" ),
+    choco: new Theme('choco', 'dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32"),
     pneuma: new Theme('pneuma', 'dark', "#fcfdfc", "#2c2b40", "#4e5eda", "#779bf2", "#35a9fc"),
-    phutopia: new Theme('phutopia', 'dark', '#ffffff','#313131', '#490F66', '#2c0544', '#000000'),
+    phutopia: new Theme('phutopia', 'dark', '#ffffff', '#313131', '#490F66', '#2c0544', '#000000'),
     peach: new Theme('peach', 'light', "#14120a", "#f7f4e2", "#ffb7b7", "#ffe679", "#fbd2d2"),
     paper: new Theme('paper', 'light', null, null, null, null, null),
+    ice: insertTheme('ice', 'light', {'text': '#081921', 'background': '#e2f1f8', 'primary': '#bae5fd', 'secondary': '#c5aeea', 'accent': '#d09be4',}),
+    icedark: insertTheme('icedark', 'dark', {'text': '#deeff7', 'background': '#07161d', 'primary': '#022e45', 'secondary': '#2c1551', 'accent': '#511b64'}),
 }
 
-if(Themes[currentTheme].themeType == "light"){
+if (Themes[currentTheme].themeType == "light") {
     themeButton.innerText = "light_mode"
-} else{
+} else {
     themeButton.innerText = "dark_mode"
 }
 
@@ -72,10 +74,14 @@ themeButton.addEventListener('click', () => {
     localStorage.setItem("currentTheme", currentTheme)
     Themes[currentTheme].setCSS()
 })
-try{
+try {
     Themes[currentTheme].setCSS()
 }
-catch{
+catch {
     Themes[settings.defaultThemes.light].setCSS()
     localStorage.setItem("currentTheme", settings.defaultThemes.light)
+}
+
+function insertTheme(name, type, tailwindObj) {
+    return new Theme(name, type, tailwindObj['text'], tailwindObj['background'], tailwindObj['primary'], tailwindObj['secondary'], tailwindObj['accent'])
 }
