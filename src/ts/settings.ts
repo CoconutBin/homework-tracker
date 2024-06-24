@@ -14,6 +14,7 @@ class Settings {
         dark: string
     }
     pureBlackDarkMode: boolean
+    customThemes: boolean
     rightToLeft: boolean
     subjectNameClick: string
 
@@ -24,12 +25,14 @@ class Settings {
         },
             this.pureBlackDarkMode = false,
             this.rightToLeft = false,
+            this.customThemes = false,
             this.subjectNameClick = ""
     }
 
     constructor() {
         this.pureBlackDarkMode = false,
             this.rightToLeft = false,
+            this.customThemes = false,
             this.subjectNameClick = "",
             this.defaultThemes = {
                 light: "matcha",
@@ -43,6 +46,7 @@ class Settings {
                 light: this.defaultThemes.light,
                 dark: this.defaultThemes.dark
             },
+            customThemes: this.customThemes,
             pureBlackDarkMode: this.pureBlackDarkMode,
             rightToLeft: this.rightToLeft,
             subjectNameClick: this.subjectNameClick
@@ -50,6 +54,7 @@ class Settings {
     }
 
     set settingsObject(obj) {
+        this.customThemes = obj.customThemes
         this.defaultThemes = obj.defaultThemes
         this.rightToLeft = obj.rightToLeft
         this.subjectNameClick = obj.subjectNameClick
@@ -69,6 +74,7 @@ const defaultLightThemeSetting = document.getElementById("defaultLight") as HTML
 const rightToLeft = document.getElementById("rightToLeft") as HTMLInputElement;
 const subjectNameClick = document.getElementById("subjectNameClick") as HTMLSelectElement;
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode') as HTMLInputElement
+const customThemes = document.getElementById('customThemes') as HTMLInputElement
 
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block"
@@ -134,6 +140,14 @@ pureBlackDarkMode.addEventListener("change", () => {
     Themes[currentTheme].setCSS();
 })
 
+customThemes.addEventListener("change", () => {
+    customThemes.checked = settings.customThemes
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    if (settings.customThemes) {
+        themeButton.textContent = "palette"
+    }
+})
+
 if (subjectNameClick != undefined) {
     subjectNameClick.addEventListener("change", () => {
         settings.subjectNameClick = subjectNameClick.value
@@ -149,6 +163,7 @@ try {
     defaultDarkThemeSetting.value = settings.defaultThemes.dark
     defaultLightThemeSetting.value = settings.defaultThemes.light
     rightToLeft.checked = settings.rightToLeft
+    if (customThemes != undefined) customThemes.checked = settings.customThemes
     if (subjectNameClick != undefined) subjectNameClick.value = settings.subjectNameClick
     if (pureBlackDarkMode != undefined) pureBlackDarkMode.checked = settings.pureBlackDarkMode
 }
@@ -157,6 +172,7 @@ catch {
     defaultDarkThemeSetting.value = settings.defaultThemes.dark
     defaultLightThemeSetting.value = settings.defaultThemes.light
     rightToLeft.checked = settings.rightToLeft
+    customThemes.checked = settings.customThemes
     subjectNameClick.value = settings.subjectNameClick
     pureBlackDarkMode.checked = settings.pureBlackDarkMode
 }

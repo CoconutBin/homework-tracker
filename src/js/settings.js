@@ -8,6 +8,7 @@ sortButton.addEventListener("click", () => {
 class Settings {
     defaultThemes;
     pureBlackDarkMode;
+    customThemes;
     rightToLeft;
     subjectNameClick;
     reset() {
@@ -17,11 +18,13 @@ class Settings {
         },
             this.pureBlackDarkMode = false,
             this.rightToLeft = false,
+            this.customThemes = false,
             this.subjectNameClick = "";
     }
     constructor() {
         this.pureBlackDarkMode = false,
             this.rightToLeft = false,
+            this.customThemes = false,
             this.subjectNameClick = "",
             this.defaultThemes = {
                 light: "matcha",
@@ -34,12 +37,14 @@ class Settings {
                 light: this.defaultThemes.light,
                 dark: this.defaultThemes.dark
             },
+            customThemes: this.customThemes,
             pureBlackDarkMode: this.pureBlackDarkMode,
             rightToLeft: this.rightToLeft,
             subjectNameClick: this.subjectNameClick
         };
     }
     set settingsObject(obj) {
+        this.customThemes = obj.customThemes;
         this.defaultThemes = obj.defaultThemes;
         this.rightToLeft = obj.rightToLeft;
         this.subjectNameClick = obj.subjectNameClick;
@@ -57,6 +62,7 @@ const defaultLightThemeSetting = document.getElementById("defaultLight");
 const rightToLeft = document.getElementById("rightToLeft");
 const subjectNameClick = document.getElementById("subjectNameClick");
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode');
+const customThemes = document.getElementById('customThemes');
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block";
     settingsDiv.style.display = "block";
@@ -113,6 +119,13 @@ pureBlackDarkMode.addEventListener("change", () => {
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
     Themes[currentTheme].setCSS();
 });
+customThemes.addEventListener("change", () => {
+    customThemes.checked = settings.customThemes;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    if (settings.customThemes) {
+        themeButton.textContent = "palette";
+    }
+});
 if (subjectNameClick != undefined) {
     subjectNameClick.addEventListener("change", () => {
         settings.subjectNameClick = subjectNameClick.value;
@@ -126,6 +139,8 @@ try {
     defaultDarkThemeSetting.value = settings.defaultThemes.dark;
     defaultLightThemeSetting.value = settings.defaultThemes.light;
     rightToLeft.checked = settings.rightToLeft;
+    if (customThemes != undefined)
+        customThemes.checked = settings.customThemes;
     if (subjectNameClick != undefined)
         subjectNameClick.value = settings.subjectNameClick;
     if (pureBlackDarkMode != undefined)
@@ -136,6 +151,7 @@ catch {
     defaultDarkThemeSetting.value = settings.defaultThemes.dark;
     defaultLightThemeSetting.value = settings.defaultThemes.light;
     rightToLeft.checked = settings.rightToLeft;
+    customThemes.checked = settings.customThemes;
     subjectNameClick.value = settings.subjectNameClick;
     pureBlackDarkMode.checked = settings.pureBlackDarkMode;
 }
