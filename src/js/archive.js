@@ -78,7 +78,6 @@ function addArchiveListItem(homeworkObject) {
         detailsModal.style.display = "none";
         detailsDisplay.style.display = "none";
         detailsDiv.style.display = "none";
-        enableScroll();
     });
     //Display Management (Final)
     const detailsDeleteButton = addButton("Custom", null, "Delete");
@@ -100,7 +99,6 @@ function addArchiveListItem(homeworkObject) {
         detailsDiv.style.display = "flex";
         detailsModal.style.display = "flex";
         detailsDisplay.style.display = "block";
-        disableScroll();
     });
     //appending to list element
     list.appendChild(listItem);

@@ -89,7 +89,6 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
         detailsModal.style.display = "none";
         detailsDisplay.style.display = "none";
         detailsDiv.style.display = "none";
-        enableScroll();
     })
 
     //Display Management (Final)
@@ -112,7 +111,6 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
             detailsDiv.style.display = "flex";
             detailsModal.style.display = "flex";
             detailsDisplay.style.display = "block";
-            disableScroll()
     });
 
     //appending to list element
