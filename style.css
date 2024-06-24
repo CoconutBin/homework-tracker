@@ -185,7 +185,8 @@ p {
     z-index: 9999;
     padding: 20px 20px;
     width: max(30vw,350px);
-    height: auto;
+    max-height: 80vh;
+    overflow: auto;
     align-content: center;
 }
 
