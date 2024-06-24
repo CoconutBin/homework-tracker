@@ -1,13 +1,12 @@
 const archiveList = document.getElementById("list")
 
-if(archivedHomeworks.length > 0) {
-    for(let homeworkObject of archivedHomeworks) {
+if (archivedHomeworks.length > 0) {
+    for (let homeworkObject of archivedHomeworks) {
         addArchiveListItem(homeworkObject)
     }
 }
 
 function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
-
     // Display Management (Initial)
 
     const listItem = document.createElement("div")
@@ -16,7 +15,7 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
     const isImportant = addElement("p")
     const subjectName = addElement("p", homeworkObject.subject.name)
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`)
-    const timeUsed = addElement("p", `Homework finished in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`)
+    const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`)
     subjectNameContainer.classList.add("subjectNameContainer")
     subjectName.classList.add("subjectNameText")
     isImportant.classList.add("isImportantIsGroupWork")
@@ -24,14 +23,25 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
     subjectNameContainer.appendChild(isImportant)
     subjectNameContainer.appendChild(subjectName)
     displayDiv.appendChild(subjectNameContainer)
-    displayDiv.appendChild(timeUsed)
-    if(homeworkObject.isGroupWork){
+    displayDiv.appendChild(timeStarted)
+    timeStarted.style.display = "none"
+    if (homeworkObject.isGroupWork) {
         isImportant.innerText = "group"
-    } else{
+    } else {
         isImportant.innerText = "person"
+    }
+    if (homeworkObject.isImportant) {
+        isImportant.style.color = "var(--accent)"
     }
     if (new Date(homeworkObject.dueDate).toDateString() != "Invalid Date") {
         displayDiv.appendChild(dueDate)
+    }
+    if (homeworkObject.timeStarted > 0 && homeworkObject.timeEnded == undefined) {
+        timeStarted.style.display = "block"
+    }
+    if (homeworkObject.timeEnded > 0) {
+        timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`
+        timeStarted.style.display = "block"
     }
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
@@ -42,7 +52,7 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
     const detailsDisplay = document.createElement("div")
     const detailsDiv = document.createElement("div")
 
-    const detailsSubject = addElement("h2", homeworkObject.subject.name)
+    const detailsSubject = addElement("p", homeworkObject.subject.name)
     const detailsSubjectDetails = document.createElement("p")
     const detailsSubjectID = addElement("span", homeworkObject.subject.id)
     const detailsSubjectType = addElement("span", homeworkObject.subject.type)
@@ -52,9 +62,13 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
     const detailsPointsNumber = addElement("span", `${parseInt(homeworkObject.points) > 0 ? homeworkObject.points : "None"}`)
     const detailsPoints = addElement("p", `Points: `)
     detailsPoints.appendChild(detailsPointsNumber)
+    detailsSubject.classList.add("detailsSubjectNameText")
     detailsDueDate.appendChild(detailsDueDateTime)
 
-    const detailsDescriptionText = homeworkObject.description.length > 0? addElement("p", homeworkObject.description):addElement("p", "No details")
+    const detailsDescriptionText = addElement("p", homeworkObject.description)
+    if (homeworkObject.description.length < 0 || homeworkObject.description == undefined) {
+        detailsDescriptionText.innerText = "No Details"
+    }
     const detailsDescription = addElement("p", `Details:`)
     detailsDescription.appendChild(document.createElement("br"))
     detailsDescription.appendChild(detailsDescriptionText)
@@ -92,10 +106,11 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
     })
 
     //Display Management (Final)
+
     const detailsDeleteButton = addButton("Custom", null, "Delete")
     detailsDeleteButton.addEventListener("click", () => {
-        if(!confirm("Are you sure?")) return
-        ManageLocalStorage.deleteArchived(homeworkObject)
+        if (!confirm("Are you sure?")) return
+        ManageLocalStorage.deleteListItem(homeworkObject)
         listItem.remove();
     })
     detailsDiv.style.display = "none"
@@ -107,10 +122,12 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
     listItem.appendChild(detailsDiv)
 
     //Clicking for Details
-    displayDiv.addEventListener("click", () => {
+    displayDiv.addEventListener("click", (event) => {
+        if (event.target != subjectName) {
             detailsDiv.style.display = "flex";
             detailsModal.style.display = "flex";
             detailsDisplay.style.display = "block";
+        }
     });
 
     //appending to list element
