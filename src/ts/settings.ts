@@ -28,7 +28,7 @@ class Settings {
     reset() {
         this.defaultThemes = {
             light: "matcha",
-            dark: "dark"
+            dark: "simpledark"
         },
         this.pureBlackDarkMode = false,
         this.rightToLeft = false,
@@ -45,7 +45,7 @@ class Settings {
             this.subjectNameClick = "",
             this.defaultThemes = {
                 light: "matcha",
-                dark: "dark"
+                dark: "simpledark"
             }
     }
 
