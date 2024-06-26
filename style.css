@@ -209,6 +209,13 @@ p {
     width: auto;
 }
 
+input[type="color"]{
+    padding: 0;
+    border: none;
+    appearance: none;
+    background-color: transparent;
+}
+
 input[type="button"]:hover,
 input[type="submit"]:hover,
 button:hover {

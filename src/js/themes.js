@@ -1,5 +1,14 @@
 const themeButton = document.getElementById('themes');
 const cssVariables = document.querySelector(':root');
+const themesContainer = document.getElementById("themesContainer");
+const themesModal = document.getElementById("themesModal");
+const themesDiv = document.getElementById("customThemesScreen");
+const themesCloseButton = document.getElementById("themesCloseButton");
+const inputThemeText = document.getElementById("inputThemeText");
+const inputThemeBackground = document.getElementById("inputThemeBackground");
+const inputThemePrimary = document.getElementById("inputThemePrimary");
+const inputThemeSecondary = document.getElementById("inputThemeSecondary");
+const inputThemeAccent = document.getElementById("inputThemeAccent");
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
 class Theme {
     name;
@@ -22,6 +31,16 @@ class Theme {
         this.successColor = successColor ?? "#00ff00";
         this.errorColor = errorColor ?? "#da0000";
     }
+    set CSSColors(customThemeColorObj) {
+        this.textColor = customThemeColorObj.text;
+        this.backgroundColor = customThemeColorObj.background;
+        this.primaryColor = customThemeColorObj.primary;
+        this.secondaryColor = customThemeColorObj.secondary;
+        this.accentColor = customThemeColorObj.accent;
+        // To do: Set success and error colors
+        // this.successColor = customThemeColorObj.success;
+        // this.errorColor = customThemeColorObj.error;
+    }
     setCSS() {
         localStorage.setItem("currentTheme", this.name);
         currentTheme = this.name;
@@ -35,9 +54,11 @@ class Theme {
         if (settings.pureBlackDarkMode && this.themeType === 'dark') {
             cssVariables.style.setProperty('--background', "#000000");
         }
+        customThemeColorSetup();
     }
 }
 const Themes = {
+    custom: new Theme('custom', 'light', null, null, null, null, null),
     fern: new Theme('fern', 'light', "#011206", "#f2fef5", "#47c068", "#92c3da", "#6982cb", "#faf7ff", "#da0000"),
     simpledark: new Theme('simpledark', 'dark', '#e2e2e2', '#0f0f0f', '#252525', '#313131', '#202020'),
     dark: new Theme('dark', 'dark', '#d6fbf2', '#000a06', '#125e48', '#115385', '#1968da'),
@@ -53,23 +74,45 @@ const Themes = {
     ice: insertTheme('ice', 'light', { 'text': '#081921', 'background': '#e2f1f8', 'primary': '#bae5fd', 'secondary': '#c5aeea', 'accent': '#84aef1', }),
     icedark: insertTheme('icedark', 'dark', { 'text': '#deeff7', 'background': '#07161d', 'primary': '#022e45', 'secondary': '#2c1551', 'accent': '#511b64' }),
 };
-if (Themes[currentTheme].themeType == "light") {
-    themeButton.innerText = "light_mode";
-}
-else {
-    themeButton.innerText = "dark_mode";
-}
-themeButton.addEventListener('click', () => {
-    if (currentTheme == settings.defaultThemes.light) {
-        currentTheme = settings.defaultThemes.dark;
-        themeButton.innerText = "dark_mode";
-    }
-    else {
-        currentTheme = settings.defaultThemes.light;
+if (settings.customThemes == false) {
+    if (Themes[currentTheme].themeType == "light") {
         themeButton.innerText = "light_mode";
     }
-    localStorage.setItem("currentTheme", currentTheme);
-    Themes[currentTheme].setCSS();
+    else {
+        themeButton.innerText = "dark_mode";
+    }
+}
+else {
+    themeButton.innerText = "palette";
+    currentTheme = 'custom';
+}
+if (settings.customThemes == true && settings.customThemeColor != undefined) {
+    Themes['custom'].CSSColors = settings.customThemeColor;
+}
+themeButton.addEventListener('click', () => {
+    if (settings.customThemes == false) {
+        if (currentTheme == settings.defaultThemes.light) {
+            currentTheme = settings.defaultThemes.dark;
+            themeButton.innerText = "dark_mode";
+        }
+        else {
+            currentTheme = settings.defaultThemes.light;
+            themeButton.innerText = "light_mode";
+        }
+        localStorage.setItem("currentTheme", currentTheme);
+        Themes[currentTheme].setCSS();
+    }
+    else {
+        themesContainer.style.display = "block";
+        themesModal.style.display = "block";
+        themesDiv.style.display = "block";
+    }
+});
+themesModal.addEventListener('click', () => {
+    themesContainer.style.display = "none";
+});
+themesCloseButton.addEventListener('click', () => {
+    themesContainer.style.display = "none";
 });
 try {
     Themes[currentTheme].setCSS();
@@ -80,4 +123,45 @@ catch {
 }
 function insertTheme(name, type, tailwindObj) {
     return new Theme(name, type, tailwindObj['text'], tailwindObj['background'], tailwindObj['primary'], tailwindObj['secondary'], tailwindObj['accent']);
+}
+inputThemeText.addEventListener('input', () => {
+    settings.customThemeColor.text = inputThemeText.value;
+    cssVariables.style.setProperty('--text', settings.customThemeColor.text);
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+});
+inputThemeBackground.addEventListener('input', () => {
+    settings.customThemeColor.background = inputThemeBackground.value;
+    cssVariables.style.setProperty('--background', settings.customThemeColor.background);
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+});
+inputThemePrimary.addEventListener('input', () => {
+    settings.customThemeColor.primary = inputThemePrimary.value;
+    cssVariables.style.setProperty('--primary', settings.customThemeColor.primary);
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+});
+inputThemeSecondary.addEventListener('input', () => {
+    settings.customThemeColor.secondary = inputThemeSecondary.value;
+    cssVariables.style.setProperty('--secondary', settings.customThemeColor.secondary);
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+});
+inputThemeAccent.addEventListener('input', () => {
+    settings.customThemeColor.accent = inputThemeAccent.value;
+    cssVariables.style.setProperty('--accent', settings.customThemeColor.accent);
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+});
+function customThemeColorSetup() {
+    if (settings.customThemeColor != undefined) {
+        inputThemeText.value = settings.customThemeColor.text ?? Themes[currentTheme].textColor;
+        inputThemeBackground.value = settings.customThemeColor.background ?? Themes[currentTheme].backgroundColor;
+        inputThemePrimary.value = settings.customThemeColor.primary ?? Themes[currentTheme].primaryColor;
+        inputThemeSecondary.value = settings.customThemeColor.secondary ?? Themes[currentTheme].secondaryColor;
+        inputThemeAccent.value = settings.customThemeColor.accent ?? Themes[currentTheme].accentColor;
+    }
+    else {
+        inputThemeText.value = Themes[currentTheme].textColor;
+        inputThemeBackground.value = Themes[currentTheme].backgroundColor;
+        inputThemePrimary.value = Themes[currentTheme].primaryColor;
+        inputThemeSecondary.value = Themes[currentTheme].secondaryColor;
+        inputThemeAccent.value = Themes[currentTheme].accentColor;
+    }
 }
