@@ -132,6 +132,7 @@ customThemes.addEventListener("change", () => {
         if (settings.customThemeColor == undefined) {
             settings.customThemeColor = {};
         }
+        Themes['custom'].CSSColors = settings.customThemeColor;
         Themes['custom'].setCSS();
     }
     else {
