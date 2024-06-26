@@ -271,3 +271,7 @@ button:hover {
     font-weight: bold;
     margin-bottom: 20px;
 }
+
+.preventTransition{
+    transition: none !important;
+}
