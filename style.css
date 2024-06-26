@@ -211,6 +211,7 @@ p {
 
 input[type="color"]{
     padding: 0;
+    translate: 0 15px;
     border: none;
     appearance: none;
     background-color: transparent;
