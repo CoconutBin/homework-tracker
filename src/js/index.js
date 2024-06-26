@@ -366,11 +366,13 @@ function addListItem(homeworkObject) {
     list.appendChild(listItem);
 }
 function clearList() {
-    listContents.splice(0, listContents.length);
-    localStorage.setItem("listContents", JSON.stringify(listContents));
-    list.innerHTML = `<div class="listItem" id="addListItemButton">
-            <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
-        </div>`;
+    if (confirm("Are you sure you want to clear the list?")) {
+        listContents.splice(0, listContents.length);
+        localStorage.setItem("listContents", JSON.stringify(listContents));
+        list.innerHTML = `<div class="listItem" id="addListItemButton">
+                <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
+            </div>`;
+    }
 }
 //data transfer button setup
 //i cant be bothered finding a good place to put this, so it goes here, move if you want.

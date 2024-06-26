@@ -421,11 +421,13 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 }
 
 function clearList() {
-    listContents.splice(0, listContents.length);
-    localStorage.setItem("listContents", JSON.stringify(listContents));
-    list.innerHTML = `<div class="listItem" id="addListItemButton">
-            <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
-        </div>`;
+    if(confirm("Are you sure you want to clear the list?")){
+        listContents.splice(0, listContents.length);
+        localStorage.setItem("listContents", JSON.stringify(listContents));
+        list.innerHTML = `<div class="listItem" id="addListItemButton">
+                <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
+            </div>`;
+    }
 }
 
 //data transfer button setup

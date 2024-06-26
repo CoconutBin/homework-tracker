@@ -120,3 +120,10 @@ function addArchiveListItem(homeworkObject) {
     //appending to list element
     list.appendChild(listItem);
 }
+function clearArchiveList() {
+    if (confirm("Are you sure you want to delete all archived homeworks?")) {
+        archivedHomeworks.splice(0, archivedHomeworks.length);
+        localStorage.setItem("archivedHomeworks", JSON.stringify(archivedHomeworks));
+        list.innerHTML = ``;
+    }
+}

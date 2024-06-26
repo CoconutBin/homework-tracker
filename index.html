@@ -24,6 +24,7 @@
         <div style="display: flex">
             <a id="navbarButtons">
                 <!--<span class="material-symbols-outlined clickable" style="font-size: 48px;" id="sort">sort</span> -->
+                <a class="material-symbols-outlined clickable" id="clearList" title="Clear List" onclick="clearList()">delete_forever</a>
                 <a class="material-symbols-outlined clickable" href="./archive.html"
                     title="Archived Homework">inventory_2</a>
                 <span class="material-symbols-outlined clickable" id="themes" title="Dark/Light Theme">light_mode</span>
@@ -138,7 +139,6 @@
                     placeholder="write here"></textarea>
             </label><br><br>
             <input type="submit">
-            <input type="button" value="Clear List" onclick="clearList()">
             <input type="button" value="Close" id="inputFormCloseButton">
         </form>
         <div class="modal" id="inputFormModalBackground"></div>
