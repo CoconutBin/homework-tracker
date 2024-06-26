@@ -112,6 +112,7 @@ themeButton.addEventListener('click', () => {
         localStorage.setItem("currentTheme", currentTheme)
         Themes[currentTheme].setCSS()
     } else {
+        (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.add("preventTransition"))
         themesContainer.style.display = "block"
         themesModal.style.display = "block"
         themesDiv.style.display = "block"
@@ -119,10 +120,12 @@ themeButton.addEventListener('click', () => {
 })
 
 themesModal.addEventListener('click', () => {
+    (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.remove("preventTransition"))
     themesContainer.style.display = "none"
 })
 
 themesCloseButton.addEventListener('click', () => {
+    (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.remove("preventTransition"))
     themesContainer.style.display = "none"
 })
 

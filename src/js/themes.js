@@ -103,15 +103,18 @@ themeButton.addEventListener('click', () => {
         Themes[currentTheme].setCSS();
     }
     else {
+        Array.from(document.querySelector("body").children).forEach(x => x.classList.add("preventTransition"));
         themesContainer.style.display = "block";
         themesModal.style.display = "block";
         themesDiv.style.display = "block";
     }
 });
 themesModal.addEventListener('click', () => {
+    Array.from(document.querySelector("body").children).forEach(x => x.classList.remove("preventTransition"));
     themesContainer.style.display = "none";
 });
 themesCloseButton.addEventListener('click', () => {
+    Array.from(document.querySelector("body").children).forEach(x => x.classList.remove("preventTransition"));
     themesContainer.style.display = "none";
 });
 try {
