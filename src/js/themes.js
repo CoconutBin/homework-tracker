@@ -9,6 +9,7 @@ const inputThemeBackground = document.getElementById("inputThemeBackground");
 const inputThemePrimary = document.getElementById("inputThemePrimary");
 const inputThemeSecondary = document.getElementById("inputThemeSecondary");
 const inputThemeAccent = document.getElementById("inputThemeAccent");
+const themesResetButton = document.getElementById('themesResetButton');
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
 class Theme {
     name;
@@ -120,6 +121,20 @@ themesModal.addEventListener('click', () => {
 themesCloseButton.addEventListener('click', () => {
     Array.from(document.querySelector("body").children).forEach(x => x.classList.remove("preventTransition"));
     themesContainer.style.display = "none";
+});
+themesResetButton.addEventListener("click", () => {
+    if (confirm("Are you sure you want to reset themes?")) {
+        settings.customThemeColor = {
+            text: "#000000",
+            background: "#ffffff",
+            primary: "#bbbbbb",
+            secondary: "#888888",
+            accent: "#aaaaaa",
+        };
+        localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+        Themes['custom'].CSSColors = settings.customThemeColor;
+        Themes['custom'].setCSS();
+    }
 });
 try {
     Themes[currentTheme].setCSS();

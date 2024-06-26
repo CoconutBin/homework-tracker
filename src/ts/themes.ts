@@ -9,6 +9,7 @@ const inputThemeBackground = document.getElementById("inputThemeBackground") as 
 const inputThemePrimary = document.getElementById("inputThemePrimary") as HTMLInputElement;
 const inputThemeSecondary = document.getElementById("inputThemeSecondary") as HTMLInputElement;
 const inputThemeAccent = document.getElementById("inputThemeAccent") as HTMLInputElement;
+const themesResetButton = document.getElementById('themesResetButton') as HTMLButtonElement
 
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
 
@@ -25,7 +26,7 @@ class Theme {
     successColor = "#00ff00";
     errorColor = "#da0000";
 
-    constructor(name:string,displayName:string, themeType:ThemeTypes, textColor:string, backgroundColor:string, primaryColor:string, secondaryColor:string, accentColor:string, successColor?:string, errorColor?:string) {
+    constructor(name: string, displayName: string, themeType: ThemeTypes, textColor: string, backgroundColor: string, primaryColor: string, secondaryColor: string, accentColor: string, successColor?: string, errorColor?: string) {
         this.name = name;
         this.displayName = displayName;
         this.themeType = themeType ?? "light";
@@ -50,7 +51,7 @@ class Theme {
         // this.errorColor = customThemeColorObj.error;
     }
 
-    get ThemeContructorForm(){
+    get ThemeContructorForm() {
         return `('${this.name}', '${this.themeType}', '${this.textColor}', '${this.backgroundColor}', '${this.primaryColor}', '${this.secondaryColor}', '${this.accentColor}', '${this.successColor}', '${this.errorColor}')`
     }
 
@@ -74,20 +75,20 @@ class Theme {
 }
 
 const Themes = {
-    custom: new Theme('custom',"Custom", 'light', null, null, null, null, null),
-    matcha: new Theme('matcha',"Matcha", 'light', "#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098"),
-    simpledark: new Theme('simpledark',"Simple", 'dark', '#e2e2e2', '#0f0f0f', '#252525', '#313131', '#202020'),
-    dark: new Theme('dark',"Dark", 'dark', '#d6fbf2', '#000a06', '#125e48', '#115385', '#1968da'),
-    darkold: new Theme('darkold',"Dark (Old)", 'dark', "#e9f8ed", "#050f02", "#2e5f3b", "#26576e", "#344d98", "#011206", "#da0000"),
-    prakiao: new Theme('prakiao',"Prakiao", 'light', "#130112", "#f8e7f8", "#7995cd", "#fdafdf", "#5474bb", "#011206", "#da0000"),
-    choco: new Theme('choco',"Choco", 'dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32"),
-    pneuma: new Theme('pneuma',"Pneuma", 'dark', "#fcfdfc", "#2c2b40", "#4e5eda", "#779bf2", "#35a9fc"),
-    phutopia: new Theme('phutopia',"Peam", 'dark', '#ffffff', '#313131', '#490F66', '#2c0544', '#000000'),
-    peach: new Theme('peach',"Peach", 'light', "#14120a", "#f7f4e2", "#fbd2d2", "#ffe679", "#ffb7b7"),
-    peachnew: new Theme('peachnew',"Peach (New)", 'light', "#14120a", "#f7f4e2", "#fbe1d2", "#ffe279", "#ffcbb7"),
-    deepsea: new Theme('deepsea',"Deep Sea", 'dark', '#ffffff', '#0c1b27', '#062651', '#3a5d83', '#163d6a', '#00ff00', '#da0000'),
-    ice: new Theme('ice',"Ice", 'light', '#081921', '#e2f1f8', '#bae5fd', '#c5aeea', '#84aef1', '#00ff00', '#da0000'),
-    icedark: insertTheme('icedark',"Mario64", 'dark', { 'text': '#deeff7', 'background': '#07161d', 'primary': '#022e45', 'secondary': '#2c1551', 'accent': '#511b64' }),
+    custom: new Theme('custom', "Custom", 'light', null, null, null, null, null),
+    matcha: new Theme('matcha', "Matcha", 'light', "#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098"),
+    simpledark: new Theme('simpledark', "Simple", 'dark', '#e2e2e2', '#0f0f0f', '#252525', '#313131', '#202020'),
+    dark: new Theme('dark', "Dark", 'dark', '#d6fbf2', '#000a06', '#125e48', '#115385', '#1968da'),
+    darkold: new Theme('darkold', "Dark (Old)", 'dark', "#e9f8ed", "#050f02", "#2e5f3b", "#26576e", "#344d98", "#011206", "#da0000"),
+    prakiao: new Theme('prakiao', "Prakiao", 'light', "#130112", "#f8e7f8", "#7995cd", "#fdafdf", "#5474bb", "#011206", "#da0000"),
+    choco: new Theme('choco', "Choco", 'dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32"),
+    pneuma: new Theme('pneuma', "Pneuma", 'dark', "#fcfdfc", "#2c2b40", "#4e5eda", "#779bf2", "#35a9fc"),
+    phutopia: new Theme('phutopia', "Peam", 'dark', '#ffffff', '#313131', '#490F66', '#2c0544', '#000000'),
+    peach: new Theme('peach', "Peach", 'light', "#14120a", "#f7f4e2", "#fbd2d2", "#ffe679", "#ffb7b7"),
+    peachnew: new Theme('peachnew', "Peach (New)", 'light', "#14120a", "#f7f4e2", "#fbe1d2", "#ffe279", "#ffcbb7"),
+    deepsea: new Theme('deepsea', "Deep Sea", 'dark', '#ffffff', '#0c1b27', '#062651', '#3a5d83', '#163d6a', '#00ff00', '#da0000'),
+    ice: new Theme('ice', "Ice", 'light', '#081921', '#e2f1f8', '#bae5fd', '#c5aeea', '#84aef1', '#00ff00', '#da0000'),
+    icedark: insertTheme('icedark', "Mario64", 'dark', { 'text': '#deeff7', 'background': '#07161d', 'primary': '#022e45', 'secondary': '#2c1551', 'accent': '#511b64' }),
 }
 
 if (settings.customThemes == false) {
@@ -101,7 +102,7 @@ if (settings.customThemes == false) {
     currentTheme = 'custom'
 }
 
-if(settings.customThemes == true && settings.customThemeColor != undefined) {
+if (settings.customThemes == true && settings.customThemeColor != undefined) {
     Themes['custom'].CSSColors = settings.customThemeColor
 }
 
@@ -135,6 +136,21 @@ themesCloseButton.addEventListener('click', () => {
     themesContainer.style.display = "none"
 })
 
+themesResetButton.addEventListener("click", () => {
+    if (confirm("Are you sure you want to reset themes?")) {
+        settings.customThemeColor = {
+            text: "#000000",
+            background: "#ffffff",
+            primary: "#bbbbbb",
+            secondary: "#888888",
+            accent: "#aaaaaa",
+        }
+        localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+        Themes['custom'].CSSColors = settings.customThemeColor
+        Themes['custom'].setCSS()
+    }
+})
+
 try {
     Themes[currentTheme].setCSS()
 }
@@ -143,8 +159,8 @@ catch {
     localStorage.setItem("currentTheme", settings.defaultThemes.light)
 }
 
-function insertTheme(name:string, displayName:string, type:ThemeTypes, tailwindObj) {
-    return new Theme(name,displayName, type, tailwindObj['text'], tailwindObj['background'], tailwindObj['primary'], tailwindObj['secondary'], tailwindObj['accent'])
+function insertTheme(name: string, displayName: string, type: ThemeTypes, tailwindObj) {
+    return new Theme(name, displayName, type, tailwindObj['text'], tailwindObj['background'], tailwindObj['primary'], tailwindObj['secondary'], tailwindObj['accent'])
 }
 
 inputThemeText.addEventListener('input', () => {
@@ -199,7 +215,7 @@ function customThemeColorSetup() {
     const defaultDark = document.getElementById("defaultDark") as HTMLSelectElement;
 
     for (const theme of Object.values(Themes)) {
-        if(theme.name == "custom") continue;
+        if (theme.name == "custom") continue;
         const option = document.createElement("option") as HTMLOptionElement;
         option.value = theme.name;
         option.innerText = theme.displayName;
@@ -209,7 +225,7 @@ function customThemeColorSetup() {
             defaultDark.appendChild(option);
         }
     }
-    
+
     defaultLight.value = settings.defaultThemes.light;
     defaultDark.value = settings.defaultThemes.dark;
 }

@@ -157,8 +157,15 @@ customThemes.addEventListener("change", () => {
         pureBlackDarkMode.disabled = true
         themeButton.textContent = "palette"
         themeButton.title = "Cutomize Theme"
-        if(settings.customThemeColor == undefined) {
-            settings.customThemeColor = {}
+        if(settings.customThemeColor == undefined || Object.values(settings.customThemeColor).length == 0) {
+            console.log(currentTheme)
+            settings.customThemeColor = {
+                text: Themes[currentTheme].textColor,
+                background: Themes[currentTheme].backgroundColor,
+                primary: Themes[currentTheme].primaryColor,
+                secondary: Themes[currentTheme].secondaryColor,
+                accent: Themes[currentTheme].accentColor
+            }
         }
         Themes['custom'].CSSColors = settings.customThemeColor
         Themes['custom'].setCSS()
