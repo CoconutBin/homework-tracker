@@ -45,7 +45,7 @@ class Theme {
         // this.errorColor = customThemeColorObj.error;
     }
     get ThemeContructorForm() {
-        return `('${this.name}', '${this.themeType}', '${this.textColor}', '${this.backgroundColor}', '${this.primaryColor}', '${this.secondaryColor}', '${this.accentColor}', '${this.successColor}', '${this.errorColor}')`;
+        return `('${this.name}', '${this.displayName}', '${this.themeType}', '${this.textColor}', '${this.backgroundColor}', '${this.primaryColor}', '${this.secondaryColor}', '${this.accentColor}', '${this.successColor}', '${this.errorColor}')`;
     }
     setCSS() {
         localStorage.setItem("currentTheme", this.name);
@@ -65,19 +65,20 @@ class Theme {
 }
 const Themes = {
     custom: new Theme('custom', "Custom", 'light', null, null, null, null, null),
+    // Light Themes
     matcha: new Theme('matcha', "Matcha", 'light', "#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098"),
-    simpledark: new Theme('simpledark', "Simple", 'dark', '#e2e2e2', '#0f0f0f', '#252525', '#313131', '#202020'),
-    dark: new Theme('dark', "Dark", 'dark', '#d6fbf2', '#000a06', '#125e48', '#115385', '#1968da'),
-    darkold: new Theme('darkold', "Dark (Old)", 'dark', "#e9f8ed", "#050f02", "#2e5f3b", "#26576e", "#344d98", "#011206", "#da0000"),
-    prakiao: new Theme('prakiao', "Prakiao", 'light', "#130112", "#f8e7f8", "#7995cd", "#fdafdf", "#5474bb", "#011206", "#da0000"),
-    choco: new Theme('choco', "Choco", 'dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32"),
-    pneuma: new Theme('pneuma', "Pneuma", 'dark', "#fcfdfc", "#2c2b40", "#4e5eda", "#779bf2", "#35a9fc"),
-    phutopia: new Theme('phutopia', "Peam", 'dark', '#ffffff', '#313131', '#490F66', '#2c0544', '#000000'),
-    peach: new Theme('peach', "Peach", 'light', "#14120a", "#f7f4e2", "#fbd2d2", "#ffe679", "#ffb7b7"),
-    peachnew: new Theme('peachnew', "Peach (New)", 'light', "#14120a", "#f7f4e2", "#fbe1d2", "#ffe279", "#ffcbb7"),
-    deepsea: new Theme('deepsea', "Deep Sea", 'dark', '#ffffff', '#0c1b27', '#062651', '#3a5d83', '#163d6a', '#00ff00', '#da0000'),
     ice: new Theme('ice', "Ice", 'light', '#081921', '#e2f1f8', '#bae5fd', '#c5aeea', '#84aef1', '#00ff00', '#da0000'),
-    icedark: insertTheme('icedark', "Mario64", 'dark', { 'text': '#deeff7', 'background': '#07161d', 'primary': '#022e45', 'secondary': '#2c1551', 'accent': '#511b64' }),
+    prakiao: new Theme('prakiao', "Prakiao", 'light', "#130112", "#f8e7f8", "#7995cd", "#fdafdf", "#5474bb", "#011206", "#da0000"),
+    peach: new Theme('peach', "Peach", 'light', "#14120a", "#f7f4e2", "#fbd2d2", "#ffe679", "#ffb7b7"),
+    peachnew: new Theme('peachnew', "Peach (New)", 'light', "#14120a", "#f7f4e2", "#ffdfcc", "#fed85d", "#ffbda3"),
+    //Dark Themes
+    simpledark: new Theme('simpledark', "Simple", 'dark', '#e2e2e2', '#0f0f0f', '#252525', '#313131', '#202020'),
+    choco: new Theme('choco', "Choco", 'dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32"),
+    icedark: new Theme('icedark', "Ice", 'dark', '#deeff7', '#00061e', '#152e60', '#261c5a', '#142152', '#00ff00', '#da0000'),
+    deepsea: new Theme('deepsea', "Deep Sea", 'dark', '#ffffff', '#0c1b27', '#062651', '#3a5d83', '#163d6a', '#00ff00', '#da0000'),
+    phutopia: new Theme('phutopia', "Peam", 'dark', '#ffffff', '#313131', '#490F66', '#2c0544', '#000000'),
+    pneuma: new Theme('pneuma', "Pneuma", 'dark', '#e1e7f6', '#30354c', '#2d4586', '#698cd2', '#1a1f68'),
+    sepia: new Theme('sepia', "Sepia", 'dark', '#bca080', '#201209', '#604129', '#a27e49', '#301e0d'),
 };
 if (settings.customThemes == false) {
     if (Themes[currentTheme].themeType == "light") {
