@@ -124,13 +124,13 @@ textarea {
     background: var(--primary);
     border-radius: calc((2vh + 2vw)/2);
     padding: 0 10px;
+    overflow: auto;
 }
 
 .listItemDisplay {
     height: max(250px, 20vh);
     width: auto;
     text-overflow: clip;
-    overflow: hidden;
     overflow-wrap: break-word;
     word-wrap: break-word;
     align-content: center;
@@ -186,7 +186,6 @@ p {
     padding: 20px 20px;
     width: max(30vw,350px);
     max-height: 80vh;
-    overflow: auto;
     align-content: center;
 }
 
