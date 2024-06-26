@@ -156,6 +156,7 @@ customThemes.addEventListener("change", () => {
         defaultLightThemeSetting.disabled = true
         pureBlackDarkMode.disabled = true
         themeButton.textContent = "palette"
+        themeButton.title = "Cutomize Theme"
         if(settings.customThemeColor == undefined) {
             settings.customThemeColor = {}
         }
@@ -170,6 +171,7 @@ customThemes.addEventListener("change", () => {
             themeButton.textContent = "dark_mode"
             Themes[settings.defaultThemes.dark].setCSS()
         }
+        themeButton.title = "Dark/Light Theme"
         defaultDarkThemeSetting.disabled = false
         defaultLightThemeSetting.disabled = false
         pureBlackDarkMode.disabled = false
@@ -188,8 +190,6 @@ if (localStorage.getItem("settings") != null) {
 }
 
 try {
-    defaultDarkThemeSetting.value = settings.defaultThemes.dark
-    defaultLightThemeSetting.value = settings.defaultThemes.light
     rightToLeft.checked = settings.rightToLeft
     if (customThemes != undefined){customThemes.checked = settings.customThemes} 
     if (subjectNameClick != undefined) subjectNameClick.value = settings.subjectNameClick
@@ -213,3 +213,4 @@ catch {
 if (rightToLeft.checked) {
     list.style.flexDirection = "row-reverse"
 }
+
