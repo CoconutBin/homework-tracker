@@ -38,6 +38,7 @@ button {
     padding: 5px;
     margin: 5px;
     color: var(--text);
+    overflow: auto;
 }
 
 input[type="number"] {
