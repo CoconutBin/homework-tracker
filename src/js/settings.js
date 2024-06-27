@@ -8,38 +8,45 @@ sortButton.addEventListener("click", () => {
 class Settings {
     defaultThemes;
     pureBlackDarkMode;
+    customThemes;
+    customThemeColor;
     rightToLeft;
     subjectNameClick;
     reset() {
         this.defaultThemes = {
             light: "matcha",
-            dark: "dark"
+            dark: "simpledark"
         },
             this.pureBlackDarkMode = false,
             this.rightToLeft = false,
-            this.subjectNameClick = "";
+            this.customThemes = false,
+            this.customThemeColor = {};
+        this.subjectNameClick = "";
     }
     constructor() {
         this.pureBlackDarkMode = false,
             this.rightToLeft = false,
-            this.subjectNameClick = "",
+            this.customThemes = false,
+            this.customThemeColor = {};
+        this.subjectNameClick = "",
             this.defaultThemes = {
                 light: "matcha",
-                dark: "dark"
+                dark: "simpledark"
             };
     }
     get settingsObject() {
         return {
-            defaultThemes: {
-                light: this.defaultThemes.light,
-                dark: this.defaultThemes.dark
-            },
+            defaultThemes: this.defaultThemes,
+            customThemes: this.customThemes,
+            customThemeColor: this.customThemeColor,
             pureBlackDarkMode: this.pureBlackDarkMode,
             rightToLeft: this.rightToLeft,
             subjectNameClick: this.subjectNameClick
         };
     }
     set settingsObject(obj) {
+        this.customThemeColor = obj.customThemeColor;
+        this.customThemes = obj.customThemes;
         this.defaultThemes = obj.defaultThemes;
         this.rightToLeft = obj.rightToLeft;
         this.subjectNameClick = obj.subjectNameClick;
@@ -57,20 +64,18 @@ const defaultLightThemeSetting = document.getElementById("defaultLight");
 const rightToLeft = document.getElementById("rightToLeft");
 const subjectNameClick = document.getElementById("subjectNameClick");
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode');
+const customThemes = document.getElementById('customThemes');
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block";
     settingsDiv.style.display = "block";
-    disableScroll();
 });
 settingsModal.addEventListener("click", () => {
     settingsContainer.style.display = "none";
     settingsDiv.style.display = "none";
-    enableScroll();
 });
 settingsCloseButton.addEventListener("click", () => {
     settingsContainer.style.display = "none";
     settingsDiv.style.display = "none";
-    enableScroll();
 });
 settingsresetButton.addEventListener("click", () => {
     if (confirm("Are you sure you want to reset settings?")) {
@@ -116,6 +121,43 @@ pureBlackDarkMode.addEventListener("change", () => {
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
     Themes[currentTheme].setCSS();
 });
+customThemes.addEventListener("change", () => {
+    settings.customThemes = customThemes.checked;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    if (settings.customThemes) {
+        defaultDarkThemeSetting.disabled = true;
+        defaultLightThemeSetting.disabled = true;
+        pureBlackDarkMode.disabled = true;
+        themeButton.textContent = "palette";
+        themeButton.title = "Cutomize Theme";
+        if (settings.customThemeColor == undefined || Object.values(settings.customThemeColor).length == 0) {
+            console.log(currentTheme);
+            settings.customThemeColor = {
+                text: Themes[currentTheme].textColor,
+                background: Themes[currentTheme].backgroundColor,
+                primary: Themes[currentTheme].primaryColor,
+                secondary: Themes[currentTheme].secondaryColor,
+                accent: Themes[currentTheme].accentColor
+            };
+        }
+        Themes['custom'].CSSColors = settings.customThemeColor;
+        Themes['custom'].setCSS();
+    }
+    else {
+        if (Themes[currentTheme].themeType == "light") {
+            themeButton.textContent = "light_mode";
+            Themes[settings.defaultThemes.light].setCSS();
+        }
+        else {
+            themeButton.textContent = "dark_mode";
+            Themes[settings.defaultThemes.dark].setCSS();
+        }
+        themeButton.title = "Dark/Light Theme";
+        defaultDarkThemeSetting.disabled = false;
+        defaultLightThemeSetting.disabled = false;
+        pureBlackDarkMode.disabled = false;
+    }
+});
 if (subjectNameClick != undefined) {
     subjectNameClick.addEventListener("change", () => {
         settings.subjectNameClick = subjectNameClick.value;
@@ -126,19 +168,26 @@ if (localStorage.getItem("settings") != null) {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"));
 }
 try {
-    defaultDarkThemeSetting.value = settings.defaultThemes.dark;
-    defaultLightThemeSetting.value = settings.defaultThemes.light;
     rightToLeft.checked = settings.rightToLeft;
+    if (customThemes != undefined) {
+        customThemes.checked = settings.customThemes;
+    }
     if (subjectNameClick != undefined)
         subjectNameClick.value = settings.subjectNameClick;
     if (pureBlackDarkMode != undefined)
         pureBlackDarkMode.checked = settings.pureBlackDarkMode;
+    if (settings.customThemes) {
+        defaultDarkThemeSetting.disabled = true;
+        defaultLightThemeSetting.disabled = true;
+        pureBlackDarkMode.disabled = true;
+    }
 }
 catch {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"));
     defaultDarkThemeSetting.value = settings.defaultThemes.dark;
     defaultLightThemeSetting.value = settings.defaultThemes.light;
     rightToLeft.checked = settings.rightToLeft;
+    customThemes.checked = settings.customThemes;
     subjectNameClick.value = settings.subjectNameClick;
     pureBlackDarkMode.checked = settings.pureBlackDarkMode;
 }

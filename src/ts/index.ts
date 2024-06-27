@@ -6,7 +6,7 @@ const inputIsImportant = document.getElementById("inputIsImportant") as HTMLInpu
 const inputDueDate = document.getElementById("inputDueDate") as HTMLInputElement;
 const inputPoints = document.getElementById("inputPoints") as HTMLInputElement;
 const inputDescription = document.getElementById("inputDescription") as HTMLTextAreaElement;
-const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupWork, inputDueDate, inputPoints, inputDescription]
+const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsImportant, inputIsGroupWork, inputDueDate, inputPoints, inputDescription]
 const inputDiv = document.getElementById("inputform")
 const list = document.getElementById("list")
 const listContents: Homework["homeworkObject"][] = []
@@ -286,7 +286,6 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         detailsModal.style.display = "none";
         detailsDisplay.style.display = "none";
         detailsDiv.style.display = "none";
-        enableScroll();
     })
 
     //Display Management (Final)
@@ -311,7 +310,6 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
             detailsDiv.style.display = "flex";
             detailsModal.style.display = "flex";
             detailsDisplay.style.display = "block";
-            disableScroll();
         }
     });
 
@@ -423,11 +421,13 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 }
 
 function clearList() {
-    listContents.splice(0, listContents.length);
-    localStorage.setItem("listContents", JSON.stringify(listContents));
-    list.innerHTML = `<div class="listItem" id="addListItemButton">
-            <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
-        </div>`;
+    if(confirm("Are you sure you want to clear the list?")){
+        listContents.splice(0, listContents.length);
+        localStorage.setItem("listContents", JSON.stringify(listContents));
+        list.innerHTML = `<div class="listItem" id="addListItemButton">
+                <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
+            </div>`;
+    }
 }
 
 //data transfer button setup

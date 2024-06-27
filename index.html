@@ -24,6 +24,7 @@
         <div style="display: flex">
             <a id="navbarButtons">
                 <!--<span class="material-symbols-outlined clickable" style="font-size: 48px;" id="sort">sort</span> -->
+                <a class="material-symbols-outlined clickable" id="clearList" title="Clear List" onclick="clearList()">delete_forever</a>
                 <a class="material-symbols-outlined clickable" href="./archive.html"
                     title="Archived Homework">inventory_2</a>
                 <span class="material-symbols-outlined clickable" id="themes" title="Dark/Light Theme">light_mode</span>
@@ -43,31 +44,28 @@
         <div id="settingsModal" class="modal"></div>
         <div id="settingsScreen" class="settingsDisplay">
             <p class="settingsCategory">Themes</p>
+            <label for="customThemes">Custom Theming</label>
+            <input type="checkbox" name="customThemes" id="customThemes"><br>
             <label for="defaultLight">Default Light Theme:</label>
             <select name="defaultLight" id="defaultLight">
-                <option value="matcha">Matcha</option>
-                <option value="fern">Fern</option>
-                <option value="prakiao">Prakiao</option>
-                <option value="peach">Peach</option>
-                <option value="ice">Ice</option>
-                <option value="paper">Paper</option>
             </select><br>
             <label for="defaultDark">Default Dark Theme:</label>
             <select name="defaultDark" id="defaultDark">
-                <option value="dark">Dark</option>
-                <option value="darkold">Dark (Old)</option>
-                <option value="choco">Choco</option>
-                <option value="pneuma">Pneuma</option>
-                <option value="phutopia">Phutopia</option>
-            <option value="icedark">Ice</option>
             </select><br>
             <label for="pureBlackDarkMode">Pure black background for dark mode</label>
             <input type="checkbox" name="pureBlackDarkMode" id="pureBlackDarkMode">
-            </label>
-            <br>
+            </label><br>
             <p class="settingsCategory">UI</p>
             <label for="rightToLeft">Right-to-Left Layout</label>
             <input type="checkbox" name="rightToLeft" id="rightToLeft"><br>
+            <p class="settingsCategory">Data</p>
+            <div>
+                <textarea placeholder="export/import data" id="dataTransferTextArea" style="resize: none;"></textarea>
+                <br>
+                <button id="dataTransferImportButton">import</button>
+                <button id="dataTransferExportButton">export</button>
+                <button id="dataTransferDownloadButton">export as a file</button>
+            </div>
             <p class="settingsCategory">Beta</p>
             <label for="subjectNameClick">Subject Name clicking behavior:
                 <select name="subjectNameClick" id="subjectNameClick">
@@ -75,19 +73,21 @@
                     <option value="markImportant">Mark/Unmark Important</option>
                     <option value="editSubjectName">Edit Subject Name</option>
                 </select><br>
-
-                <!-- export/import funcationality -->
-                <!-- didnt bother also putting this into archive.html since the settings menus arent the same anyways-->
-                <div>
-                    <textarea placeholder="export/import data" id="dataTransferTextArea" style="resize: none;"></textarea>
-                    <br>
-                    <button id="dataTransferImportButton">import</button>
-                    <button id="dataTransferExportButton">export</button>
-                    <button id="dataTransferDownloadButton">export as a file</button>
-                </div>
                 <br>
                 <input type="button" value="Close" id="settingsCloseButton">
                 <input type="button" value="Reset Settings" id="settingsResetButton">
+        </div>
+    </div>
+    <div id="themesContainer" style="display: none;">
+        <div id="themesModal" class="modal"></div>
+        <div id="customThemesScreen" class="settingsDisplay">
+            <label for="inputThemeText">Theme Text Color: </label><input type="color" name="inputThemeText" id="inputThemeText"><br>
+            <label for="inputThemeBackground">Theme Background Color: </label><input type="color" name="inputThemeBackground" id="inputThemeBackground"><br>
+           <label for="inputThemePrimary">Theme Primary Color: </label><input type="color" name="inputThemePrimary" id="inputThemePrimary"><br>
+           <label for="inputThemeSecondary">Theme Secondary Color: </label><input type="color" name="inputThemeSecondary" id="inputThemeSecondary"><br>
+           <label for="inputThemeAccent">Theme Accent Color: </label><input type="color" name="inputThemeAccent" id="inputThemeAccent"><br>
+           <br><input type="button" value="Close" id="themesCloseButton">
+           <input type="button" value="Reset Custom Theme" id="themesResetButton">
         </div>
     </div>
     <div id="inputform" style="display: none;">
@@ -126,7 +126,6 @@
                     placeholder="write here"></textarea>
             </label><br><br>
             <input type="submit">
-            <input type="button" value="Clear List" onclick="clearList()">
             <input type="button" value="Close" id="inputFormCloseButton">
         </form>
         <div class="modal" id="inputFormModalBackground"></div>

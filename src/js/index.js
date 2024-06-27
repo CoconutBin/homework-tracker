@@ -6,7 +6,7 @@ const inputIsImportant = document.getElementById("inputIsImportant");
 const inputDueDate = document.getElementById("inputDueDate");
 const inputPoints = document.getElementById("inputPoints");
 const inputDescription = document.getElementById("inputDescription");
-const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsGroupWork, inputDueDate, inputPoints, inputDescription];
+const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsImportant, inputIsGroupWork, inputDueDate, inputPoints, inputDescription];
 const inputDiv = document.getElementById("inputform");
 const list = document.getElementById("list");
 const listContents = [];
@@ -247,7 +247,6 @@ function addListItem(homeworkObject) {
         detailsModal.style.display = "none";
         detailsDisplay.style.display = "none";
         detailsDiv.style.display = "none";
-        enableScroll();
     });
     //Display Management (Final)
     const detailsDeleteButton = addButton("Custom", null, "Delete");
@@ -270,7 +269,6 @@ function addListItem(homeworkObject) {
             detailsDiv.style.display = "flex";
             detailsModal.style.display = "flex";
             detailsDisplay.style.display = "block";
-            disableScroll();
         }
     });
     //Edit Functionality
@@ -368,11 +366,13 @@ function addListItem(homeworkObject) {
     list.appendChild(listItem);
 }
 function clearList() {
-    listContents.splice(0, listContents.length);
-    localStorage.setItem("listContents", JSON.stringify(listContents));
-    list.innerHTML = `<div class="listItem" id="addListItemButton">
-            <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
-        </div>`;
+    if (confirm("Are you sure you want to clear the list?")) {
+        listContents.splice(0, listContents.length);
+        localStorage.setItem("listContents", JSON.stringify(listContents));
+        list.innerHTML = `<div class="listItem" id="addListItemButton">
+                <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
+            </div>`;
+    }
 }
 //data transfer button setup
 //i cant be bothered finding a good place to put this, so it goes here, move if you want.
