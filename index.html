@@ -44,18 +44,17 @@
         <div id="settingsModal" class="modal"></div>
         <div id="settingsScreen" class="settingsDisplay">
             <p class="settingsCategory">Themes</p>
+            <label for="customThemes">Custom Theming</label>
+            <input type="checkbox" name="customThemes" id="customThemes"><br>
             <label for="defaultLight">Default Light Theme:</label>
             <select name="defaultLight" id="defaultLight">
-
             </select><br>
             <label for="defaultDark">Default Dark Theme:</label>
             <select name="defaultDark" id="defaultDark">
-
             </select><br>
             <label for="pureBlackDarkMode">Pure black background for dark mode</label>
             <input type="checkbox" name="pureBlackDarkMode" id="pureBlackDarkMode">
-            </label>
-            <br>
+            </label><br>
             <p class="settingsCategory">UI</p>
             <label for="rightToLeft">Right-to-Left Layout</label>
             <input type="checkbox" name="rightToLeft" id="rightToLeft"><br>
@@ -74,8 +73,6 @@
                     <option value="markImportant">Mark/Unmark Important</option>
                     <option value="editSubjectName">Edit Subject Name</option>
                 </select><br>
-                <label for="customThemes">Custom Theming</label>
-                <input type="checkbox" name="customThemes" id="customThemes"><br>
                 <br>
                 <input type="button" value="Close" id="settingsCloseButton">
                 <input type="button" value="Reset Settings" id="settingsResetButton">

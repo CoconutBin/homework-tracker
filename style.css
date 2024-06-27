@@ -21,6 +21,10 @@ html {
     padding: 0;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
+
 body>* {
     transition: all .2s ease-in-out;
 }
