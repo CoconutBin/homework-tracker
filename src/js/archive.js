@@ -125,6 +125,17 @@ function addArchiveListItem(homeworkObject) {
         detailsDiv.style.display = "none";
     });
     //Display Management (Final)
+    const restoreButton = addButton("Custom", null, "Restore");
+    restoreButton.addEventListener("click", () => {
+        if (!confirm("Do you want to restore this homework?"))
+            return;
+        let listContents = (JSON.parse(localStorage.getItem("listContents")));
+        listContents.push(homeworkObject);
+        localStorage.setItem("listContents", JSON.stringify(listContents));
+        ManageLocalStorage.deleteArchived(homeworkObject);
+        listItem.remove();
+        updateArchiveCount();
+    });
     const detailsDeleteButton = addButton("Custom", null, "Delete");
     detailsDeleteButton.addEventListener("click", () => {
         if (!confirm("Are you sure?"))
@@ -137,6 +148,7 @@ function addArchiveListItem(homeworkObject) {
     detailsDiv.appendChild(detailsDisplay);
     detailsDiv.appendChild(detailsModal);
     detailsDisplay.appendChild(detailsDeleteButton);
+    detailsDisplay.appendChild(restoreButton);
     detailsDisplay.appendChild(addButton("Close", detailsDiv));
     listItem.appendChild(displayDiv);
     listItem.appendChild(detailsDiv);
