@@ -72,6 +72,7 @@ const pureBlackDarkMode = document.getElementById('pureBlackDarkMode');
 const customThemes = document.getElementById('customThemes');
 const analytics = document.getElementById('analytics');
 const analyticsDiv = document.getElementById("analyticsDiv");
+const quickAddSetup = document.getElementById("quickAddSetup");
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block";
     settingsDiv.style.display = "block";
@@ -164,6 +165,10 @@ customThemes.addEventListener("change", () => {
         defaultLightThemeSetting.disabled = false;
         pureBlackDarkMode.disabled = false;
     }
+});
+quickAddSetup.addEventListener("click", () => {
+    alert("Quick Add Function is currently not avaliable");
+    //to do: add quick add function
 });
 if (analytics != undefined) {
     analytics.addEventListener("change", () => {

@@ -13,6 +13,7 @@ const localStorageListContents = JSON.parse(localStorage.getItem("listContents")
 const addListItemButton = document.getElementById("addListItemButton");
 const editModal = document.getElementById("editModal");
 const logo = document.getElementById("logo");
+const quickAddButton = document.getElementById("quickAddButton");
 let localStorageLock = true;
 if (Storage == null) {
     alert("Your browser does not support local storage, so list items won't save when you exit the tab");
@@ -364,6 +365,9 @@ function addListItem(homeworkObject) {
     displayDiv.appendChild(startHomeworkButton);
     list.appendChild(listItem);
 }
+quickAddButton.addEventListener("click", () => {
+    alert("Quick Add requires setup in settings");
+});
 function clearList() {
     if (confirm("Are you sure you want to clear the list?")) {
         listContents.splice(0, listContents.length);

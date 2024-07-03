@@ -67,12 +67,14 @@
                 <button id="dataTransferDownloadButton">export as a file</button>
             </div>
             <p class="settingsCategory">Beta</p>
-            <label for="subjectNameClick">Subject Name clicking behavior:
+            <label for="subjectNameClick">Subject Name clicking behavior:</label>
                 <select name="subjectNameClick" id="subjectNameClick">
                     <option value="">Nothing</option>
                     <option value="markImportant">Mark/Unmark Important</option>
                     <option value="editSubjectName">Edit Subject Name</option>
                 </select><br>
+                <label for="quickAddSetup">Quick Add</label>
+                <button id="quickAddSetup" name="quickAddSetup">Set Up</button><br>
                 <br>
                 <input type="button" value="Close" id="settingsCloseButton">
                 <input type="button" value="Reset Settings" id="settingsResetButton">
@@ -127,6 +129,7 @@
             </label><br><br>
             <input type="submit">
             <input type="button" value="Close" id="inputFormCloseButton">
+            <input type="button" value="Quick Add" id="quickAddButton">
         </form>
         <div class="modal" id="inputFormModalBackground"></div>
     </div>

@@ -13,6 +13,7 @@ const localStorageListContents: Homework["homeworkObject"][] = JSON.parse(localS
 const addListItemButton = document.getElementById("addListItemButton") as HTMLElement;
 const editModal = document.getElementById("editModal")
 const logo = document.getElementById("logo")
+const quickAddButton = document.getElementById("quickAddButton")
 let localStorageLock = true
 
 if (Storage == null) {
@@ -418,6 +419,10 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     displayDiv.appendChild(startHomeworkButton)
     list.appendChild(listItem)
 }
+
+quickAddButton.addEventListener("click", () => {
+    alert("Quick Add requires setup in settings")
+})
 
 function clearList() {
     if(confirm("Are you sure you want to clear the list?")){

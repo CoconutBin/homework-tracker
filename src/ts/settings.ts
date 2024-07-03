@@ -89,7 +89,8 @@ const subjectNameClick = document.getElementById("subjectNameClick") as HTMLSele
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode') as HTMLInputElement
 const customThemes = document.getElementById('customThemes') as HTMLInputElement
 const analytics = document.getElementById('analytics') as HTMLInputElement
-const analyticsDiv = document.getElementById("analyticsDiv")
+const analyticsDiv = document.getElementById("analyticsDiv") as HTMLDivElement
+const quickAddSetup = document.getElementById("quickAddSetup") as HTMLButtonElement
 
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block"
@@ -190,6 +191,11 @@ customThemes.addEventListener("change", () => {
         defaultLightThemeSetting.disabled = false
         pureBlackDarkMode.disabled = false
     }
+})
+
+quickAddSetup.addEventListener("click", () => {
+    alert("Quick Add Function is currently not avaliable")
+    //to do: add quick add function
 })
 
 if(analytics != undefined) {
