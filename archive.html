@@ -54,7 +54,9 @@
             <p class="settingsCategory">UI</p>
             <label for="rightToLeft">Right-to-Left Layout</label>
             <input type="checkbox" name="rightToLeft" id="rightToLeft"><br>
-            <!-- <p class="settingsCategory">Beta</p> -->
+            <p class="settingsCategory">Beta</p>
+            <label for="analytics">Analytics</label>
+            <input type="checkbox" name="analytics" id="analytics"><br>
                 <br><input type="button" value="Close" id="settingsCloseButton">
             <input type="button" value="Reset Settings" id="settingsResetButton">
         </div>
@@ -70,6 +72,11 @@
            <br><input type="button" value="Close" id="themesCloseButton">
            <input type="button" value="Reset Custom Theme" id="themesResetButton">
         </div>
+    </div>
+    <div id="analyticsDiv" class="analyticsDiv">
+        <div class="analyticsBlock"><p class="analyticsTitle">Total Archived Homeworks:</p><p id="archiveCount">0</p></div><br>
+        <div class="analyticsBlock"><p class="analyticsTitle">Average Time Taken:</p><p id="archiveTime">0d 0h 0s</p></div>
+        <div class="analyticsBlock"><p class="analyticsTitle">Group Work:Individual Work</p><p id="archiveGroupRatio">1:1</p></div>
     </div>
 </body>
 <script src="./src/js/localStorage.js"></script>

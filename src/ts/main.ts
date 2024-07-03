@@ -59,6 +59,10 @@ function convertToTime(time: number): string {
     if (Seconds >= 0) {
         returnedTime += `${Seconds}s`;
     }
+
+    if(parseInt(returnedTime) < 0 || Number.isNaN(parseInt(returnedTime))){
+        returnedTime = "0s"
+    }
     
     return returnedTime.trim();
 }

@@ -1,10 +1,41 @@
 const archiveList = document.getElementById("list")
+const archiveCountElement = document.getElementById("archiveCount");
+const archiveTime = document.getElementById("archiveTime");
+const archiveGroupRatio = document.getElementById("archiveGroupRatio");
 
 if (archivedHomeworks.length > 0) {
     for (let homeworkObject of archivedHomeworks) {
         addArchiveListItem(homeworkObject)
     }
 }
+
+function updateArchiveCount() {
+    archiveCountElement.textContent = archivedHomeworks.length.toString();
+}
+updateArchiveCount();
+
+function updateArchiveTime() {
+    let archiveAddedTime = 0
+    for(let homeworkObject of archivedHomeworks) {
+        archiveAddedTime += homeworkObject.timeEnded - homeworkObject.timeStarted;
+    } 
+    archiveTime.textContent = convertToTime(archiveAddedTime/archivedHomeworks.length)
+}
+updateArchiveTime();
+
+function updateArchiveGroupRatio() {
+    let groupCount = 0
+    let personCount = 0
+    for (let homeworkObject of archivedHomeworks) {
+        if (homeworkObject.isGroupWork) {
+            groupCount++
+        } else {
+            personCount++
+        }
+    }
+    archiveGroupRatio.textContent = `${groupCount}:${groupCount + personCount}`
+}
+updateArchiveGroupRatio();
 
 function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
     // Display Management (Initial)
@@ -45,6 +76,10 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
     }
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
+    
+
+// Function to add a new archived homework item
+
 
     // Details Display Management
 
@@ -110,8 +145,9 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
     const detailsDeleteButton = addButton("Custom", null, "Delete")
     detailsDeleteButton.addEventListener("click", () => {
         if (!confirm("Are you sure?")) return
-        ManageLocalStorage.deleteListItem(homeworkObject)
+        ManageLocalStorage.deleteArchived(homeworkObject)
         listItem.remove();
+        updateArchiveCount();
     })
     detailsDiv.style.display = "none"
     detailsDiv.appendChild(detailsDisplay)
@@ -132,6 +168,7 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //appending to list element
     list.appendChild(listItem)
+    updateArchiveCount();
 }
 
 function clearArchiveList() {
@@ -139,5 +176,7 @@ function clearArchiveList() {
         archivedHomeworks.splice(0, archivedHomeworks.length);
         localStorage.setItem("archivedHomeworks", JSON.stringify(archivedHomeworks));
         list.innerHTML = ``;
+        updateArchiveCount();
     }
 }
+

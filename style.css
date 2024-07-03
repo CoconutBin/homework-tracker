@@ -99,6 +99,7 @@ textarea {
     user-select: none;
 }
 
+.analyticsTitle,
 .settingsCategory {
     font-weight: bold;
     font-size: large;
@@ -112,6 +113,7 @@ textarea {
     flex-wrap: wrap;
 }
 
+.analyticsBlock,
 .listItem {
     display: flex;
     margin: var(--standard-margin);
@@ -279,4 +281,27 @@ button:hover {
 
 .preventTransition{
     transition: none !important;
+}
+
+.analyticsDiv{
+    margin: 0;
+    position: fixed;
+    overflow: hidden;
+    background-color: var(--secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: var(--standard-margin);
+    border-radius: 20px 20px 0 0;
+    background: radial-gradient(circle at top left, var(--accent) 10%, var(--secondary) 75%);
+    height: 40vh;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    z-index: 300
+}
+
+.analyticsBlock{
+    flex-direction: column !important;
 }
