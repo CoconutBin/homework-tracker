@@ -68,7 +68,8 @@ textarea {
     align-items: center;
     padding: 10px;
     border-radius: 0 0 20px 20px;
-    background: radial-gradient(circle at top left, var(--accent) 10%, var(--secondary) 75%)
+    background: radial-gradient(circle at top left, var(--accent) 10%, var(--secondary) 75%);
+    height: 10vh;
 }
 
 .navbar p {
@@ -111,6 +112,7 @@ textarea {
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
+    overflow: scroll;
 }
 
 .analyticsBlock,

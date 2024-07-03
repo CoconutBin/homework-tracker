@@ -1,4 +1,5 @@
 const archivedHomeworks: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("archivedHomeworks")) != undefined? JSON.parse(localStorage.getItem("archivedHomeworks")):[]
+const list = document.getElementById("list")
 
 function addButton(type: string, affectedElement?: HTMLElement, customValue?: string): HTMLInputElement {
     let button = document.createElement("input");

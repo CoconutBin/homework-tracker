@@ -171,9 +171,11 @@ if (analytics != undefined) {
         localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
         if (settings.analytics) {
             analyticsDiv.style.display = "flex";
+            list.style.height = "45vh";
         }
         else {
             analyticsDiv.style.display = "none";
+            list.style.height = "auto";
         }
     });
 }
@@ -218,8 +220,10 @@ if (rightToLeft.checked) {
 if (analyticsDiv != undefined) {
     if (settings.analytics) {
         analyticsDiv.style.display = "flex";
+        list.style.height = "45vh";
     }
     else {
         analyticsDiv.style.display = "none";
+        list.style.height = "auto";
     }
 }

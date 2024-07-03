@@ -8,7 +8,6 @@ const inputPoints = document.getElementById("inputPoints");
 const inputDescription = document.getElementById("inputDescription");
 const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsImportant, inputIsGroupWork, inputDueDate, inputPoints, inputDescription];
 const inputDiv = document.getElementById("inputform");
-const list = document.getElementById("list");
 const listContents = [];
 const localStorageListContents = JSON.parse(localStorage.getItem("listContents"));
 const addListItemButton = document.getElementById("addListItemButton");
