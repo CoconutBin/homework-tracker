@@ -166,10 +166,12 @@ customThemes.addEventListener("change", () => {
         pureBlackDarkMode.disabled = false;
     }
 });
-quickAddSetup.addEventListener("click", () => {
-    alert("Quick Add Function is currently not avaliable");
-    //to do: add quick add function
-});
+if (quickAddSetup != undefined) {
+    quickAddSetup.addEventListener("click", () => {
+        alert("Quick Add Function is currently not avaliable");
+        //to do: add quick add function
+    });
+}
 if (analytics != undefined) {
     analytics.addEventListener("change", () => {
         settings.analytics = analytics.checked;
