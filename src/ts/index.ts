@@ -421,8 +421,29 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 }
 
 quickAddButton.addEventListener("click", () => {
-    alert("Quick Add requires setup in settings")
-})
+    if(currentSchedule.schedule != undefined){
+        if(currentSchedule.subjects.length > 0) {
+            switch(currentSchedule.scheduleType) {
+                case "id":
+                    break;
+                case "name":
+                    break;
+                default:
+                    break
+            }
+        } else {
+           const inputHomework = new Homework({
+                name: currentSchedule.currentSubject,
+                id: null,
+                type: null
+            })
+            addListItem(inputHomework.homeworkObject)
+            inputDiv.style.display = "none"
+        }
+    } else{
+        alert("Quick Add requires setup")
+    }
+    })
 
 function clearList() {
     if(confirm("Are you sure you want to clear the list?")){

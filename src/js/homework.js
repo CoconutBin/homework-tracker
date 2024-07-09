@@ -65,16 +65,35 @@ class Homework {
         this.subjectType = obj.type;
     }
 }
-/*
-{
-    "subject": {
-        "id": "",
-        "name": "",
-        "type": "",
+class Schedule {
+    schedule;
+    startingTime;
+    interval;
+    scheduleType;
+    subjects;
+    constructor() {
+        this.schedule;
+        this.startingTime;
+        this.interval;
+        this.subjects;
+        this.scheduleType;
     }
-    "isGroupWork": false,
-    "dueDate": "",
-    "description": "",
-    "points": ""
+    get currentSubject() {
+        const currentDate = new Date();
+        const currentDay = currentDate.getDay();
+        const currentTime = (currentDate.getHours() * 60) + currentDate.getMinutes();
+        const startingTimeNumber = (parseInt(this.startingTime.split(":")[0]) * 60) + parseInt(this.startingTime.split(":")[1]);
+        return this.schedule[currentDay][Math.floor((currentTime - startingTimeNumber) / this.interval)];
+    }
+    set scheduleObject(obj) {
+        this.schedule = obj.schedule;
+        this.startingTime = obj.startingTime;
+        this.interval = obj.interval;
+        this.subjects = obj.subjects;
+        this.scheduleType = obj.scheduleType;
+    }
 }
-*/ 
+const currentSchedule = new Schedule();
+if (JSON.parse(localStorage.getItem("currentSchedule")) != null) {
+    currentSchedule.scheduleObject = JSON.parse(localStorage.getItem("currentSchedule"));
+}

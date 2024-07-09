@@ -300,7 +300,7 @@ button:hover {
     text-align: center;
     padding: var(--standard-margin);
     border-radius: 20px 20px 0 0;
-    background: radial-gradient(circle at top left, var(--accent) 10%, var(--secondary) 75%);
+    background: var(--accent);
     height: 40vh;
     width: 100%;
     left: 0;

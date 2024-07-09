@@ -1,7 +1,7 @@
 class Subject {
     name: string
-    id: string
-    type: string
+    id?: string
+    type?: string
 
     constructor(name, id, type){
         this.name = name
@@ -22,7 +22,7 @@ class Homework {
     timeStarted: number
     timeEnded: number
 
-    constructor(subject, isGroupWork, dueDate, points, description) {
+    constructor(subject, isGroupWork?, dueDate?, points?, description?) {
         this.subjectName = subject.name ?? undefined
         this.subjectID = subject.id ?? undefined
         this.subjectType = subject.type ?? undefined
@@ -74,16 +74,41 @@ class Homework {
     }
 }
 
-/*
-{
-    "subject": {
-        "id": "",
-        "name": "",
-        "type": "",
+class Schedule {
+    schedule: string[][]
+    startingTime: string
+    interval: number
+    scheduleType: "id"|"name"
+    subjects: Subject[]
+
+    constructor(){
+        this.schedule
+        this.startingTime
+        this.interval
+        this.subjects
+        this.scheduleType
     }
-    "isGroupWork": false,
-    "dueDate": "",
-    "description": "",
-    "points": ""
+
+    get currentSubject(){
+        const currentDate = new Date()
+        const currentDay = currentDate.getDay()
+        const currentTime = (currentDate.getHours() * 60) + currentDate.getMinutes();
+        const startingTimeNumber = (parseInt(this.startingTime.split(":")[0]) * 60) + parseInt(this.startingTime.split(":")[1])
+
+        return this.schedule[currentDay][Math.floor((currentTime - startingTimeNumber) / this.interval)]
+    }
+
+    set scheduleObject(obj){
+        this.schedule = obj.schedule
+        this.startingTime = obj.startingTime
+        this.interval = obj.interval
+        this.subjects = obj.subjects
+        this.scheduleType = obj.scheduleType
+    }
 }
-*/
+
+const currentSchedule = new Schedule()
+
+if(JSON.parse(localStorage.getItem("currentSchedule")) != null){
+    currentSchedule.scheduleObject = JSON.parse(localStorage.getItem("currentSchedule"))
+}

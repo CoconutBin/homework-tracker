@@ -168,7 +168,7 @@ customThemes.addEventListener("change", () => {
 });
 if (quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
-        alert("Quick Add Function is currently not avaliable");
+        alert("Quick Add Function is currently not implemented in the UI");
         //to do: add quick add function
     });
 }
