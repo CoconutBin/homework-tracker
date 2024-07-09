@@ -112,7 +112,7 @@ textarea {
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .analyticsBlock,
