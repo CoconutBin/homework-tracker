@@ -37,6 +37,12 @@ function updateArchiveGroupRatio() {
 }
 updateArchiveGroupRatio();
 
+function updateArchiveAnalytics(){
+    updateArchiveCount();
+    updateArchiveTime();
+    updateArchiveGroupRatio();
+}
+
 function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
     // Display Management (Initial)
 
@@ -150,7 +156,7 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
         localStorage.setItem("listContents", JSON.stringify(listContents))
         ManageLocalStorage.deleteArchived(homeworkObject)
         listItem.remove();
-        updateArchiveCount();
+        updateArchiveAnalytics();
     })
 
     const detailsDeleteButton = addButton("Custom", null, "Delete")
@@ -158,7 +164,7 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
         if (!confirm("Are you sure?")) return
         ManageLocalStorage.deleteArchived(homeworkObject)
         listItem.remove();
-        updateArchiveCount();
+        updateArchiveAnalytics();
     })
     detailsDiv.style.display = "none"
     detailsDiv.appendChild(detailsDisplay)
@@ -180,7 +186,7 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //appending to list element
     list.appendChild(listItem)
-    updateArchiveCount();
+    updateArchiveAnalytics();
 }
 
 function clearArchiveList() {
@@ -188,7 +194,7 @@ function clearArchiveList() {
         archivedHomeworks.splice(0, archivedHomeworks.length);
         localStorage.setItem("archivedHomeworks", JSON.stringify(archivedHomeworks));
         list.innerHTML = ``;
-        updateArchiveCount();
+        updateArchiveAnalytics();
     }
 }
 
