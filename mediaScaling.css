@@ -7,6 +7,10 @@
     .listItemDisplay {
         height: max(250px, 30vh)
     }
+
+    textarea{
+        border-radius: none !important;
+    }
 }
 
 @media (max-width: 900px) {
