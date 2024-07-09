@@ -10,6 +10,7 @@ const inputThemePrimary = document.getElementById("inputThemePrimary");
 const inputThemeSecondary = document.getElementById("inputThemeSecondary");
 const inputThemeAccent = document.getElementById("inputThemeAccent");
 const themesResetButton = document.getElementById('themesResetButton');
+const themeTemplates = document.getElementById("themeTemplates");
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
 class Theme {
     name;
@@ -44,6 +45,15 @@ class Theme {
         // this.successColor = customThemeColorObj.success;
         // this.errorColor = customThemeColorObj.error;
     }
+    get CSSColors() {
+        return {
+            text: this.textColor,
+            background: this.backgroundColor,
+            primary: this.primaryColor,
+            secondary: this.secondaryColor,
+            accent: this.accentColor,
+        };
+    }
     get ThemeContructorForm() {
         return `('${this.name}', '${this.displayName}', '${this.themeType}', '${this.textColor}', '${this.backgroundColor}', '${this.primaryColor}', '${this.secondaryColor}', '${this.accentColor}', '${this.successColor}', '${this.errorColor}')`;
     }
@@ -64,7 +74,7 @@ class Theme {
     }
 }
 const Themes = {
-    custom: new Theme('custom', "Custom", 'light', null, null, null, null, null),
+    custom: new Theme('custom', "Custom", 'none', null, null, null, null, null),
     // Light Themes
     matcha: new Theme('matcha', "Matcha", 'light', "#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098"),
     ice: new Theme('ice', "Ice", 'light', '#081921', '#e2f1f8', '#bae5fd', '#c5aeea', '#84aef1', '#00ff00', '#da0000'),
@@ -151,26 +161,37 @@ inputThemeText.addEventListener('input', () => {
     settings.customThemeColor.text = inputThemeText.value;
     cssVariables.style.setProperty('--text', settings.customThemeColor.text);
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    themeTemplates.value = 'custom';
 });
 inputThemeBackground.addEventListener('input', () => {
     settings.customThemeColor.background = inputThemeBackground.value;
     cssVariables.style.setProperty('--background', settings.customThemeColor.background);
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    themeTemplates.value = 'custom';
 });
 inputThemePrimary.addEventListener('input', () => {
     settings.customThemeColor.primary = inputThemePrimary.value;
     cssVariables.style.setProperty('--primary', settings.customThemeColor.primary);
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    themeTemplates.value = 'custom';
 });
 inputThemeSecondary.addEventListener('input', () => {
     settings.customThemeColor.secondary = inputThemeSecondary.value;
     cssVariables.style.setProperty('--secondary', settings.customThemeColor.secondary);
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    themeTemplates.value = 'custom';
 });
 inputThemeAccent.addEventListener('input', () => {
     settings.customThemeColor.accent = inputThemeAccent.value;
     cssVariables.style.setProperty('--accent', settings.customThemeColor.accent);
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    themeTemplates.value = 'custom';
+});
+themeTemplates.addEventListener('change', () => {
+    settings.customThemeColor = Themes[themeTemplates.value].CSSColors;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    Themes.custom.CSSColors = settings.customThemeColor;
+    Themes.custom.setCSS();
 });
 function customThemeColorSetup() {
     if (settings.customThemeColor != undefined) {
@@ -189,22 +210,32 @@ function customThemeColorSetup() {
     }
 }
 // Add themes to Theme Select Tags
-{
-    const defaultLight = document.getElementById("defaultLight");
-    const defaultDark = document.getElementById("defaultDark");
-    for (const theme of Object.values(Themes)) {
-        if (theme.name == "custom")
-            continue;
-        const option = document.createElement("option");
-        option.value = theme.name;
-        option.innerText = theme.displayName;
-        if (theme.themeType == "light") {
-            defaultLight.appendChild(option);
-        }
-        else {
-            defaultDark.appendChild(option);
-        }
+const defaultLight = document.getElementById("defaultLight");
+const defaultDark = document.getElementById("defaultDark");
+const themeTemplatesLight = document.createElement("optgroup");
+themeTemplatesLight.label = "Light Themes";
+const themeTemplatesDark = document.createElement("optgroup");
+themeTemplatesDark.label = "Dark Themes";
+for (const theme of Object.values(Themes)) {
+    const option = document.createElement("option");
+    const themeTemplateOption = document.createElement("option");
+    themeTemplateOption.value = theme.name;
+    themeTemplateOption.innerText = theme.displayName;
+    option.value = theme.name;
+    option.innerText = theme.displayName;
+    if (theme.name == "custom") {
+        themeTemplates.appendChild(themeTemplateOption);
     }
-    defaultLight.value = settings.defaultThemes.light;
-    defaultDark.value = settings.defaultThemes.dark;
+    if (theme.themeType == "light") {
+        defaultLight.appendChild(option);
+        themeTemplatesLight.appendChild(themeTemplateOption);
+    }
+    if (theme.themeType == "dark") {
+        defaultDark.appendChild(option);
+        themeTemplatesDark.appendChild(themeTemplateOption);
+    }
 }
+themeTemplates.appendChild(themeTemplatesLight);
+themeTemplates.appendChild(themeTemplatesDark);
+defaultLight.value = settings.defaultThemes.light;
+defaultDark.value = settings.defaultThemes.dark;

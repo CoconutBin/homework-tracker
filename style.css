@@ -129,7 +129,8 @@ textarea {
 .listItemDisplay,
 .detailsDisplay,
 .inputForm,
-.settingsDisplay {
+.settingsDisplay,
+.themesDisplay {
     background: var(--primary);
     border-radius: calc((2vh + 2vw)/2);
     padding: 0 10px;
@@ -186,7 +187,8 @@ p {
 
 .detailsDisplay,
 .inputForm,
-.settingsDisplay {
+.settingsDisplay,
+.themesDisplay {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -199,7 +201,9 @@ p {
 }
 
 .detailsDisplay,
-.settingsDisplay {
+.settingsDisplay,
+.themesDisplay
+{
     display: none;
 }
 
