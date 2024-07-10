@@ -377,7 +377,7 @@ quickAddButton.addEventListener("click", () => {
                     break;
             }
         }
-        else {
+        else if (currentSchedule.currentSubject != undefined && currentSchedule.currentSubject.length > 0) {
             const inputHomework = new Homework({
                 name: currentSchedule.currentSubject,
                 id: null,
@@ -386,6 +386,8 @@ quickAddButton.addEventListener("click", () => {
             addListItem(inputHomework.homeworkObject);
             inputDiv.style.display = "none";
         }
+        else
+            alert("No Subject in Schedule Found");
     }
     else {
         alert("Quick Add requires setup");
