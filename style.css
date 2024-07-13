@@ -68,7 +68,9 @@ textarea {
     align-items: center;
     padding: 10px;
     border-radius: 0 0 20px 20px;
-    background: radial-gradient(circle at top left, var(--accent) 10%, var(--secondary) 75%)
+    background: radial-gradient(circle at top left, var(--accent) 10%, var(--secondary) 75%);
+    height: calc(10vh - 20px);
+    max-height: 80px;
 }
 
 .navbar p {
@@ -94,11 +96,12 @@ textarea {
     justify-content: center;
 }
 
-.material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+.material-symbols-rounded {
+    font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 200, 'opsz' 40;
     user-select: none;
 }
 
+.analyticsTitle,
 .settingsCategory {
     font-weight: bold;
     font-size: large;
@@ -110,8 +113,10 @@ textarea {
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
+    overflow: auto;
 }
 
+.analyticsBlock,
 .listItem {
     display: flex;
     margin: var(--standard-margin);
@@ -125,7 +130,8 @@ textarea {
 .listItemDisplay,
 .detailsDisplay,
 .inputForm,
-.settingsDisplay {
+.settingsDisplay,
+.themesDisplay {
     background: var(--primary);
     border-radius: calc((2vh + 2vw)/2);
     padding: 0 10px;
@@ -182,7 +188,8 @@ p {
 
 .detailsDisplay,
 .inputForm,
-.settingsDisplay {
+.settingsDisplay,
+.themesDisplay {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -195,7 +202,9 @@ p {
 }
 
 .detailsDisplay,
-.settingsDisplay {
+.settingsDisplay,
+.themesDisplay
+{
     display: none;
 }
 
@@ -230,7 +239,7 @@ button:hover {
 .clickable {
     cursor: pointer;
     transition: all .1s ease-in-out;
-    font-size: 36px !important;
+    font-size: 42px !important;
     text-decoration: none;
     color: var(--text);
     
@@ -279,4 +288,27 @@ button:hover {
 
 .preventTransition{
     transition: none !important;
+}
+
+.analyticsDiv{
+    margin: 0;
+    position: fixed;
+    overflow: hidden;
+    background-color: var(--secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: var(--standard-margin);
+    border-radius: 20px 20px 0 0;
+    background: var(--accent);
+    height: 40vh;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    z-index: 300
+}
+
+.analyticsBlock{
+    flex-direction: column !important;
 }

@@ -1,8 +1,42 @@
 const archiveList = document.getElementById("list");
+const archiveCountElement = document.getElementById("archiveCount");
+const archiveTime = document.getElementById("archiveTime");
+const archiveGroupRatio = document.getElementById("archiveGroupRatio");
 if (archivedHomeworks.length > 0) {
     for (let homeworkObject of archivedHomeworks) {
         addArchiveListItem(homeworkObject);
     }
+}
+function updateArchiveCount() {
+    archiveCountElement.textContent = archivedHomeworks.length.toString();
+}
+updateArchiveCount();
+function updateArchiveTime() {
+    let archiveAddedTime = 0;
+    for (let homeworkObject of archivedHomeworks) {
+        archiveAddedTime += homeworkObject.timeEnded - homeworkObject.timeStarted;
+    }
+    archiveTime.textContent = convertToTime(archiveAddedTime / archivedHomeworks.length);
+}
+updateArchiveTime();
+function updateArchiveGroupRatio() {
+    let groupCount = 0;
+    let personCount = 0;
+    for (let homeworkObject of archivedHomeworks) {
+        if (homeworkObject.isGroupWork) {
+            groupCount++;
+        }
+        else {
+            personCount++;
+        }
+    }
+    archiveGroupRatio.textContent = `${groupCount}:${groupCount + personCount}`;
+}
+updateArchiveGroupRatio();
+function updateArchiveAnalytics() {
+    updateArchiveCount();
+    updateArchiveTime();
+    updateArchiveGroupRatio();
 }
 function addArchiveListItem(homeworkObject) {
     // Display Management (Initial)
@@ -16,7 +50,7 @@ function addArchiveListItem(homeworkObject) {
     subjectNameContainer.classList.add("subjectNameContainer");
     subjectName.classList.add("subjectNameText");
     isImportant.classList.add("isImportantIsGroupWork");
-    isImportant.classList.add("material-symbols-outlined");
+    isImportant.classList.add("material-symbols-rounded");
     subjectNameContainer.appendChild(isImportant);
     subjectNameContainer.appendChild(subjectName);
     displayDiv.appendChild(subjectNameContainer);
@@ -43,6 +77,7 @@ function addArchiveListItem(homeworkObject) {
     }
     listItem.classList.add("listItem");
     displayDiv.classList.add("listItemDisplay");
+    // Function to add a new archived homework item
     // Details Display Management
     const detailsModal = document.createElement("div");
     const detailsDisplay = document.createElement("div");
@@ -95,17 +130,30 @@ function addArchiveListItem(homeworkObject) {
         detailsDiv.style.display = "none";
     });
     //Display Management (Final)
+    const restoreButton = addButton("Custom", null, "Restore");
+    restoreButton.addEventListener("click", () => {
+        if (!confirm("Do you want to restore this homework?"))
+            return;
+        let listContents = (JSON.parse(localStorage.getItem("listContents")));
+        listContents.push(homeworkObject);
+        localStorage.setItem("listContents", JSON.stringify(listContents));
+        ManageLocalStorage.deleteArchived(homeworkObject);
+        listItem.remove();
+        updateArchiveAnalytics();
+    });
     const detailsDeleteButton = addButton("Custom", null, "Delete");
     detailsDeleteButton.addEventListener("click", () => {
         if (!confirm("Are you sure?"))
             return;
-        ManageLocalStorage.deleteListItem(homeworkObject);
+        ManageLocalStorage.deleteArchived(homeworkObject);
         listItem.remove();
+        updateArchiveAnalytics();
     });
     detailsDiv.style.display = "none";
     detailsDiv.appendChild(detailsDisplay);
     detailsDiv.appendChild(detailsModal);
     detailsDisplay.appendChild(detailsDeleteButton);
+    detailsDisplay.appendChild(restoreButton);
     detailsDisplay.appendChild(addButton("Close", detailsDiv));
     listItem.appendChild(displayDiv);
     listItem.appendChild(detailsDiv);
@@ -119,11 +167,13 @@ function addArchiveListItem(homeworkObject) {
     });
     //appending to list element
     list.appendChild(listItem);
+    updateArchiveAnalytics();
 }
 function clearArchiveList() {
     if (confirm("Are you sure you want to delete all archived homeworks?")) {
         archivedHomeworks.splice(0, archivedHomeworks.length);
         localStorage.setItem("archivedHomeworks", JSON.stringify(archivedHomeworks));
         list.innerHTML = ``;
+        updateArchiveAnalytics();
     }
 }

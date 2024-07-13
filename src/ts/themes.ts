@@ -10,10 +10,11 @@ const inputThemePrimary = document.getElementById("inputThemePrimary") as HTMLIn
 const inputThemeSecondary = document.getElementById("inputThemeSecondary") as HTMLInputElement;
 const inputThemeAccent = document.getElementById("inputThemeAccent") as HTMLInputElement;
 const themesResetButton = document.getElementById('themesResetButton') as HTMLButtonElement
+const themeTemplates = document.getElementById("themeTemplates") as HTMLSelectElement;
 
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
 
-type ThemeTypes = "light" | "dark";
+type ThemeTypes = "light" | "dark" | "none";
 class Theme {
     name: string;
     displayName: string;
@@ -51,6 +52,16 @@ class Theme {
         // this.errorColor = customThemeColorObj.error;
     }
 
+    get CSSColors(){
+        return {
+            text: this.textColor,
+            background: this.backgroundColor,
+            primary: this.primaryColor,
+            secondary: this.secondaryColor,
+            accent: this.accentColor,
+        }
+    }
+
     get ThemeContructorForm() {
         return `('${this.name}', '${this.displayName}', '${this.themeType}', '${this.textColor}', '${this.backgroundColor}', '${this.primaryColor}', '${this.secondaryColor}', '${this.accentColor}', '${this.successColor}', '${this.errorColor}')`
     }
@@ -75,22 +86,20 @@ class Theme {
 }
 
 const Themes = {
-    custom: new Theme('custom', "Custom", 'light', null, null, null, null, null),
+    custom: new Theme('custom', "Custom", 'none', null, null, null, null, null),
 
     // Light Themes
     matcha: new Theme('matcha', "Matcha", 'light', "#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098"),
     ice: new Theme('ice', "Ice", 'light', '#081921', '#e2f1f8', '#bae5fd', '#c5aeea', '#84aef1', '#00ff00', '#da0000'),
     prakiao: new Theme('prakiao', "Prakiao", 'light', "#130112", "#f8e7f8", "#7995cd", "#fdafdf", "#5474bb", "#011206", "#da0000"),
-    peach: new Theme('peach', "Peach", 'light', "#14120a", "#f7f4e2", "#fbd2d2", "#ffe679", "#ffb7b7"),
-    peachnew: new Theme('peachnew', "Peach (New)", 'light', "#14120a", "#f7f4e2", "#ffdfcc", "#fed85d", "#ffbda3"),
+    peach: new Theme('peach', "Peach", 'light', "#14120a", "#f7f4e2", "#ffdfcc", "#fed85d", "#ffbda3"),
 
     //Dark Themes
+    hojicha: new Theme('hojicha', "Hojicha", 'dark', '#cbcac8', '#151413', '#2e2c28', '#33483b', '#3a4b3b', '#00ff00', '#da0000'),
+    icedark: new Theme('icedark', "Ice", 'dark', '#d0e3ec', '#00061f', '#112345', '#231e3e', '#0d173f', '#00ff00', '#da0000'),
     simpledark: new Theme('simpledark', "Simple", 'dark', '#e2e2e2', '#0f0f0f', '#252525', '#313131', '#202020'),
     choco: new Theme('choco', "Choco", 'dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32"),
-    icedark: new Theme('icedark', "Ice", 'dark', '#deeff7', '#00061e', '#152e60', '#261c5a', '#142152', '#00ff00', '#da0000'),
-    deepsea: new Theme('deepsea', "Deep Sea", 'dark', '#ffffff', '#0c1b27', '#062651', '#3a5d83', '#163d6a', '#00ff00', '#da0000'),
     phutopia: new Theme('phutopia', "Peam", 'dark', '#ffffff', '#313131', '#490F66', '#2c0544', '#000000'),
-    pneuma: new Theme('pneuma', "Pneuma", 'dark', '#e1e7f6', '#30354c','#2d4586' , '#698cd2', '#1a1f68'),
     sepia: new Theme('sepia', "Sepia", 'dark', '#bca080', '#201209', '#604129', '#a27e49', '#301e0d'),
 }
 
@@ -170,29 +179,41 @@ inputThemeText.addEventListener('input', () => {
     settings.customThemeColor.text = inputThemeText.value
     cssVariables.style.setProperty('--text', settings.customThemeColor.text)
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    themeTemplates.value = 'custom'
 })
 
 inputThemeBackground.addEventListener('input', () => {
     settings.customThemeColor.background = inputThemeBackground.value
     cssVariables.style.setProperty('--background', settings.customThemeColor.background)
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    themeTemplates.value = 'custom'
 })
 inputThemePrimary.addEventListener('input', () => {
     settings.customThemeColor.primary = inputThemePrimary.value
     cssVariables.style.setProperty('--primary', settings.customThemeColor.primary)
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    themeTemplates.value = 'custom'
 })
 
 inputThemeSecondary.addEventListener('input', () => {
     settings.customThemeColor.secondary = inputThemeSecondary.value
     cssVariables.style.setProperty('--secondary', settings.customThemeColor.secondary)
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    themeTemplates.value = 'custom'
 })
 
 inputThemeAccent.addEventListener('input', () => {
     settings.customThemeColor.accent = inputThemeAccent.value
     cssVariables.style.setProperty('--accent', settings.customThemeColor.accent)
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    themeTemplates.value = 'custom'
+})
+
+themeTemplates.addEventListener('change', () => {
+    settings.customThemeColor = Themes[themeTemplates.value].CSSColors
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    Themes.custom.CSSColors = settings.customThemeColor
+    Themes.custom.setCSS()
 })
 
 
@@ -213,22 +234,36 @@ function customThemeColorSetup() {
 }
 
 // Add themes to Theme Select Tags
-{
+
     const defaultLight = document.getElementById("defaultLight") as HTMLSelectElement;
     const defaultDark = document.getElementById("defaultDark") as HTMLSelectElement;
+    const themeTemplatesLight = document.createElement("optgroup")
+    themeTemplatesLight.label = "Light Themes"
+    const themeTemplatesDark = document.createElement("optgroup")
+    themeTemplatesDark.label = "Dark Themes"
 
     for (const theme of Object.values(Themes)) {
-        if (theme.name == "custom") continue;
         const option = document.createElement("option") as HTMLOptionElement;
+        const themeTemplateOption = document.createElement("option") as HTMLOptionElement
+        themeTemplateOption.value = theme.name
+        themeTemplateOption.innerText = theme.displayName
         option.value = theme.name;
         option.innerText = theme.displayName;
+        if (theme.name == "custom"){
+            themeTemplates.appendChild(themeTemplateOption)
+        }
         if (theme.themeType == "light") {
             defaultLight.appendChild(option);
-        } else {
+            themeTemplatesLight.appendChild(themeTemplateOption);
+        }
+        if(theme.themeType == "dark") {
             defaultDark.appendChild(option);
+            themeTemplatesDark.appendChild(themeTemplateOption);
         }
     }
 
+    themeTemplates.appendChild(themeTemplatesLight);
+    themeTemplates.appendChild(themeTemplatesDark);
+
     defaultLight.value = settings.defaultThemes.light;
     defaultDark.value = settings.defaultThemes.dark;
-}

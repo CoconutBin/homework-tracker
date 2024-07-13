@@ -12,6 +12,7 @@ class Settings {
     customThemeColor;
     rightToLeft;
     subjectNameClick;
+    analytics;
     reset() {
         this.defaultThemes = {
             light: "matcha",
@@ -22,6 +23,7 @@ class Settings {
             this.customThemes = false,
             this.customThemeColor = {};
         this.subjectNameClick = "";
+        this.analytics = false;
     }
     constructor() {
         this.pureBlackDarkMode = false,
@@ -33,6 +35,7 @@ class Settings {
                 light: "matcha",
                 dark: "simpledark"
             };
+        this.analytics = false;
     }
     get settingsObject() {
         return {
@@ -41,7 +44,8 @@ class Settings {
             customThemeColor: this.customThemeColor,
             pureBlackDarkMode: this.pureBlackDarkMode,
             rightToLeft: this.rightToLeft,
-            subjectNameClick: this.subjectNameClick
+            subjectNameClick: this.subjectNameClick,
+            analytics: this.analytics
         };
     }
     set settingsObject(obj) {
@@ -51,6 +55,7 @@ class Settings {
         this.rightToLeft = obj.rightToLeft;
         this.subjectNameClick = obj.subjectNameClick;
         this.pureBlackDarkMode = obj.pureBlackDarkMode;
+        this.analytics = obj.analytics;
     }
 }
 const settings = new Settings();
@@ -65,6 +70,9 @@ const rightToLeft = document.getElementById("rightToLeft");
 const subjectNameClick = document.getElementById("subjectNameClick");
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode');
 const customThemes = document.getElementById('customThemes');
+const analytics = document.getElementById('analytics');
+const analyticsDiv = document.getElementById("analyticsDiv");
+const quickAddSetup = document.getElementById("quickAddSetup");
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block";
     settingsDiv.style.display = "block";
@@ -158,6 +166,26 @@ customThemes.addEventListener("change", () => {
         pureBlackDarkMode.disabled = false;
     }
 });
+if (quickAddSetup != undefined) {
+    quickAddSetup.addEventListener("click", () => {
+        alert("Quick Add Function is currently not implemented in the UI");
+        //to do: add quick add function
+    });
+}
+if (analytics != undefined) {
+    analytics.addEventListener("change", () => {
+        settings.analytics = analytics.checked;
+        localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+        if (settings.analytics) {
+            analyticsDiv.style.display = "flex";
+            list.style.height = "calc(50vh - 15px)";
+        }
+        else {
+            analyticsDiv.style.display = "none";
+            list.style.height = "auto";
+        }
+    });
+}
 if (subjectNameClick != undefined) {
     subjectNameClick.addEventListener("change", () => {
         settings.subjectNameClick = subjectNameClick.value;
@@ -181,6 +209,8 @@ try {
         defaultLightThemeSetting.disabled = true;
         pureBlackDarkMode.disabled = true;
     }
+    if (analytics != undefined)
+        analytics.checked = settings.analytics;
 }
 catch {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"));
@@ -193,4 +223,14 @@ catch {
 }
 if (rightToLeft.checked) {
     list.style.flexDirection = "row-reverse";
+}
+if (analyticsDiv != undefined) {
+    if (settings.analytics) {
+        analyticsDiv.style.display = "flex";
+        list.style.height = "calc(50vh - 15px)";
+    }
+    else {
+        analyticsDiv.style.display = "none";
+        list.style.height = "auto";
+    }
 }

@@ -1,4 +1,5 @@
 const archivedHomeworks: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("archivedHomeworks")) != undefined? JSON.parse(localStorage.getItem("archivedHomeworks")):[]
+const list = document.getElementById("list")
 
 function addButton(type: string, affectedElement?: HTMLElement, customValue?: string): HTMLInputElement {
     let button = document.createElement("input");
@@ -58,6 +59,10 @@ function convertToTime(time: number): string {
     }
     if (Seconds >= 0) {
         returnedTime += `${Seconds}s`;
+    }
+
+    if(parseInt(returnedTime) < 0 || Number.isNaN(parseInt(returnedTime))){
+        returnedTime = "0s"
     }
     
     return returnedTime.trim();

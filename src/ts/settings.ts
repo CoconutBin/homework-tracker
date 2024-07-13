@@ -24,6 +24,7 @@ class Settings {
     }
     rightToLeft: boolean
     subjectNameClick: string
+    analytics: boolean
 
     reset() {
         this.defaultThemes = {
@@ -35,6 +36,7 @@ class Settings {
         this.customThemes = false,
         this.customThemeColor = {}
         this.subjectNameClick = ""
+        this.analytics = false
     }
 
     constructor() {
@@ -47,6 +49,7 @@ class Settings {
                 light: "matcha",
                 dark: "simpledark"
             }
+            this.analytics = false
     }
 
     get settingsObject() {
@@ -56,7 +59,8 @@ class Settings {
             customThemeColor: this.customThemeColor,
             pureBlackDarkMode: this.pureBlackDarkMode,
             rightToLeft: this.rightToLeft,
-            subjectNameClick: this.subjectNameClick
+            subjectNameClick: this.subjectNameClick,
+            analytics: this.analytics
         }
     }
 
@@ -67,6 +71,7 @@ class Settings {
         this.rightToLeft = obj.rightToLeft
         this.subjectNameClick = obj.subjectNameClick
         this.pureBlackDarkMode = obj.pureBlackDarkMode
+        this.analytics = obj.analytics
     }
 }
 
@@ -83,6 +88,9 @@ const rightToLeft = document.getElementById("rightToLeft") as HTMLInputElement;
 const subjectNameClick = document.getElementById("subjectNameClick") as HTMLSelectElement;
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode') as HTMLInputElement
 const customThemes = document.getElementById('customThemes') as HTMLInputElement
+const analytics = document.getElementById('analytics') as HTMLInputElement
+const analyticsDiv = document.getElementById("analyticsDiv") as HTMLDivElement
+const quickAddSetup = document.getElementById("quickAddSetup") as HTMLButtonElement
 
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block"
@@ -185,6 +193,27 @@ customThemes.addEventListener("change", () => {
     }
 })
 
+if(quickAddSetup != undefined) {
+    quickAddSetup.addEventListener("click", () => {
+        alert("Quick Add Function is currently not implemented in the UI")
+        //to do: add quick add function
+    })
+}
+
+if(analytics != undefined) {
+    analytics.addEventListener("change", () => {
+        settings.analytics = analytics.checked
+        localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+        if(settings.analytics){
+            analyticsDiv.style.display = "flex";
+            list.style.height = "calc(50vh - 15px)";
+        } else {
+            analyticsDiv.style.display = "none";
+            list.style.height = "auto";
+        }
+    })
+}
+
 if (subjectNameClick != undefined) {
     subjectNameClick.addEventListener("change", () => {
         settings.subjectNameClick = subjectNameClick.value
@@ -206,6 +235,7 @@ try {
         defaultLightThemeSetting.disabled = true
         pureBlackDarkMode.disabled = true
     }
+    if(analytics != undefined) analytics.checked = settings.analytics
 }
 catch {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"))
@@ -221,3 +251,12 @@ if (rightToLeft.checked) {
     list.style.flexDirection = "row-reverse"
 }
 
+if(analyticsDiv != undefined){
+    if(settings.analytics) {
+        analyticsDiv.style.display = "flex";
+        list.style.height = "calc(50vh - 15px)";
+    } else {
+        analyticsDiv.style.display = "none";
+        list.style.height = "auto";
+    }
+}

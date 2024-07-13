@@ -8,12 +8,12 @@ const inputPoints = document.getElementById("inputPoints") as HTMLInputElement;
 const inputDescription = document.getElementById("inputDescription") as HTMLTextAreaElement;
 const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsImportant, inputIsGroupWork, inputDueDate, inputPoints, inputDescription]
 const inputDiv = document.getElementById("inputform")
-const list = document.getElementById("list")
 const listContents: Homework["homeworkObject"][] = []
 const localStorageListContents: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("listContents"))
 const addListItemButton = document.getElementById("addListItemButton") as HTMLElement;
 const editModal = document.getElementById("editModal")
 const logo = document.getElementById("logo")
+const quickAddButton = document.getElementById("quickAddButton")
 let localStorageLock = true
 
 if (Storage == null) {
@@ -131,7 +131,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     subjectNameContainer.classList.add("subjectNameContainer")
     subjectName.classList.add("subjectNameText")
     isImportant.classList.add("isImportantIsGroupWork")
-    isImportant.classList.add("material-symbols-outlined")
+    isImportant.classList.add("material-symbols-rounded")
     subjectNameContainer.appendChild(isImportant)
     subjectNameContainer.appendChild(subjectName)
     displayDiv.appendChild(subjectNameContainer)
@@ -420,12 +420,37 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     list.appendChild(listItem)
 }
 
+quickAddButton.addEventListener("click", () => {
+    if(currentSchedule.schedule != undefined){
+        if(currentSchedule.subjects.length > 0) {
+            switch(currentSchedule.scheduleType) {
+                case "id":
+                    break;
+                case "name":
+                    break;
+                default:
+                    break
+            }
+        } else if(currentSchedule.currentSubject != undefined && currentSchedule.currentSubject.length > 0){
+           const inputHomework = new Homework({
+                name: currentSchedule.currentSubject,
+                id: null,
+                type: null
+            })
+            addListItem(inputHomework.homeworkObject)
+            inputDiv.style.display = "none"
+        } else alert("No Subject in Schedule Found")
+    } else{
+        alert("Quick Add requires setup")
+    }
+    })
+
 function clearList() {
     if(confirm("Are you sure you want to clear the list?")){
         listContents.splice(0, listContents.length);
         localStorage.setItem("listContents", JSON.stringify(listContents));
         list.innerHTML = `<div class="listItem" id="addListItemButton">
-                <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
+                <div class="listItemDisplay"><h1><span class="material-symbols-rounded" style="font-size: 48px;">add</span></h1></div>
             </div>`;
     }
 }
