@@ -1,0 +1,12 @@
+{
+    "name": "Homework Tracker",
+    "icons": [
+      {
+        "src": "icons/512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "https://coconutbin.github.io/homework-tracker",
+    "display": "standalone"
+  }
