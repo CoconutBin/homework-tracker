@@ -178,7 +178,7 @@ if (analytics != undefined) {
         localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
         if (settings.analytics) {
             analyticsDiv.style.display = "flex";
-            list.style.height = "45vh";
+            list.style.height = "calc(50vh - 15px)";
         }
         else {
             analyticsDiv.style.display = "none";
@@ -227,7 +227,7 @@ if (rightToLeft.checked) {
 if (analyticsDiv != undefined) {
     if (settings.analytics) {
         analyticsDiv.style.display = "flex";
-        list.style.height = "45vh";
+        list.style.height = "calc(50vh - 15px)";
     }
     else {
         analyticsDiv.style.display = "none";
