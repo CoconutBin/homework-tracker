@@ -108,7 +108,7 @@ function addListItem(homeworkObject) {
     subjectNameContainer.classList.add("subjectNameContainer");
     subjectName.classList.add("subjectNameText");
     isImportant.classList.add("isImportantIsGroupWork");
-    isImportant.classList.add("material-symbols-outlined");
+    isImportant.classList.add("material-symbols-rounded");
     subjectNameContainer.appendChild(isImportant);
     subjectNameContainer.appendChild(subjectName);
     displayDiv.appendChild(subjectNameContainer);
@@ -396,7 +396,7 @@ function clearList() {
         listContents.splice(0, listContents.length);
         localStorage.setItem("listContents", JSON.stringify(listContents));
         list.innerHTML = `<div class="listItem" id="addListItemButton">
-                <div class="listItemDisplay"><h1><span class="material-symbols-outlined" style="font-size: 48px;">add</span></h1></div>
+                <div class="listItemDisplay"><h1><span class="material-symbols-rounded" style="font-size: 48px;">add</span></h1></div>
             </div>`;
     }
 }

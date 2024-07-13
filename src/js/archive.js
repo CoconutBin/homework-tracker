@@ -50,7 +50,7 @@ function addArchiveListItem(homeworkObject) {
     subjectNameContainer.classList.add("subjectNameContainer");
     subjectName.classList.add("subjectNameText");
     isImportant.classList.add("isImportantIsGroupWork");
-    isImportant.classList.add("material-symbols-outlined");
+    isImportant.classList.add("material-symbols-rounded");
     subjectNameContainer.appendChild(isImportant);
     subjectNameContainer.appendChild(subjectName);
     displayDiv.appendChild(subjectNameContainer);
