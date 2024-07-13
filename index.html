@@ -3,6 +3,8 @@
 
 <head>
     <title>Homework Tracker</title>
+    <link rel="apple-touch-icon" type="image/png" href="/icons/icon.png">
+    <link rel="icon" type="image/png" href="/icons/icon.png">
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./mediaScaling.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -42,6 +44,13 @@
     <div id="settingsContainer" style="display: none;">
         <div id="settingsModal" class="modal"></div>
         <div id="settingsScreen" class="settingsDisplay">
+            <p class="settingsCategory">General</p>
+            <label for="subjectNameClick">Subject Name clicking behavior:</label>
+                <select name="subjectNameClick" id="subjectNameClick">
+                    <option value="">Nothing</option>
+                    <option value="markImportant">Mark/Unmark Important</option>
+                    <option value="editSubjectName">Edit Subject Name (Experimental)</option>
+                </select><br>
             <p class="settingsCategory">Themes</p>
             <label for="customThemes">Custom Theming</label>
             <input type="checkbox" name="customThemes" id="customThemes"><br>
@@ -66,12 +75,6 @@
                 <button id="dataTransferDownloadButton">export as a file</button>
             </div>
             <p class="settingsCategory">Beta</p>
-            <label for="subjectNameClick">Subject Name clicking behavior:</label>
-                <select name="subjectNameClick" id="subjectNameClick">
-                    <option value="">Nothing</option>
-                    <option value="markImportant">Mark/Unmark Important</option>
-                    <option value="editSubjectName">Edit Subject Name</option>
-                </select><br>
                 <label for="quickAddSetup">Quick Add</label>
                 <button id="quickAddSetup" name="quickAddSetup">Set Up</button><br>
                 <br>
