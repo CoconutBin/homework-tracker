@@ -30,7 +30,7 @@ class Settings {
     reset() {
         this.defaultThemes = {
             light: "matcha",
-            dark: "simpledark"
+            dark: "hojicha"
         },
         this.pureBlackDarkMode = false,
         this.rightToLeft = false,
@@ -49,7 +49,7 @@ class Settings {
             this.subjectNameClick = "",
             this.defaultThemes = {
                 light: "matcha",
-                dark: "simpledark"
+                dark: "hojicha"
             }
             this.analytics = false
             this.systemFont = false
