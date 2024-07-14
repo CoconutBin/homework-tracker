@@ -1,5 +1,13 @@
 {
     "name": "Homework Tracker",
+    "short_name": "wrkd.",
+    "background_color": "#f3e6d5",
+    "theme_color": "#f3e6d5",
+    "categories": [
+      "education",
+      "lifestyle",
+      "utilities"
+    ],
     "icons": [
       {
         "src": "./icons/logomonochrome.png",
@@ -21,5 +29,6 @@
       }
     ],
     "start_url": "https://coconutbin.github.io/homework-tracker",
-    "display": "standalone"
+    "display": "standalone",
+    "display_override": ["fullscreen", "minimal-ui"]
   }
