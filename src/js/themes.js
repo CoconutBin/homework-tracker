@@ -58,6 +58,7 @@ class Theme {
         return `('${this.name}', '${this.displayName}', '${this.themeType}', '${this.textColor}', '${this.backgroundColor}', '${this.primaryColor}', '${this.secondaryColor}', '${this.accentColor}', '${this.successColor}', '${this.errorColor}')`;
     }
     setCSS() {
+        document.querySelector("meta[name='theme-color']").content = this.secondaryColor;
         localStorage.setItem("currentTheme", this.name);
         currentTheme = this.name;
         cssVariables.style.setProperty('--text', this.textColor);
