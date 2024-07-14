@@ -67,6 +67,7 @@ class Theme {
     }
 
     setCSS() {
+        (document.querySelector("meta[name='theme-color']") as HTMLMetaElement).content = this.secondaryColor;
         localStorage.setItem("currentTheme", this.name)
         currentTheme = this.name
         cssVariables.style.setProperty('--text', this.textColor);

@@ -14,11 +14,12 @@ body,
 html {
     color: var(--text);
     font-size: 1.2vw;
-    font-family: "Roboto", sans-serif, system-ui;
+    font-family: "Varela Round", system-ui, sans-serif;
     cursor: default;
     background: var(--background);
     margin: 0;
     padding: 0;
+    overscroll-behavior-y: contain;
 }
 
 body::-webkit-scrollbar {
@@ -58,6 +59,7 @@ textarea {
     width: max(calc(30vw - 40px), 300px);
     height: 15vh;
     resize: none;
+    border-radius: 0 !important;
 }
 
 .navbar {
