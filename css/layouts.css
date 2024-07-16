@@ -60,6 +60,7 @@
 
 .listItemDisplay {
     height: max(250px, 20vh);
+    max-height: 425px;
     width: auto;
     text-overflow: clip;
     overflow-wrap: break-word;

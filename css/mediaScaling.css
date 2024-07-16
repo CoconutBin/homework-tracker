@@ -5,7 +5,7 @@
     }
 
     .listItemDisplay {
-        height: max(250px, 30vh)
+        height: 250px
     }
 }
 
