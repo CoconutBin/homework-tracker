@@ -67,6 +67,7 @@ class Theme {
     }
 
     setCSS() {
+        (document.querySelector("meta[name='theme-color']") as HTMLMetaElement).content = this.secondaryColor;
         localStorage.setItem("currentTheme", this.name)
         currentTheme = this.name
         cssVariables.style.setProperty('--text', this.textColor);
@@ -99,7 +100,6 @@ const Themes = {
     icedark: new Theme('icedark', "Ice", 'dark', '#d0e3ec', '#00061f', '#112345', '#231e3e', '#0d173f', '#00ff00', '#da0000'),
     simpledark: new Theme('simpledark', "Simple", 'dark', '#e2e2e2', '#0f0f0f', '#252525', '#313131', '#202020'),
     choco: new Theme('choco', "Choco", 'dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32"),
-    phutopia: new Theme('phutopia', "Peam", 'dark', '#ffffff', '#313131', '#490F66', '#2c0544', '#000000'),
     sepia: new Theme('sepia', "Sepia", 'dark', '#bca080', '#201209', '#604129', '#a27e49', '#301e0d'),
 }
 

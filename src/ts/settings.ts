@@ -25,11 +25,12 @@ class Settings {
     rightToLeft: boolean
     subjectNameClick: string
     analytics: boolean
+    systemFont: boolean
 
     reset() {
         this.defaultThemes = {
             light: "matcha",
-            dark: "simpledark"
+            dark: "hojicha"
         },
         this.pureBlackDarkMode = false,
         this.rightToLeft = false,
@@ -37,6 +38,7 @@ class Settings {
         this.customThemeColor = {}
         this.subjectNameClick = ""
         this.analytics = false
+        this.systemFont = false
     }
 
     constructor() {
@@ -47,9 +49,10 @@ class Settings {
             this.subjectNameClick = "",
             this.defaultThemes = {
                 light: "matcha",
-                dark: "simpledark"
+                dark: "hojicha"
             }
             this.analytics = false
+            this.systemFont = false
     }
 
     get settingsObject() {
@@ -60,7 +63,8 @@ class Settings {
             pureBlackDarkMode: this.pureBlackDarkMode,
             rightToLeft: this.rightToLeft,
             subjectNameClick: this.subjectNameClick,
-            analytics: this.analytics
+            analytics: this.analytics,
+            systemFont: this.systemFont
         }
     }
 
@@ -72,6 +76,7 @@ class Settings {
         this.subjectNameClick = obj.subjectNameClick
         this.pureBlackDarkMode = obj.pureBlackDarkMode
         this.analytics = obj.analytics
+        this.systemFont = obj.systemFont
     }
 }
 
@@ -91,6 +96,7 @@ const customThemes = document.getElementById('customThemes') as HTMLInputElement
 const analytics = document.getElementById('analytics') as HTMLInputElement
 const analyticsDiv = document.getElementById("analyticsDiv") as HTMLDivElement
 const quickAddSetup = document.getElementById("quickAddSetup") as HTMLButtonElement
+const systemFont = document.getElementById("systemFont") as HTMLInputElement
 
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block"
@@ -137,6 +143,16 @@ defaultLightThemeSetting.addEventListener("change", () => {
 
     if (Themes[currentTheme].themeType == "light") {
         Themes[settings.defaultThemes.light].setCSS()
+    }
+})
+
+systemFont.addEventListener("change", () => {
+    settings.systemFont = systemFont.checked
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    if (settings.systemFont) {
+        document.body.style.fontFamily = "system-ui, sans-serif"
+    } else {
+        document.body.style.fontFamily = '"Varela Round", system-ui, sans-serif'
     }
 })
 
@@ -227,6 +243,7 @@ if (localStorage.getItem("settings") != null) {
 
 try {
     rightToLeft.checked = settings.rightToLeft
+    systemFont.checked = settings.systemFont
     if (customThemes != undefined){customThemes.checked = settings.customThemes} 
     if (subjectNameClick != undefined) subjectNameClick.value = settings.subjectNameClick
     if (pureBlackDarkMode != undefined) pureBlackDarkMode.checked = settings.pureBlackDarkMode
@@ -242,6 +259,7 @@ catch {
     defaultDarkThemeSetting.value = settings.defaultThemes.dark
     defaultLightThemeSetting.value = settings.defaultThemes.light
     rightToLeft.checked = settings.rightToLeft
+    systemFont.checked = settings.systemFont
     customThemes.checked = settings.customThemes
     subjectNameClick.value = settings.subjectNameClick
     pureBlackDarkMode.checked = settings.pureBlackDarkMode
@@ -259,4 +277,10 @@ if(analyticsDiv != undefined){
         analyticsDiv.style.display = "none";
         list.style.height = "auto";
     }
+}
+
+if (settings.systemFont) {
+    document.body.style.fontFamily = "system-ui, sans-serif"
+} else {
+    document.body.style.fontFamily = '"Varela Round", system-ui, sans-serif'
 }
