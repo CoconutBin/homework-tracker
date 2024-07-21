@@ -8,51 +8,44 @@ sortButton.addEventListener("click", () => {
 */
 
 class Settings {
-
     defaultThemes: {
         light: string,
         dark: string
-    }
-    pureBlackDarkMode: boolean
-    customThemes: boolean
+    };
+    pureBlackDarkMode: boolean;
+    customThemes: boolean;
     customThemeColor: {
         text?: string,
         background?: string,
         primary?: string,
         secondary?: string,
         accent?: string
-    }
-    rightToLeft: boolean
-    subjectNameClick: string
-    analytics: boolean
-    systemFont: boolean
+    };
+    rightToLeft: boolean;
+    subjectNameClick: string;
+    analytics: boolean;
+    systemFont: boolean;
 
-    reset() {
+    private initializeDefaults() {
         this.defaultThemes = {
             light: "matcha",
             dark: "hojicha"
-        },
-        this.pureBlackDarkMode = false,
-        this.rightToLeft = false,
-        this.customThemes = false,
-        this.customThemeColor = {}
-        this.subjectNameClick = ""
-        this.analytics = false
-        this.systemFont = false
+        };
+        this.pureBlackDarkMode = false;
+        this.rightToLeft = false;
+        this.customThemes = false;
+        this.customThemeColor = {};
+        this.subjectNameClick = "";
+        this.analytics = false;
+        this.systemFont = false;
     }
 
     constructor() {
-        this.pureBlackDarkMode = false,
-            this.rightToLeft = false,
-            this.customThemes = false,
-            this.customThemeColor = {}
-            this.subjectNameClick = "",
-            this.defaultThemes = {
-                light: "matcha",
-                dark: "hojicha"
-            }
-            this.analytics = false
-            this.systemFont = false
+        this.initializeDefaults();
+    }
+
+    reset() {
+        this.initializeDefaults();
     }
 
     get settingsObject() {
@@ -65,20 +58,21 @@ class Settings {
             subjectNameClick: this.subjectNameClick,
             analytics: this.analytics,
             systemFont: this.systemFont
-        }
+        };
     }
 
     set settingsObject(obj) {
-        this.customThemeColor = obj.customThemeColor
-        this.customThemes = obj.customThemes
-        this.defaultThemes = obj.defaultThemes
-        this.rightToLeft = obj.rightToLeft
-        this.subjectNameClick = obj.subjectNameClick
-        this.pureBlackDarkMode = obj.pureBlackDarkMode
-        this.analytics = obj.analytics
-        this.systemFont = obj.systemFont
+        this.customThemeColor = obj.customThemeColor;
+        this.customThemes = obj.customThemes;
+        this.defaultThemes = obj.defaultThemes;
+        this.rightToLeft = obj.rightToLeft;
+        this.subjectNameClick = obj.subjectNameClick;
+        this.pureBlackDarkMode = obj.pureBlackDarkMode;
+        this.analytics = obj.analytics;
+        this.systemFont = obj.systemFont;
     }
 }
+
 
 const settings = new Settings()
 

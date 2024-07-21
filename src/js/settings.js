@@ -14,31 +14,24 @@ class Settings {
     subjectNameClick;
     analytics;
     systemFont;
-    reset() {
+    initializeDefaults() {
         this.defaultThemes = {
             light: "matcha",
             dark: "hojicha"
-        },
-            this.pureBlackDarkMode = false,
-            this.rightToLeft = false,
-            this.customThemes = false,
-            this.customThemeColor = {};
+        };
+        this.pureBlackDarkMode = false;
+        this.rightToLeft = false;
+        this.customThemes = false;
+        this.customThemeColor = {};
         this.subjectNameClick = "";
         this.analytics = false;
         this.systemFont = false;
     }
     constructor() {
-        this.pureBlackDarkMode = false,
-            this.rightToLeft = false,
-            this.customThemes = false,
-            this.customThemeColor = {};
-        this.subjectNameClick = "",
-            this.defaultThemes = {
-                light: "matcha",
-                dark: "hojicha"
-            };
-        this.analytics = false;
-        this.systemFont = false;
+        this.initializeDefaults();
+    }
+    reset() {
+        this.initializeDefaults();
     }
     get settingsObject() {
         return {
