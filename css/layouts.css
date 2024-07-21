@@ -185,3 +185,7 @@ p {
 .analyticsBlock {
     flex-direction: column !important;
 }
+
+.overdueHomework {
+    background: var(--accent) !important;
+}
