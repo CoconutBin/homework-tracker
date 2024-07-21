@@ -206,7 +206,17 @@ customThemes.addEventListener("change", () => {
         Themes['custom'].CSSColors = settings.customThemeColor
         Themes['custom'].setCSS()
     } else{
-        if(Themes[currentTheme].themeType == "light") {
+        function themeDeterminer(hexcolor: string){
+           let splitHex: string[] = hexcolor.match(/[0-9a-f]{2}/gi)
+           if(((parseInt(splitHex[0], 16) + parseInt(splitHex[1], 16) + parseInt(splitHex[2], 16)) / 3) < 30){
+            return "dark";
+           }
+           else{
+            return "light";
+           }
+        }
+
+        if(themeDeterminer(Themes[currentTheme].backgroundColor) == "light") {
             themeButton.textContent = "light_mode"
             Themes[settings.defaultThemes.light].setCSS()
         }
