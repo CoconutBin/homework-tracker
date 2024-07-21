@@ -72,6 +72,13 @@ const analytics = document.getElementById('analytics');
 const analyticsDiv = document.getElementById("analyticsDiv");
 const quickAddSetup = document.getElementById("quickAddSetup");
 const systemFont = document.getElementById("systemFont");
+const quickAddContainer = document.getElementById("quickAddContainer");
+const quickAddModal = document.getElementById("quickAddModal");
+const quickAddScreen = document.getElementById("quickAddScreen");
+const quickAddTextArea = document.getElementById("quickAddTextArea");
+const quickAddImportButton = document.getElementById("quickAddImportButton");
+const quickAddExportButton = document.getElementById("quickAddExportButton");
+const quickAddDownloadButton = document.getElementById("quickAddDownloadButton");
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block";
     settingsDiv.style.display = "block";
@@ -120,7 +127,7 @@ systemFont.addEventListener("change", () => {
         document.body.style.fontFamily = "system-ui, sans-serif";
     }
     else {
-        document.body.style.fontFamily = '"Varela Round", system-ui, sans-serif';
+        document.body.style.fontFamily = '"Nunito", system-ui, sans-serif';
     }
 });
 rightToLeft.addEventListener("change", () => {
@@ -249,5 +256,5 @@ if (settings.systemFont) {
     document.body.style.fontFamily = "system-ui, sans-serif";
 }
 else {
-    document.body.style.fontFamily = '"Varela Round", system-ui, sans-serif';
+    document.body.style.fontFamily = '"Nunito", system-ui, sans-serif';
 }

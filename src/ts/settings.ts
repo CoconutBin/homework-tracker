@@ -91,6 +91,14 @@ const analytics = document.getElementById('analytics') as HTMLInputElement
 const analyticsDiv = document.getElementById("analyticsDiv") as HTMLDivElement
 const quickAddSetup = document.getElementById("quickAddSetup") as HTMLButtonElement
 const systemFont = document.getElementById("systemFont") as HTMLInputElement
+const quickAddContainer = document.getElementById("quickAddContainer") as HTMLDivElement
+const quickAddModal = document.getElementById("quickAddModal") as HTMLDivElement
+const quickAddScreen = document.getElementById("quickAddScreen") as HTMLDivElement
+const quickAddTextArea = document.getElementById("quickAddTextArea") as HTMLTextAreaElement
+const quickAddImportButton = document.getElementById("quickAddImportButton") as HTMLButtonElement
+const quickAddExportButton = document.getElementById("quickAddExportButton") as HTMLButtonElement
+const quickAddDownloadButton = document.getElementById("quickAddDownloadButton") as HTMLButtonElement
+
 
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block"
@@ -146,7 +154,7 @@ systemFont.addEventListener("change", () => {
     if (settings.systemFont) {
         document.body.style.fontFamily = "system-ui, sans-serif"
     } else {
-        document.body.style.fontFamily = '"Varela Round", system-ui, sans-serif'
+        document.body.style.fontFamily = '"Nunito", system-ui, sans-serif'
     }
 })
 
@@ -276,5 +284,5 @@ if(analyticsDiv != undefined){
 if (settings.systemFont) {
     document.body.style.fontFamily = "system-ui, sans-serif"
 } else {
-    document.body.style.fontFamily = '"Varela Round", system-ui, sans-serif'
+    document.body.style.fontFamily = '"Nunito", system-ui, sans-serif'
 }

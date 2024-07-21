@@ -15,7 +15,7 @@ body,
 html {
     color: var(--text);
     font-size: 1.2vw;
-    font-family: "Varela Round", system-ui, sans-serif;
+    font-family: "Nunito", system-ui, sans-serif;
     cursor: default;
     background: var(--background);
     margin: 0;
