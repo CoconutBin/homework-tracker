@@ -93,7 +93,7 @@ const quickAddSetup = document.getElementById("quickAddSetup") as HTMLButtonElem
 const systemFont = document.getElementById("systemFont") as HTMLInputElement
 const quickAddContainer = document.getElementById("quickAddContainer") as HTMLDivElement
 const quickAddModal = document.getElementById("quickAddModal") as HTMLDivElement
-const quickAddScreen = document.getElementById("quickAddScreen") as HTMLDivElement
+const quickAddDiv = document.getElementById("quickAddScreen") as HTMLDivElement
 const quickAddTextArea = document.getElementById("quickAddTextArea") as HTMLTextAreaElement
 const quickAddImportButton = document.getElementById("quickAddImportButton") as HTMLButtonElement
 const quickAddExportButton = document.getElementById("quickAddExportButton") as HTMLButtonElement
@@ -213,8 +213,22 @@ customThemes.addEventListener("change", () => {
 
 if(quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
-        alert("Quick Add Function is currently not implemented in the UI")
-        //to do: add quick add function
+        settingsContainer.style.display = "none"
+        quickAddContainer.style.display = "block"
+        quickAddDiv.style.display = "block"
+    })
+    quickAddModal.addEventListener("click", () => {
+        quickAddContainer.style.display = "none"
+    })
+    quickAddExportButton.addEventListener("click", (e) => {
+        quickAddTextArea.value = localStorage.getItem("currentSchedule");
+        quickAddTextArea.select();
+        navigator.clipboard.writeText(localStorage.getItem("currentSchedule"));
+    })
+
+    quickAddImportButton.addEventListener("click", (e) => {
+        localStorage.setItem("currentSchedule", JSON.stringify(quickAddTextArea.value));
+        alert("Quick Add Setup Complete");
     })
 }
 

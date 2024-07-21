@@ -74,7 +74,7 @@ const quickAddSetup = document.getElementById("quickAddSetup");
 const systemFont = document.getElementById("systemFont");
 const quickAddContainer = document.getElementById("quickAddContainer");
 const quickAddModal = document.getElementById("quickAddModal");
-const quickAddScreen = document.getElementById("quickAddScreen");
+const quickAddDiv = document.getElementById("quickAddScreen");
 const quickAddTextArea = document.getElementById("quickAddTextArea");
 const quickAddImportButton = document.getElementById("quickAddImportButton");
 const quickAddExportButton = document.getElementById("quickAddExportButton");
@@ -184,8 +184,21 @@ customThemes.addEventListener("change", () => {
 });
 if (quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
-        alert("Quick Add Function is currently not implemented in the UI");
-        //to do: add quick add function
+        settingsContainer.style.display = "none";
+        quickAddContainer.style.display = "block";
+        quickAddDiv.style.display = "block";
+    });
+    quickAddModal.addEventListener("click", () => {
+        quickAddContainer.style.display = "none";
+    });
+    quickAddExportButton.addEventListener("click", (e) => {
+        quickAddTextArea.value = localStorage.getItem("currentSchedule");
+        quickAddTextArea.select();
+        navigator.clipboard.writeText(localStorage.getItem("currentSchedule"));
+    });
+    quickAddImportButton.addEventListener("click", (e) => {
+        localStorage.setItem("currentSchedule", JSON.stringify(quickAddTextArea.value));
+        alert("Quick Add Setup Complete");
     });
 }
 if (analytics != undefined) {
