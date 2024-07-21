@@ -305,8 +305,8 @@ function addListItem(homeworkObject) {
         dueDateInput.addEventListener("change", () => {
             homeworkObject.dueDate = new Date(dueDateInput.value).toDateString();
             detailsDueDateTime.textContent = new Date(homeworkObject.dueDate).toDateString();
-            dueDate.textContent = new Date(homeworkObject.dueDate).toDateString();
-            displayDiv.appendChild(dueDate);
+            dueDate.textContent = `Due: ${new Date(homeworkObject.dueDate).toDateString()}`;
+            displayDivRender();
             ManageLocalStorage.replace(index, homeworkObject);
             dueDateInput.style.display = "none";
         });
@@ -366,6 +366,15 @@ function addListItem(homeworkObject) {
     //appending to list element
     displayDiv.appendChild(startHomeworkButton);
     list.appendChild(listItem);
+    function displayDivRender() {
+        let existingElements = [subjectNameContainer, timeStarted];
+        if (dueDate.innerText != undefined) {
+            existingElements.push(dueDate);
+        }
+        existingElements.push(startHomeworkButton);
+        displayDiv.replaceChildren();
+        existingElements.forEach(x => displayDiv.appendChild(x));
+    }
 }
 quickAddButton.addEventListener("click", () => {
     if (currentSchedule.schedule != undefined) {
