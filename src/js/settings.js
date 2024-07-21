@@ -78,7 +78,7 @@ const quickAddDiv = document.getElementById("quickAddScreen");
 const quickAddTextArea = document.getElementById("quickAddTextArea");
 const quickAddImportButton = document.getElementById("quickAddImportButton");
 const quickAddExportButton = document.getElementById("quickAddExportButton");
-const quickAddDownloadButton = document.getElementById("quickAddDownloadButton");
+const quickAddCancelButton = document.getElementById("quickAddCancelButton");
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block";
     settingsDiv.style.display = "block";
@@ -199,6 +199,10 @@ if (quickAddSetup != undefined) {
     quickAddImportButton.addEventListener("click", (e) => {
         localStorage.setItem("currentSchedule", JSON.stringify(quickAddTextArea.value));
         alert("Quick Add Setup Complete");
+        quickAddContainer.style.display = "none";
+    });
+    quickAddCancelButton.addEventListener("click", (e) => {
+        quickAddContainer.style.display = "none";
     });
 }
 if (analytics != undefined) {

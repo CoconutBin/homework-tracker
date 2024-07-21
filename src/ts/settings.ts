@@ -97,7 +97,7 @@ const quickAddDiv = document.getElementById("quickAddScreen") as HTMLDivElement
 const quickAddTextArea = document.getElementById("quickAddTextArea") as HTMLTextAreaElement
 const quickAddImportButton = document.getElementById("quickAddImportButton") as HTMLButtonElement
 const quickAddExportButton = document.getElementById("quickAddExportButton") as HTMLButtonElement
-const quickAddDownloadButton = document.getElementById("quickAddDownloadButton") as HTMLButtonElement
+const quickAddCancelButton = document.getElementById("quickAddCancelButton") as HTMLButtonElement
 
 
 settingsButton.addEventListener("click", () => {
@@ -229,6 +229,11 @@ if(quickAddSetup != undefined) {
     quickAddImportButton.addEventListener("click", (e) => {
         localStorage.setItem("currentSchedule", JSON.stringify(quickAddTextArea.value));
         alert("Quick Add Setup Complete");
+        quickAddContainer.style.display = "none";
+    })
+
+    quickAddCancelButton.addEventListener("click", (e) => {
+        quickAddContainer.style.display = "none";
     })
 }
 
