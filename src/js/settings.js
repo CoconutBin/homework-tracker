@@ -14,12 +14,16 @@ class Settings {
     subjectNameClick;
     analytics;
     systemFont;
+    noGradientNavbars;
+    useSystemTheme;
     initializeDefaults() {
         this.defaultThemes = {
             light: "matcha",
             dark: "hojicha"
         };
+        this.noGradientNavbars = false;
         this.pureBlackDarkMode = false;
+        this.useSystemTheme = true;
         this.rightToLeft = false;
         this.customThemes = false;
         this.customThemeColor = {};
@@ -42,7 +46,9 @@ class Settings {
             rightToLeft: this.rightToLeft,
             subjectNameClick: this.subjectNameClick,
             analytics: this.analytics,
-            systemFont: this.systemFont
+            systemFont: this.systemFont,
+            noGradientNavbars: this.noGradientNavbars,
+            useSystemTheme: this.useSystemTheme,
         };
     }
     set settingsObject(obj) {
@@ -54,6 +60,8 @@ class Settings {
         this.pureBlackDarkMode = obj.pureBlackDarkMode;
         this.analytics = obj.analytics;
         this.systemFont = obj.systemFont;
+        this.noGradientNavbars = obj.noGradientNavbars;
+        this.useSystemTheme = obj.useSystemTheme;
     }
 }
 const settings = new Settings();
@@ -65,6 +73,8 @@ const settingsresetButton = document.getElementById('settingsResetButton');
 const defaultDarkThemeSetting = document.getElementById("defaultDark");
 const defaultLightThemeSetting = document.getElementById("defaultLight");
 const rightToLeft = document.getElementById("rightToLeft");
+const noGradientNavbars = document.getElementById("noGradientNavbars");
+const useSystemTheme = document.getElementById("useSystemTheme");
 const subjectNameClick = document.getElementById("subjectNameClick");
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode');
 const customThemes = document.getElementById('customThemes');
@@ -182,6 +192,20 @@ customThemes.addEventListener("change", () => {
         pureBlackDarkMode.disabled = false;
     }
 });
+noGradientNavbars.addEventListener("change", () => {
+    settings.noGradientNavbars = noGradientNavbars.checked;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    if (settings.noGradientNavbars) {
+        document.getElementById("navbar").style.background = 'var(--secondary)';
+    }
+    else {
+        document.getElementById("navbar").style.background = '';
+    }
+});
+useSystemTheme.addEventListener("change", () => {
+    settings.useSystemTheme = useSystemTheme.checked;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+});
 if (quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
         settingsContainer.style.display = "none";
@@ -231,6 +255,8 @@ if (localStorage.getItem("settings") != null) {
 try {
     rightToLeft.checked = settings.rightToLeft;
     systemFont.checked = settings.systemFont;
+    useSystemTheme.checked = settings.useSystemTheme;
+    noGradientNavbars.checked = settings.noGradientNavbars;
     if (customThemes != undefined) {
         customThemes.checked = settings.customThemes;
     }
@@ -255,6 +281,8 @@ catch {
     customThemes.checked = settings.customThemes;
     subjectNameClick.value = settings.subjectNameClick;
     pureBlackDarkMode.checked = settings.pureBlackDarkMode;
+    noGradientNavbars.checked = settings.noGradientNavbars;
+    useSystemTheme.checked = settings.useSystemTheme;
 }
 if (rightToLeft.checked) {
     list.style.flexDirection = "row-reverse";

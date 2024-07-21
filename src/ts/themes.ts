@@ -14,6 +14,21 @@ const themeTemplates = document.getElementById("themeTemplates") as HTMLSelectEl
 
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
 
+if(settings.noGradientNavbars){
+    document.getElementById("navbar").style.background = 'var(--secondary)'
+} else{
+    document.getElementById("navbar").style.background = ''
+}
+
+if(settings.useSystemTheme && !settings.customThemes){
+    if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+        currentTheme = settings.defaultThemes.dark;
+    } else{
+        currentTheme = settings.defaultThemes.light;
+    }
+}
+
+
 type ThemeTypes = "light" | "dark" | "none";
 class Theme {
     name: string;
