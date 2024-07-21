@@ -287,6 +287,10 @@ if (localStorage.getItem("settings") != null) {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"))
 }
 
+if(settings.useSystemTheme == undefined) {
+    settings.useSystemTheme = true
+}
+
 try {
     rightToLeft.checked = settings.rightToLeft
     systemFont.checked = settings.systemFont
