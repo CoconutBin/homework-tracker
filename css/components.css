@@ -53,7 +53,6 @@ button:hover {
     color: var(--text);
     padding: 0 5px;
     display: inline-block;
-    font-size: 1.2vw;
     margin: 0;
     font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
     overflow: visible;
