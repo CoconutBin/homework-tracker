@@ -12,6 +12,20 @@ const inputThemeAccent = document.getElementById("inputThemeAccent");
 const themesResetButton = document.getElementById('themesResetButton');
 const themeTemplates = document.getElementById("themeTemplates");
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
+if (settings.noGradientNavbars) {
+    document.getElementById("navbar").style.background = 'var(--secondary)';
+}
+else {
+    document.getElementById("navbar").style.background = '';
+}
+if (settings.useSystemTheme && !settings.customThemes) {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        currentTheme = settings.defaultThemes.dark;
+    }
+    else {
+        currentTheme = settings.defaultThemes.light;
+    }
+}
 class Theme {
     name;
     displayName;
@@ -86,7 +100,6 @@ const Themes = {
     icedark: new Theme('icedark', "Ice", 'dark', '#d0e3ec', '#00061f', '#112345', '#231e3e', '#0d173f', '#00ff00', '#da0000'),
     simpledark: new Theme('simpledark', "Simple", 'dark', '#e2e2e2', '#0f0f0f', '#252525', '#313131', '#202020'),
     choco: new Theme('choco', "Choco", 'dark', "#f8d9d9", "#190f0b", "#604a31", "#63543c", "#951b32"),
-    phutopia: new Theme('phutopia', "Peam", 'dark', '#ffffff', '#313131', '#490F66', '#2c0544', '#000000'),
     sepia: new Theme('sepia', "Sepia", 'dark', '#bca080', '#201209', '#604129', '#a27e49', '#301e0d'),
 };
 if (settings.customThemes == false) {
@@ -177,6 +190,7 @@ inputThemePrimary.addEventListener('input', () => {
 inputThemeSecondary.addEventListener('input', () => {
     settings.customThemeColor.secondary = inputThemeSecondary.value;
     cssVariables.style.setProperty('--secondary', settings.customThemeColor.secondary);
+    document.querySelector("meta[name='theme-color']").content = this.secondaryColor;
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
     themeTemplates.value = 'custom';
 });

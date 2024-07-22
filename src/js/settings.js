@@ -14,31 +14,28 @@ class Settings {
     subjectNameClick;
     analytics;
     systemFont;
-    reset() {
+    noGradientNavbars;
+    useSystemTheme;
+    initializeDefaults() {
         this.defaultThemes = {
             light: "matcha",
-            dark: "simpledark"
-        },
-            this.pureBlackDarkMode = false,
-            this.rightToLeft = false,
-            this.customThemes = false,
-            this.customThemeColor = {};
+            dark: "hojicha"
+        };
+        this.noGradientNavbars = false;
+        this.pureBlackDarkMode = false;
+        this.useSystemTheme = true;
+        this.rightToLeft = false;
+        this.customThemes = false;
+        this.customThemeColor = {};
         this.subjectNameClick = "";
         this.analytics = false;
         this.systemFont = false;
     }
     constructor() {
-        this.pureBlackDarkMode = false,
-            this.rightToLeft = false,
-            this.customThemes = false,
-            this.customThemeColor = {};
-        this.subjectNameClick = "",
-            this.defaultThemes = {
-                light: "matcha",
-                dark: "simpledark"
-            };
-        this.analytics = false;
-        this.systemFont = false;
+        this.initializeDefaults();
+    }
+    reset() {
+        this.initializeDefaults();
     }
     get settingsObject() {
         return {
@@ -49,7 +46,9 @@ class Settings {
             rightToLeft: this.rightToLeft,
             subjectNameClick: this.subjectNameClick,
             analytics: this.analytics,
-            systemFont: this.systemFont
+            systemFont: this.systemFont,
+            noGradientNavbars: this.noGradientNavbars,
+            useSystemTheme: this.useSystemTheme,
         };
     }
     set settingsObject(obj) {
@@ -61,6 +60,8 @@ class Settings {
         this.pureBlackDarkMode = obj.pureBlackDarkMode;
         this.analytics = obj.analytics;
         this.systemFont = obj.systemFont;
+        this.noGradientNavbars = obj.noGradientNavbars;
+        this.useSystemTheme = obj.useSystemTheme;
     }
 }
 const settings = new Settings();
@@ -72,6 +73,8 @@ const settingsresetButton = document.getElementById('settingsResetButton');
 const defaultDarkThemeSetting = document.getElementById("defaultDark");
 const defaultLightThemeSetting = document.getElementById("defaultLight");
 const rightToLeft = document.getElementById("rightToLeft");
+const noGradientNavbars = document.getElementById("noGradientNavbars");
+const useSystemTheme = document.getElementById("useSystemTheme");
 const subjectNameClick = document.getElementById("subjectNameClick");
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode');
 const customThemes = document.getElementById('customThemes');
@@ -79,6 +82,13 @@ const analytics = document.getElementById('analytics');
 const analyticsDiv = document.getElementById("analyticsDiv");
 const quickAddSetup = document.getElementById("quickAddSetup");
 const systemFont = document.getElementById("systemFont");
+const quickAddContainer = document.getElementById("quickAddContainer");
+const quickAddModal = document.getElementById("quickAddModal");
+const quickAddDiv = document.getElementById("quickAddScreen");
+const quickAddTextArea = document.getElementById("quickAddTextArea");
+const quickAddImportButton = document.getElementById("quickAddImportButton");
+const quickAddExportButton = document.getElementById("quickAddExportButton");
+const quickAddCancelButton = document.getElementById("quickAddCancelButton");
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block";
     settingsDiv.style.display = "block";
@@ -127,7 +137,7 @@ systemFont.addEventListener("change", () => {
         document.body.style.fontFamily = "system-ui, sans-serif";
     }
     else {
-        document.body.style.fontFamily = '"Varela Round", system-ui, sans-serif';
+        document.body.style.fontFamily = '"Nunito", system-ui, sans-serif';
     }
 });
 rightToLeft.addEventListener("change", () => {
@@ -168,7 +178,16 @@ customThemes.addEventListener("change", () => {
         Themes['custom'].setCSS();
     }
     else {
-        if (Themes[currentTheme].themeType == "light") {
+        function themeDeterminer(hexcolor) {
+            let splitHex = hexcolor.match(/[0-9a-f]{2}/gi);
+            if (((parseInt(splitHex[0], 16) + parseInt(splitHex[1], 16) + parseInt(splitHex[2], 16)) / 3) < 30) {
+                return "dark";
+            }
+            else {
+                return "light";
+            }
+        }
+        if (themeDeterminer(Themes[currentTheme].backgroundColor) == "light") {
             themeButton.textContent = "light_mode";
             Themes[settings.defaultThemes.light].setCSS();
         }
@@ -182,10 +201,41 @@ customThemes.addEventListener("change", () => {
         pureBlackDarkMode.disabled = false;
     }
 });
+noGradientNavbars.addEventListener("change", () => {
+    settings.noGradientNavbars = noGradientNavbars.checked;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    if (settings.noGradientNavbars) {
+        document.getElementById("navbar").style.background = 'var(--secondary)';
+    }
+    else {
+        document.getElementById("navbar").style.background = '';
+    }
+});
+useSystemTheme.addEventListener("change", () => {
+    settings.useSystemTheme = useSystemTheme.checked;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+});
 if (quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
-        alert("Quick Add Function is currently not implemented in the UI");
-        //to do: add quick add function
+        settingsContainer.style.display = "none";
+        quickAddContainer.style.display = "block";
+        quickAddDiv.style.display = "block";
+    });
+    quickAddModal.addEventListener("click", () => {
+        quickAddContainer.style.display = "none";
+    });
+    quickAddExportButton.addEventListener("click", (e) => {
+        quickAddTextArea.value = localStorage.getItem("currentSchedule");
+        quickAddTextArea.select();
+        navigator.clipboard.writeText(localStorage.getItem("currentSchedule"));
+    });
+    quickAddImportButton.addEventListener("click", (e) => {
+        localStorage.setItem("currentSchedule", JSON.stringify(quickAddTextArea.value));
+        alert("Quick Add Setup Complete");
+        quickAddContainer.style.display = "none";
+    });
+    quickAddCancelButton.addEventListener("click", (e) => {
+        quickAddContainer.style.display = "none";
     });
 }
 if (analytics != undefined) {
@@ -211,9 +261,14 @@ if (subjectNameClick != undefined) {
 if (localStorage.getItem("settings") != null) {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"));
 }
+if (settings.useSystemTheme == undefined) {
+    settings.useSystemTheme = true;
+}
 try {
     rightToLeft.checked = settings.rightToLeft;
     systemFont.checked = settings.systemFont;
+    useSystemTheme.checked = settings.useSystemTheme;
+    noGradientNavbars.checked = settings.noGradientNavbars;
     if (customThemes != undefined) {
         customThemes.checked = settings.customThemes;
     }
@@ -238,6 +293,8 @@ catch {
     customThemes.checked = settings.customThemes;
     subjectNameClick.value = settings.subjectNameClick;
     pureBlackDarkMode.checked = settings.pureBlackDarkMode;
+    noGradientNavbars.checked = settings.noGradientNavbars;
+    useSystemTheme.checked = settings.useSystemTheme;
 }
 if (rightToLeft.checked) {
     list.style.flexDirection = "row-reverse";
@@ -256,5 +313,5 @@ if (settings.systemFont) {
     document.body.style.fontFamily = "system-ui, sans-serif";
 }
 else {
-    document.body.style.fontFamily = '"Varela Round", system-ui, sans-serif';
+    document.body.style.fontFamily = '"Nunito", system-ui, sans-serif';
 }

@@ -8,51 +8,48 @@ sortButton.addEventListener("click", () => {
 */
 
 class Settings {
-
     defaultThemes: {
         light: string,
         dark: string
-    }
-    pureBlackDarkMode: boolean
-    customThemes: boolean
+    };
+    pureBlackDarkMode: boolean;
+    customThemes: boolean;
     customThemeColor: {
         text?: string,
         background?: string,
         primary?: string,
         secondary?: string,
         accent?: string
-    }
-    rightToLeft: boolean
-    subjectNameClick: string
-    analytics: boolean
-    systemFont: boolean
+    };
+    rightToLeft: boolean;
+    subjectNameClick: string;
+    analytics: boolean;
+    systemFont: boolean;
+    noGradientNavbars: boolean;
+    useSystemTheme: boolean;
 
-    reset() {
+    private initializeDefaults() {
         this.defaultThemes = {
             light: "matcha",
-            dark: "simpledark"
-        },
-        this.pureBlackDarkMode = false,
-        this.rightToLeft = false,
-        this.customThemes = false,
-        this.customThemeColor = {}
-        this.subjectNameClick = ""
-        this.analytics = false
-        this.systemFont = false
+            dark: "hojicha"
+        };
+        this.noGradientNavbars = false;
+        this.pureBlackDarkMode = false;
+        this.useSystemTheme = true;
+        this.rightToLeft = false;
+        this.customThemes = false;
+        this.customThemeColor = {};
+        this.subjectNameClick = "";
+        this.analytics = false;
+        this.systemFont = false;
     }
 
     constructor() {
-        this.pureBlackDarkMode = false,
-            this.rightToLeft = false,
-            this.customThemes = false,
-            this.customThemeColor = {}
-            this.subjectNameClick = "",
-            this.defaultThemes = {
-                light: "matcha",
-                dark: "simpledark"
-            }
-            this.analytics = false
-            this.systemFont = false
+        this.initializeDefaults();
+    }
+
+    reset() {
+        this.initializeDefaults();
     }
 
     get settingsObject() {
@@ -64,21 +61,26 @@ class Settings {
             rightToLeft: this.rightToLeft,
             subjectNameClick: this.subjectNameClick,
             analytics: this.analytics,
-            systemFont: this.systemFont
-        }
+            systemFont: this.systemFont,
+            noGradientNavbars: this.noGradientNavbars,
+            useSystemTheme: this.useSystemTheme,
+        };
     }
 
     set settingsObject(obj) {
-        this.customThemeColor = obj.customThemeColor
-        this.customThemes = obj.customThemes
-        this.defaultThemes = obj.defaultThemes
-        this.rightToLeft = obj.rightToLeft
-        this.subjectNameClick = obj.subjectNameClick
-        this.pureBlackDarkMode = obj.pureBlackDarkMode
-        this.analytics = obj.analytics
-        this.systemFont = obj.systemFont
+        this.customThemeColor = obj.customThemeColor;
+        this.customThemes = obj.customThemes;
+        this.defaultThemes = obj.defaultThemes;
+        this.rightToLeft = obj.rightToLeft;
+        this.subjectNameClick = obj.subjectNameClick;
+        this.pureBlackDarkMode = obj.pureBlackDarkMode;
+        this.analytics = obj.analytics;
+        this.systemFont = obj.systemFont;
+        this.noGradientNavbars = obj.noGradientNavbars;
+        this.useSystemTheme = obj.useSystemTheme;
     }
 }
+
 
 const settings = new Settings()
 
@@ -90,6 +92,8 @@ const settingsresetButton = document.getElementById('settingsResetButton') as HT
 const defaultDarkThemeSetting = document.getElementById("defaultDark") as HTMLSelectElement;
 const defaultLightThemeSetting = document.getElementById("defaultLight") as HTMLSelectElement;
 const rightToLeft = document.getElementById("rightToLeft") as HTMLInputElement;
+const noGradientNavbars = document.getElementById("noGradientNavbars") as HTMLInputElement;
+const useSystemTheme = document.getElementById("useSystemTheme") as HTMLInputElement;
 const subjectNameClick = document.getElementById("subjectNameClick") as HTMLSelectElement;
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode') as HTMLInputElement
 const customThemes = document.getElementById('customThemes') as HTMLInputElement
@@ -97,6 +101,14 @@ const analytics = document.getElementById('analytics') as HTMLInputElement
 const analyticsDiv = document.getElementById("analyticsDiv") as HTMLDivElement
 const quickAddSetup = document.getElementById("quickAddSetup") as HTMLButtonElement
 const systemFont = document.getElementById("systemFont") as HTMLInputElement
+const quickAddContainer = document.getElementById("quickAddContainer") as HTMLDivElement
+const quickAddModal = document.getElementById("quickAddModal") as HTMLDivElement
+const quickAddDiv = document.getElementById("quickAddScreen") as HTMLDivElement
+const quickAddTextArea = document.getElementById("quickAddTextArea") as HTMLTextAreaElement
+const quickAddImportButton = document.getElementById("quickAddImportButton") as HTMLButtonElement
+const quickAddExportButton = document.getElementById("quickAddExportButton") as HTMLButtonElement
+const quickAddCancelButton = document.getElementById("quickAddCancelButton") as HTMLButtonElement
+
 
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block"
@@ -152,7 +164,7 @@ systemFont.addEventListener("change", () => {
     if (settings.systemFont) {
         document.body.style.fontFamily = "system-ui, sans-serif"
     } else {
-        document.body.style.fontFamily = '"Varela Round", system-ui, sans-serif'
+        document.body.style.fontFamily = '"Nunito", system-ui, sans-serif'
     }
 })
 
@@ -194,7 +206,17 @@ customThemes.addEventListener("change", () => {
         Themes['custom'].CSSColors = settings.customThemeColor
         Themes['custom'].setCSS()
     } else{
-        if(Themes[currentTheme].themeType == "light") {
+        function themeDeterminer(hexcolor: string){
+           let splitHex: string[] = hexcolor.match(/[0-9a-f]{2}/gi)
+           if(((parseInt(splitHex[0], 16) + parseInt(splitHex[1], 16) + parseInt(splitHex[2], 16)) / 3) < 30){
+            return "dark";
+           }
+           else{
+            return "light";
+           }
+        }
+
+        if(themeDeterminer(Themes[currentTheme].backgroundColor) == "light") {
             themeButton.textContent = "light_mode"
             Themes[settings.defaultThemes.light].setCSS()
         }
@@ -209,10 +231,44 @@ customThemes.addEventListener("change", () => {
     }
 })
 
+noGradientNavbars.addEventListener("change", () => {
+    settings.noGradientNavbars = noGradientNavbars.checked
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    if(settings.noGradientNavbars){
+        document.getElementById("navbar").style.background = 'var(--secondary)'
+    } else{
+        document.getElementById("navbar").style.background = ''
+    }
+})
+
+useSystemTheme.addEventListener("change", () => {
+    settings.useSystemTheme = useSystemTheme.checked
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+})
+
 if(quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
-        alert("Quick Add Function is currently not implemented in the UI")
-        //to do: add quick add function
+        settingsContainer.style.display = "none"
+        quickAddContainer.style.display = "block"
+        quickAddDiv.style.display = "block"
+    })
+    quickAddModal.addEventListener("click", () => {
+        quickAddContainer.style.display = "none"
+    })
+    quickAddExportButton.addEventListener("click", (e) => {
+        quickAddTextArea.value = localStorage.getItem("currentSchedule");
+        quickAddTextArea.select();
+        navigator.clipboard.writeText(localStorage.getItem("currentSchedule"));
+    })
+
+    quickAddImportButton.addEventListener("click", (e) => {
+        localStorage.setItem("currentSchedule", JSON.stringify(quickAddTextArea.value));
+        alert("Quick Add Setup Complete");
+        quickAddContainer.style.display = "none";
+    })
+
+    quickAddCancelButton.addEventListener("click", (e) => {
+        quickAddContainer.style.display = "none";
     })
 }
 
@@ -241,9 +297,15 @@ if (localStorage.getItem("settings") != null) {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"))
 }
 
+if(settings.useSystemTheme == undefined) {
+    settings.useSystemTheme = true
+}
+
 try {
     rightToLeft.checked = settings.rightToLeft
     systemFont.checked = settings.systemFont
+    useSystemTheme.checked = settings.useSystemTheme
+    noGradientNavbars.checked = settings.noGradientNavbars
     if (customThemes != undefined){customThemes.checked = settings.customThemes} 
     if (subjectNameClick != undefined) subjectNameClick.value = settings.subjectNameClick
     if (pureBlackDarkMode != undefined) pureBlackDarkMode.checked = settings.pureBlackDarkMode
@@ -263,6 +325,8 @@ catch {
     customThemes.checked = settings.customThemes
     subjectNameClick.value = settings.subjectNameClick
     pureBlackDarkMode.checked = settings.pureBlackDarkMode
+    noGradientNavbars.checked = settings.noGradientNavbars
+    useSystemTheme.checked = settings.useSystemTheme
 }
 
 if (rightToLeft.checked) {
@@ -282,5 +346,5 @@ if(analyticsDiv != undefined){
 if (settings.systemFont) {
     document.body.style.fontFamily = "system-ui, sans-serif"
 } else {
-    document.body.style.fontFamily = '"Varela Round", system-ui, sans-serif'
+    document.body.style.fontFamily = '"Nunito", system-ui, sans-serif'
 }

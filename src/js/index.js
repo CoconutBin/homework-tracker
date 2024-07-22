@@ -305,6 +305,8 @@ function addListItem(homeworkObject) {
         dueDateInput.addEventListener("change", () => {
             homeworkObject.dueDate = new Date(dueDateInput.value).toDateString();
             detailsDueDateTime.textContent = new Date(homeworkObject.dueDate).toDateString();
+            dueDate.textContent = `Due: ${new Date(homeworkObject.dueDate).toDateString()}`;
+            displayDivRender();
             ManageLocalStorage.replace(index, homeworkObject);
             dueDateInput.style.display = "none";
         });
@@ -364,6 +366,15 @@ function addListItem(homeworkObject) {
     //appending to list element
     displayDiv.appendChild(startHomeworkButton);
     list.appendChild(listItem);
+    function displayDivRender() {
+        let existingElements = [subjectNameContainer, timeStarted];
+        if (dueDate.innerText != undefined) {
+            existingElements.push(dueDate);
+        }
+        existingElements.push(startHomeworkButton);
+        displayDiv.replaceChildren();
+        existingElements.forEach(x => displayDiv.appendChild(x));
+    }
 }
 quickAddButton.addEventListener("click", () => {
     if (currentSchedule.schedule != undefined) {
@@ -397,10 +408,12 @@ function clearList() {
     if (confirm("Are you sure you want to clear the list?")) {
         listContents.splice(0, listContents.length);
         localStorage.setItem("listContents", JSON.stringify(listContents));
-        list.innerHTML = `<div class="listItem" id="addListItemButton">
-                <div class="listItemDisplay"><h1><span class="material-symbols-rounded" style="font-size: 48px;">add</span></h1></div>
-            </div>`;
+        renderList();
     }
+}
+function renderList() {
+    list.replaceChildren(addListItemButton);
+    listContents.forEach(homeworkObject => addListItem(homeworkObject));
 }
 //data transfer button setup
 //i cant be bothered finding a good place to put this, so it goes here, move if you want.

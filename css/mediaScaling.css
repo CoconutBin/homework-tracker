@@ -1,15 +1,11 @@
-@media (max-width: 1280px) {
+@media (max-width: 1440px) {
     .analyticsBlock,
     .listItem {
         width: calc(25vw - calc(2*var(--standard-margin)) - 10px);
     }
 
     .listItemDisplay {
-        height: max(250px, 30vh)
-    }
-
-    textarea{
-        border-radius: none !important;
+        height: 250px
     }
 }
 

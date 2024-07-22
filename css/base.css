@@ -1,0 +1,32 @@
+:root {
+    --text: #011206;
+    --background: #ffffff;
+    --primary: #ffffff;
+    --secondary: #ffffff;
+    --accent: #ffffff;
+    --success: #1ec726;
+    --error: #da0000;
+
+    --standard-margin: 5px;
+    --listItem-width: calc(20% - calc(2*var(--standard-margin)) - 10px);
+}
+
+body,
+html {
+    color: var(--text);
+    font-size: 1.2vw;
+    font-family: "Nunito", system-ui, sans-serif;
+    cursor: default;
+    background: var(--background);
+    margin: 0;
+    padding: 0;
+    overscroll-behavior-y: contain;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body>* {
+    transition: all .2s ease-in-out;
+}
