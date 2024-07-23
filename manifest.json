@@ -30,5 +30,5 @@
     ],
     "start_url": "https://coconutbin.github.io/homework-tracker",
     "display": "standalone",
-    "display_override": ["fullscreen", "minimal-ui"]
+    "display_override": ["minimal-ui"]
   }
