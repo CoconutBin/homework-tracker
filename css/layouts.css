@@ -93,7 +93,7 @@ p.settingsCategory{
 
 #addListItemButton div {
     background: var(--accent) !important;
-    text-align: center;
+    text-align: center !important;
 }
 
 .modal {
