@@ -171,11 +171,7 @@ systemFont.addEventListener("change", () => {
 rightToLeft.addEventListener("change", () => {
     settings.rightToLeft = rightToLeft.checked
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
-    if (settings.rightToLeft) {
-        list.style.flexDirection = "row-reverse"
-    } else {
-        list.style.flexDirection = "row"
-    }
+    rtlFormat(rightToLeft.checked)
 })
 
 pureBlackDarkMode.addEventListener("change", () => {
@@ -255,6 +251,7 @@ if(quickAddSetup != undefined) {
     quickAddModal.addEventListener("click", () => {
         quickAddContainer.style.display = "none"
     })
+    
     quickAddExportButton.addEventListener("click", (e) => {
         quickAddTextArea.value = localStorage.getItem("currentSchedule");
         quickAddTextArea.select();
@@ -262,8 +259,9 @@ if(quickAddSetup != undefined) {
     })
 
     quickAddImportButton.addEventListener("click", (e) => {
-        localStorage.setItem("currentSchedule", JSON.stringify(quickAddTextArea.value));
-        alert("Quick Add Setup Complete");
+        localStorage.setItem("currentSchedule",quickAddTextArea.value);
+        console.log(`saved ${quickAddTextArea.value} into localStorage`)
+        currentSchedule.scheduleObject = JSON.parse(localStorage.getItem("currentSchedule"))
         quickAddContainer.style.display = "none";
     })
 
@@ -329,9 +327,22 @@ catch {
     useSystemTheme.checked = settings.useSystemTheme
 }
 
-if (rightToLeft.checked) {
-    list.style.flexDirection = "row-reverse"
+function rtlFormat(bool: boolean){
+    let listItemDisplay = document.querySelectorAll(".listItemDisplay") as unknown as HTMLElement[]
+    let subjectNameContainer = document.querySelectorAll(".subjectNameContainer") as unknown as HTMLElement[]
+
+    if(bool){
+        list.style.flexDirection = "row-reverse";
+        listItemDisplay.forEach(x => x.style.textAlign = "right");
+        subjectNameContainer.forEach(x => x.style.flexDirection = "row-reverse");
+    } else{
+        list.style.flexDirection = "row"
+        listItemDisplay.forEach(x => x.style.textAlign = "left");
+        subjectNameContainer.forEach(x => x.style.flexDirection = "row");
+    }
 }
+
+rtlFormat(rightToLeft.checked)
 
 if(analyticsDiv != undefined){
     if(settings.analytics) {

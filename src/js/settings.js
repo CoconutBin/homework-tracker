@@ -143,12 +143,7 @@ systemFont.addEventListener("change", () => {
 rightToLeft.addEventListener("change", () => {
     settings.rightToLeft = rightToLeft.checked;
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
-    if (settings.rightToLeft) {
-        list.style.flexDirection = "row-reverse";
-    }
-    else {
-        list.style.flexDirection = "row";
-    }
+    rtlFormat(rightToLeft.checked);
 });
 pureBlackDarkMode.addEventListener("change", () => {
     settings.pureBlackDarkMode = pureBlackDarkMode.checked;
@@ -230,8 +225,9 @@ if (quickAddSetup != undefined) {
         navigator.clipboard.writeText(localStorage.getItem("currentSchedule"));
     });
     quickAddImportButton.addEventListener("click", (e) => {
-        localStorage.setItem("currentSchedule", JSON.stringify(quickAddTextArea.value));
-        alert("Quick Add Setup Complete");
+        localStorage.setItem("currentSchedule", quickAddTextArea.value);
+        console.log(`saved ${quickAddTextArea.value} into localStorage`);
+        currentSchedule.scheduleObject = JSON.parse(localStorage.getItem("currentSchedule"));
         quickAddContainer.style.display = "none";
     });
     quickAddCancelButton.addEventListener("click", (e) => {
@@ -296,9 +292,21 @@ catch {
     noGradientNavbars.checked = settings.noGradientNavbars;
     useSystemTheme.checked = settings.useSystemTheme;
 }
-if (rightToLeft.checked) {
-    list.style.flexDirection = "row-reverse";
+function rtlFormat(bool) {
+    let listItemDisplay = document.querySelectorAll(".listItemDisplay");
+    let subjectNameContainer = document.querySelectorAll(".subjectNameContainer");
+    if (bool) {
+        list.style.flexDirection = "row-reverse";
+        listItemDisplay.forEach(x => x.style.textAlign = "right");
+        subjectNameContainer.forEach(x => x.style.flexDirection = "row-reverse");
+    }
+    else {
+        list.style.flexDirection = "row";
+        listItemDisplay.forEach(x => x.style.textAlign = "left");
+        subjectNameContainer.forEach(x => x.style.flexDirection = "row");
+    }
 }
+rtlFormat(rightToLeft.checked);
 if (analyticsDiv != undefined) {
     if (settings.analytics) {
         analyticsDiv.style.display = "flex";
