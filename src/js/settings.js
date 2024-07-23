@@ -143,12 +143,7 @@ systemFont.addEventListener("change", () => {
 rightToLeft.addEventListener("change", () => {
     settings.rightToLeft = rightToLeft.checked;
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
-    if (settings.rightToLeft) {
-        list.style.flexDirection = "row-reverse";
-    }
-    else {
-        list.style.flexDirection = "row";
-    }
+    rtlFormat(rightToLeft.checked);
 });
 pureBlackDarkMode.addEventListener("change", () => {
     settings.pureBlackDarkMode = pureBlackDarkMode.checked;
@@ -297,9 +292,21 @@ catch {
     noGradientNavbars.checked = settings.noGradientNavbars;
     useSystemTheme.checked = settings.useSystemTheme;
 }
-if (rightToLeft.checked) {
-    list.style.flexDirection = "row-reverse";
+function rtlFormat(bool) {
+    let listItemDisplay = document.querySelectorAll(".listItemDisplay");
+    let subjectNameContainer = document.querySelectorAll(".subjectNameContainer");
+    if (bool) {
+        list.style.flexDirection = "row-reverse";
+        listItemDisplay.forEach(x => x.style.textAlign = "right");
+        subjectNameContainer.forEach(x => x.style.flexDirection = "row-reverse");
+    }
+    else {
+        list.style.flexDirection = "row";
+        listItemDisplay.forEach(x => x.style.textAlign = "left");
+        subjectNameContainer.forEach(x => x.style.flexDirection = "row");
+    }
 }
+rtlFormat(rightToLeft.checked);
 if (analyticsDiv != undefined) {
     if (settings.analytics) {
         analyticsDiv.style.display = "flex";

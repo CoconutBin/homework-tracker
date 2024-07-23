@@ -171,11 +171,7 @@ systemFont.addEventListener("change", () => {
 rightToLeft.addEventListener("change", () => {
     settings.rightToLeft = rightToLeft.checked
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
-    if (settings.rightToLeft) {
-        list.style.flexDirection = "row-reverse"
-    } else {
-        list.style.flexDirection = "row"
-    }
+    rtlFormat(rightToLeft.checked)
 })
 
 pureBlackDarkMode.addEventListener("change", () => {
@@ -331,9 +327,22 @@ catch {
     useSystemTheme.checked = settings.useSystemTheme
 }
 
-if (rightToLeft.checked) {
-    list.style.flexDirection = "row-reverse"
+function rtlFormat(bool: boolean){
+    let listItemDisplay = document.querySelectorAll(".listItemDisplay") as unknown as HTMLElement[]
+    let subjectNameContainer = document.querySelectorAll(".subjectNameContainer") as unknown as HTMLElement[]
+
+    if(bool){
+        list.style.flexDirection = "row-reverse";
+        listItemDisplay.forEach(x => x.style.textAlign = "right");
+        subjectNameContainer.forEach(x => x.style.flexDirection = "row-reverse");
+    } else{
+        list.style.flexDirection = "row"
+        listItemDisplay.forEach(x => x.style.textAlign = "left");
+        subjectNameContainer.forEach(x => x.style.flexDirection = "row");
+    }
 }
+
+rtlFormat(rightToLeft.checked)
 
 if(analyticsDiv != undefined){
     if(settings.analytics) {
