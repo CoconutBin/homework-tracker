@@ -255,6 +255,7 @@ if(quickAddSetup != undefined) {
     quickAddModal.addEventListener("click", () => {
         quickAddContainer.style.display = "none"
     })
+    
     quickAddExportButton.addEventListener("click", (e) => {
         quickAddTextArea.value = localStorage.getItem("currentSchedule");
         quickAddTextArea.select();
@@ -262,8 +263,9 @@ if(quickAddSetup != undefined) {
     })
 
     quickAddImportButton.addEventListener("click", (e) => {
-        localStorage.setItem("currentSchedule", JSON.stringify(quickAddTextArea.value));
-        alert("Quick Add Setup Complete");
+        localStorage.setItem("currentSchedule",quickAddTextArea.value);
+        console.log(`saved ${quickAddTextArea.value} into localStorage`)
+        currentSchedule.scheduleObject = JSON.parse(localStorage.getItem("currentSchedule"))
         quickAddContainer.style.display = "none";
     })
 
