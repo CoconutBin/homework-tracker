@@ -29,6 +29,5 @@
       }
     ],
     "start_url": "https://coconutbin.github.io/homework-tracker",
-    "display": "standalone",
-    "display_override": ["minimal-ui"]
+    "display": "standalone"
   }
