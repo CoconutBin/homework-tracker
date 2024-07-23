@@ -190,7 +190,7 @@ inputThemePrimary.addEventListener('input', () => {
 inputThemeSecondary.addEventListener('input', () => {
     settings.customThemeColor.secondary = inputThemeSecondary.value;
     cssVariables.style.setProperty('--secondary', settings.customThemeColor.secondary);
-    document.querySelector("meta[name='theme-color']").content = this.secondaryColor;
+    document.querySelector("meta[name='theme-color']").content = settings.customThemeColor.secondary;
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
     themeTemplates.value = 'custom';
 });
