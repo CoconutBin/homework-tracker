@@ -28,6 +28,16 @@
         "purpose": "any"
       }
     ],
+    "shortcuts": [
+    {
+      "name": "See archived homeworks",
+      "url": "/archive.html"
+    },
+    {
+      "name": "See active homeworks",
+      "url": "/index.html"
+    }
+  ],
     "start_url": "https://coconutbin.github.io/homework-tracker",
     "display": "standalone"
   }
