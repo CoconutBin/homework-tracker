@@ -1,7 +1,7 @@
 @media (max-width: 1440px) {
 
     .listItemDisplay {
-        width: calc(25vw - calc(2*var(--standard-margin)) - 10px);
+        width: calc(25vw - calc(2*var(--standard-margin)) - 30px);
         height: 250px
     }
 }
@@ -9,7 +9,7 @@
 @media (max-width: 900px) {
 
     .listItemDisplay {
-        width: calc(33vw - calc(2*var(--standard-margin)) - 10px);
+        width: calc(33vw - calc(2*var(--standard-margin)) - 30px);
         height: max(250px, 30vh)
     }
 }
@@ -17,7 +17,7 @@
 @media (max-width: 700px) {
 
     .listItemDisplay {
-        width: calc(50vw - calc(2*var(--standard-margin)) - 10px);
+        width: calc(50vw - calc(2*var(--standard-margin)) - 30px);
         height: max(300px, 30vh)
     }
 
@@ -35,7 +35,7 @@
 @media (max-width: 400px) {
 
     .listItemDisplay {
-        width: calc(100vw - calc(2*var(--standard-margin)) - 10px);
+        width: calc(100vw - calc(2*var(--standard-margin)) - 30px);
         height: max(200px, 30vh)
     }
 
