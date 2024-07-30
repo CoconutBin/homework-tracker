@@ -354,6 +354,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
             dueDate.textContent = `Due: ${new Date(homeworkObject.dueDate).toDateString()}`
             displayDivRender()
             ManageLocalStorage.replace(index, homeworkObject)
+            overdueUpdate()
             dueDateInput.style.display = "none"
         })
     })
@@ -410,8 +411,21 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //updating time
     const liveUpdateTimer = setInterval(() => {
+        overdueUpdate()
         timeStarted.innerText = `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`
     }, 1000)
+
+    function overdueUpdate(){
+        if(Date.now() >= Date.parse(homeworkObject.dueDate) && listItem.classList.contains("listItemOverdue") == false){
+            displayDiv.classList.add("listItemOverdue")
+            dueDate.classList.add("errorText")
+        } else if(Date.now() < Date.parse(homeworkObject.dueDate)){
+            displayDiv.classList.remove("listItemOverdue")
+            dueDate.classList.remove("errorText")
+        }
+    }
+
+    overdueUpdate()
 
     if (homeworkObject.timeEnded != undefined) {
         clearInterval(liveUpdateTimer)
@@ -473,6 +487,7 @@ function renderList(){
 //data transfer button setup
 //i cant be bothered finding a good place to put this, so it goes here, move if you want.
 //wrapped in its own block so i dont accidentally modify anything that has the same name.
+// TO DO: Modular Data Transfering
 {
     const dataTransferTextArea = document.getElementById("dataTransferTextArea") as HTMLTextAreaElement;
 
