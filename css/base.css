@@ -8,7 +8,7 @@
     --error: #da0000;
 
     --standard-margin: 5px;
-    --listItem-width: calc(20% - calc(2*var(--standard-margin)) - 10px);
+    --listItem-width: 350px;
 }
 
 body,
