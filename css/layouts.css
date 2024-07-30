@@ -190,6 +190,10 @@ p.settingsCategory{
     font-weight: bold !important;
 }
 
-.overdueHomework {
+.listItemOverdue {
     background: var(--accent) !important;
+}
+
+.errorText {
+    color: var(--error);
 }
