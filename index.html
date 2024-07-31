@@ -88,6 +88,7 @@
                 <br>
                 <input type="button" value="Close" id="settingsCloseButton">
                 <input type="button" value="Reset Settings" id="settingsResetButton">
+                <input type="button" value="About" id="aboutButton">
         </div>
     </div>
     <div id="quickAddContainer" style="display: none;">
@@ -119,6 +120,14 @@
            <br><input type="button" value="Close" id="themesCloseButton">
            <input type="button" value="Reset Custom Theme" id="themesResetButton">
         </div>
+    </div>
+    <div id="aboutContainer" style="display: none;">
+        <div id="aboutModal" class="modal"></div>
+        <div id="aboutScreen" class="settingsDisplay">
+            <p class="settingsCategory">About Homework Tracker (wrkd.)</p><br>
+            <p id="version">Version: 1.0.0</p><br>
+            <p><a id="source" href="https://www.github.com/coconutbin/homework-tracker">View Source (Github)</a></p><br>
+            <br><button id="aboutCloseButton">Close</button>
     </div>
     <div id="inputform" style="display: none;">
         <form class="inputForm" style="z-index: 9999">

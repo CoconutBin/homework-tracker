@@ -359,3 +359,32 @@ if (settings.systemFont) {
 } else {
     document.body.style.fontFamily = '"Nunito", system-ui, sans-serif'
 }
+
+
+
+// About Screen
+const aboutButton = document.getElementById("aboutButton") as HTMLElement
+const aboutContainer = document.getElementById("aboutContainer") as HTMLElement
+const aboutScreen = document.getElementById("aboutScreen") as HTMLElement
+const aboutCloseButton = document.getElementById("aboutCloseButton") as HTMLElement
+const aboutModal = document.getElementById("aboutModal") as HTMLElement
+const aboutVersion = document.getElementById("version") as HTMLElement
+const aboutSource = document.getElementById("source") as HTMLElement
+
+aboutButton.addEventListener("click", () => {
+    settingsContainer.style.display = "none"
+    aboutContainer.style.display = "block"
+    aboutScreen.style.display = "block"
+})
+
+aboutModal.addEventListener("click", () => {
+    aboutContainer.style.display = "none"
+})
+
+aboutCloseButton.addEventListener("click", () => {
+    aboutContainer.style.display = "none"
+})
+
+aboutVersion.textContent = `Version: V.${version}`
+aboutSource.style.textDecoration = "none"
+aboutSource.style.color = "var(--text)"

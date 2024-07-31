@@ -89,6 +89,11 @@ p.settingsCategory{
     font-weight: bold;
 }
 
+.settingsDisplay p{
+    margin: 5px 0 !important;
+    padding: 0 5px !important;
+}
+
 #addListItemButton div {
     background: var(--accent) !important;
     text-align: center !important;
