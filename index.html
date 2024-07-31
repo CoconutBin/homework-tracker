@@ -81,9 +81,12 @@
             <p class="settingsCategory">Data</p>
             <div>
                 <div style="display: flex;" id="dataTransferOptions">
-                    <label for="includeSettings">Settings <input type="checkbox" name="includeSettings" id="includeSettings"></label>
-                    <label for="includeCustomThemes">Custom Themes <input type="checkbox" name="includeCustomThemes" id="includeCustomThemes"></label>
-                    <label for="includeSchedule">Schedule <input type="checkbox" name="includeSchedule" id="includeSchedule"></label>
+                    <label for="includeSettings">Settings <input type="checkbox" name="includeSettings"
+                            id="includeSettings"></label>
+                    <label for="includeCustomThemes">Custom Themes <input type="checkbox" name="includeCustomThemes"
+                            id="includeCustomThemes"></label>
+                    <label for="includeSchedule">Schedule <input type="checkbox" name="includeSchedule"
+                            id="includeSchedule"></label>
                 </div>
                 <textarea placeholder="export/import data" id="dataTransferTextArea" style="resize: none;"></textarea>
                 <br>
@@ -143,47 +146,48 @@
             <p><a id="source" href="https://www.github.com/coconutbin/homework-tracker">View Source (Github)</a></p><br>
             <button id="aboutCloseButton">Close</button>
         </div>
-        <div id="inputform" style="display: none;">
-            <form class="inputForm" style="z-index: 9999">
-                <label>
-                    Subject:
-                    <input type="text" name="subject" id="inputSubject" autocomplete="off">
-                </label><br>
-                <label>
-                    Subject ID:
-                    <input type="text" name="subjectId" id="inputSubjectID" autocomplete="off">
-                </label><br>
-                <label>
-                    Subject Type:
-                    <input type="text" name="subjectType" id="inputSubjectType" autocomplete="off">
-                </label><br>
-                <label>
-                    Is it a group work?
-                    <input type="checkbox" name="isGroupWork" id="inputIsGroupWork" autocomplete="off">
-                </label><br>
-                <label>
-                    Mark as important
-                    <input type="checkbox" name="isImportant" id="inputIsImportant" autocomplete="off">
-                </label><br><br>
-                <label>
-                    Due Date:
-                    <input type="date" name="dueDate" id="inputDueDate" autocomplete="off">
-                </label><br><br>
-                <label>
-                    Points:
-                    <input type="number" name="points" id="inputPoints" autocomplete="off">
-                </label><br><br>
-                <label>
-                    Work Details:
-                    <textarea name="description" id="inputDescription" autocomplete="off"
-                        placeholder="write here"></textarea>
-                </label><br><br>
-                <input type="submit">
-                <input type="button" value="Close" id="inputFormCloseButton">
-                <input type="button" value="Quick Add" id="quickAddButton">
-            </form>
-            <div class="modal" id="inputFormModalBackground"></div>
-        </div>
+    </div>
+    <div id="inputform" style="display: none;">
+        <form class="inputForm" style="z-index: 9999">
+            <label>
+                Subject:
+                <input type="text" name="subject" id="inputSubject" autocomplete="off">
+            </label><br>
+            <label>
+                Subject ID:
+                <input type="text" name="subjectId" id="inputSubjectID" autocomplete="off">
+            </label><br>
+            <label>
+                Subject Type:
+                <input type="text" name="subjectType" id="inputSubjectType" autocomplete="off">
+            </label><br>
+            <label>
+                Is it a group work?
+                <input type="checkbox" name="isGroupWork" id="inputIsGroupWork" autocomplete="off">
+            </label><br>
+            <label>
+                Mark as important
+                <input type="checkbox" name="isImportant" id="inputIsImportant" autocomplete="off">
+            </label><br><br>
+            <label>
+                Due Date:
+                <input type="date" name="dueDate" id="inputDueDate" autocomplete="off">
+            </label><br><br>
+            <label>
+                Points:
+                <input type="number" name="points" id="inputPoints" autocomplete="off">
+            </label><br><br>
+            <label>
+                Work Details:
+                <textarea name="description" id="inputDescription" autocomplete="off"
+                    placeholder="write here"></textarea>
+            </label><br><br>
+            <input type="submit">
+            <input type="button" value="Close" id="inputFormCloseButton">
+            <input type="button" value="Quick Add" id="quickAddButton">
+        </form>
+        <div class="modal" id="inputFormModalBackground"></div>
+    </div>
 </body>
 <script src="./src/js/localStorage.js"></script>
 <script src="./src/js/homework.js"></script>
