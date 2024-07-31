@@ -9,7 +9,10 @@
     <link rel="icon" type="image/png" href="icons/icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="./manifest.json" />
     <link rel="stylesheet" href="./css/base.css">
@@ -25,7 +28,8 @@
         <div style="display: flex">
             <a id="navbarButtons">
                 <!-- <a class="material-symbols-rounded clickable" id="sort">sort</a> -->
-                <a class="material-symbols-rounded clickable" id="clearList" title="Clear List" onclick="clearList()">delete_forever</a>
+                <a class="material-symbols-rounded clickable" id="clearList" title="Clear List"
+                    onclick="clearList()">delete_forever</a>
                 <a class="material-symbols-rounded clickable" href="./archive.html"
                     title="Archived Homework">inventory_2</a>
                 <a class="material-symbols-rounded clickable" id="themes" title="Dark/Light Theme">light_mode</a>
@@ -46,11 +50,11 @@
         <div id="settingsScreen" class="settingsDisplay">
             <p class="settingsCategory">General</p>
             <label for="subjectNameClick">Subject Name clicking behavior:</label>
-                <select name="subjectNameClick" id="subjectNameClick">
-                    <option value="">Nothing</option>
-                    <option value="markImportant">Mark/Unmark Important</option>
-                    <option value="editSubjectName">Edit Subject Name (Beta)</option>
-                </select><br>
+            <select name="subjectNameClick" id="subjectNameClick">
+                <option value="">Nothing</option>
+                <option value="markImportant">Mark/Unmark Important</option>
+                <option value="editSubjectName">Edit Subject Name (Beta)</option>
+            </select><br>
             <p class="settingsCategory">Themes</p>
             <label for="customThemes">Custom Theming</label>
             <input type="checkbox" name="customThemes" id="customThemes"><br>
@@ -76,6 +80,11 @@
             <input type="checkbox" name="systemFont" id="systemFont"><br>
             <p class="settingsCategory">Data</p>
             <div>
+                <div style="display: flex;" id="dataTransferOptions">
+                    <label for="includeSettings">Settings <input type="checkbox" name="includeSettings" id="includeSettings"></label>
+                    <label for="includeCustomThemes">Custom Themes <input type="checkbox" name="includeCustomThemes" id="includeCustomThemes"></label>
+                    <label for="includeSchedule">Schedule <input type="checkbox" name="includeSchedule" id="includeSchedule"></label>
+                </div>
                 <textarea placeholder="export/import data" id="dataTransferTextArea" style="resize: none;"></textarea>
                 <br>
                 <button id="dataTransferImportButton">Import</button>
@@ -83,12 +92,12 @@
                 <button id="dataTransferDownloadButton">Export as a File</button>
             </div>
             <p class="settingsCategory">Beta</p>
-                <label for="quickAddSetup">Quick Add</label>
-                <button id="quickAddSetup" name="quickAddSetup">Set Up</button><br>
-                <br>
-                <input type="button" value="Close" id="settingsCloseButton">
-                <input type="button" value="Reset Settings" id="settingsResetButton">
-                <input type="button" value="About" id="aboutButton">
+            <label for="quickAddSetup">Quick Add</label>
+            <button id="quickAddSetup" name="quickAddSetup">Set Up</button><br>
+            <br>
+            <input type="button" value="Close" id="settingsCloseButton">
+            <input type="button" value="Reset Settings" id="settingsResetButton">
+            <input type="button" value="About" id="aboutButton">
         </div>
     </div>
     <div id="quickAddContainer" style="display: none;">
@@ -107,18 +116,23 @@
     <div id="themesContainer" style="display: none;">
         <div id="themesModal" class="modal"></div>
         <div id="customThemesScreen" class="themesDisplay">
-                <label for="inputThemeText">Theme Text Color: </label><input type="color" name="inputThemeText" id="inputThemeText"><br>
-                <label for="inputThemeBackground">Theme Background Color: </label><input type="color" name="inputThemeBackground" id="inputThemeBackground"><br>
-                <label for="inputThemePrimary">Theme Primary Color: </label><input type="color" name="inputThemePrimary" id="inputThemePrimary"><br>
-                <label for="inputThemeSecondary">Theme Secondary Color: </label><input type="color" name="inputThemeSecondary" id="inputThemeSecondary"><br>
-                <label for="inputThemeAccent">Theme Accent Color: </label><input type="color" name="inputThemeAccent" id="inputThemeAccent"><br><br>
-                <label for="themeTemplates"> Theme Template:
-                    <select name="themeTemplates" id="themeTemplates">
+            <label for="inputThemeText">Theme Text Color: </label><input type="color" name="inputThemeText"
+                id="inputThemeText"><br>
+            <label for="inputThemeBackground">Theme Background Color: </label><input type="color"
+                name="inputThemeBackground" id="inputThemeBackground"><br>
+            <label for="inputThemePrimary">Theme Primary Color: </label><input type="color" name="inputThemePrimary"
+                id="inputThemePrimary"><br>
+            <label for="inputThemeSecondary">Theme Secondary Color: </label><input type="color"
+                name="inputThemeSecondary" id="inputThemeSecondary"><br>
+            <label for="inputThemeAccent">Theme Accent Color: </label><input type="color" name="inputThemeAccent"
+                id="inputThemeAccent"><br><br>
+            <label for="themeTemplates"> Theme Template:
+                <select name="themeTemplates" id="themeTemplates">
                 </select></label>
-                </select><br>
+            </select><br>
 
-           <br><input type="button" value="Close" id="themesCloseButton">
-           <input type="button" value="Reset Custom Theme" id="themesResetButton">
+            <br><input type="button" value="Close" id="themesCloseButton">
+            <input type="button" value="Reset Custom Theme" id="themesResetButton">
         </div>
     </div>
     <div id="aboutContainer" style="display: none;">
@@ -128,48 +142,48 @@
             <p id="version">Version: 1.0.0</p><br>
             <p><a id="source" href="https://www.github.com/coconutbin/homework-tracker">View Source (Github)</a></p><br>
             <button id="aboutCloseButton">Close</button>
-    </div>
-    <div id="inputform" style="display: none;">
-        <form class="inputForm" style="z-index: 9999">
-            <label>
-                Subject:
-                <input type="text" name="subject" id="inputSubject" autocomplete="off">
-            </label><br>
-            <label>
-                Subject ID:
-                <input type="text" name="subjectId" id="inputSubjectID" autocomplete="off">
-            </label><br>
-            <label>
-                Subject Type:
-                <input type="text" name="subjectType" id="inputSubjectType" autocomplete="off">
-            </label><br>
-            <label>
-                Is it a group work?
-                <input type="checkbox" name="isGroupWork" id="inputIsGroupWork" autocomplete="off">
-            </label><br>
-            <label>
-                Mark as important
-                <input type="checkbox" name="isImportant" id="inputIsImportant" autocomplete="off">
-            </label><br><br>
-            <label>
-                Due Date:
-                <input type="date" name="dueDate" id="inputDueDate" autocomplete="off">
-            </label><br><br>
-            <label>
-                Points:
-                <input type="number" name="points" id="inputPoints" autocomplete="off">
-            </label><br><br>
-            <label>
-                Work Details:
-                <textarea name="description" id="inputDescription" autocomplete="off"
-                    placeholder="write here"></textarea>
-            </label><br><br>
-            <input type="submit">
-            <input type="button" value="Close" id="inputFormCloseButton">
-            <input type="button" value="Quick Add" id="quickAddButton">
-        </form>
-        <div class="modal" id="inputFormModalBackground"></div>
-    </div>
+        </div>
+        <div id="inputform" style="display: none;">
+            <form class="inputForm" style="z-index: 9999">
+                <label>
+                    Subject:
+                    <input type="text" name="subject" id="inputSubject" autocomplete="off">
+                </label><br>
+                <label>
+                    Subject ID:
+                    <input type="text" name="subjectId" id="inputSubjectID" autocomplete="off">
+                </label><br>
+                <label>
+                    Subject Type:
+                    <input type="text" name="subjectType" id="inputSubjectType" autocomplete="off">
+                </label><br>
+                <label>
+                    Is it a group work?
+                    <input type="checkbox" name="isGroupWork" id="inputIsGroupWork" autocomplete="off">
+                </label><br>
+                <label>
+                    Mark as important
+                    <input type="checkbox" name="isImportant" id="inputIsImportant" autocomplete="off">
+                </label><br><br>
+                <label>
+                    Due Date:
+                    <input type="date" name="dueDate" id="inputDueDate" autocomplete="off">
+                </label><br><br>
+                <label>
+                    Points:
+                    <input type="number" name="points" id="inputPoints" autocomplete="off">
+                </label><br><br>
+                <label>
+                    Work Details:
+                    <textarea name="description" id="inputDescription" autocomplete="off"
+                        placeholder="write here"></textarea>
+                </label><br><br>
+                <input type="submit">
+                <input type="button" value="Close" id="inputFormCloseButton">
+                <input type="button" value="Quick Add" id="quickAddButton">
+            </form>
+            <div class="modal" id="inputFormModalBackground"></div>
+        </div>
 </body>
 <script src="./src/js/localStorage.js"></script>
 <script src="./src/js/homework.js"></script>

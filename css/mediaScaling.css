@@ -4,6 +4,10 @@
         width: calc(25vw - calc(2*var(--standard-margin)) - 30px);
         height: 250px
     }
+
+    #dataTransferOptions{
+        flex-direction: row;
+    }
 }
 
 @media (max-width: 900px) {
@@ -11,6 +15,10 @@
     .listItemDisplay {
         width: calc(33vw - calc(2*var(--standard-margin)) - 30px);
         height: max(250px, 30vh)
+    }
+
+    #dataTransferOptions{
+        flex-direction: column;
     }
 }
 
