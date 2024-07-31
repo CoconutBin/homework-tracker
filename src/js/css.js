@@ -3,7 +3,7 @@ function setItemListWidth(){
 
     if(window.innerWidth < 385){
         document.getElementById('logo').innerText = 'wrkd.'
-    } else if(document.querySelector('title').value == 'Homework Tracker'){
+    } else if(document.querySelector('title').textContent == 'Homework Tracker'){
         document.getElementById('logo').innerText = 'Homework Tracker'
     } else {
             document.getElementById('logo').innerText = 'Archived Homeworks'
