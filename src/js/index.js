@@ -363,6 +363,7 @@ function addListItem(homeworkObject) {
         notifyDue();
         timeStarted.innerText = `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`;
     }, 1000);
+    setInterval(notifyDue, 86400000);
     function overdueUpdate() {
         if (Date.now() >= Date.parse(homeworkObject.dueDate) && listItem.classList.contains("listItemOverdue") == false) {
             displayDiv.classList.add("listItemOverdue");
@@ -375,10 +376,11 @@ function addListItem(homeworkObject) {
     }
     function notifyDue() {
         if (settings.allowNotifications) {
-            if (Date.parse(homeworkObject.dueDate) - Date.now() == 86400000 * 3) {
+            console.log(new Date().toDateString());
+            if (Date.parse(new Date().toDateString()) == Date.parse(homeworkObject.dueDate) - 86400000 * 3) {
                 new Notification("Homework Tracker (wrkd.)", { body: `Your ${homeworkObject.subject.name} homework is now due in 3 days!`, icon: "../../icons/logo.png" });
             }
-            if (Date.parse(homeworkObject.dueDate) - Date.now() == 86400000 * 1) {
+            if (Date.parse(new Date().toDateString()) == Date.parse(homeworkObject.dueDate) - 86400000 * 1) {
                 new Notification("Homework Tracker (wrkd.)", { body: `Your ${homeworkObject.subject.name} homework is due tomorrow!`, icon: "../../icons/logo.png" });
             }
         }
