@@ -31,11 +31,51 @@
     "shortcuts": [
     {
       "name": "See archived homeworks",
-      "url": "/archive.html"
+      "url": "/homework-tracker/archive.html",
+      "icons": [
+        {
+          "src": "./icons/logomonochrome.png",
+          "type": "image/png",
+          "sizes": "512x512",
+          "purpose": "monochrome"
+        },
+        {
+          "src": "./icons/logomaskable.png",
+          "type": "image/png",
+          "sizes": "512x512",
+          "purpose": "maskable"
+        },
+        {
+          "src": "./icons/logo.png",
+          "type": "image/png",
+          "sizes": "512x512",
+          "purpose": "any"
+        }
+      ]
     },
     {
       "name": "See active homeworks",
-      "url": "/index.html"
+      "url": "/homework-tracker/index.html",
+      "icons": [
+        {
+          "src": "./icons/logomonochrome.png",
+          "type": "image/png",
+          "sizes": "512x512",
+          "purpose": "monochrome"
+        },
+        {
+          "src": "./icons/logomaskable.png",
+          "type": "image/png",
+          "sizes": "512x512",
+          "purpose": "maskable"
+        },
+        {
+          "src": "./icons/logo.png",
+          "type": "image/png",
+          "sizes": "512x512",
+          "purpose": "any"
+        }
+      ]
     }
   ],
     "start_url": "https://coconutbin.github.io/homework-tracker",
