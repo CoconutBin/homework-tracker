@@ -82,7 +82,7 @@ class Theme {
     }
 
     setCSS() {
-        (document.querySelector("meta[name='theme-color']") as HTMLMetaElement).content = this.secondaryColor;
+        document.querySelectorAll("meta[name='theme-color']").forEach(x => (x as HTMLMetaElement).content = this.secondaryColor);
         localStorage.setItem("currentTheme", this.name)
         currentTheme = this.name
         cssVariables.style.setProperty('--text', this.textColor);
@@ -213,7 +213,7 @@ inputThemePrimary.addEventListener('input', () => {
 inputThemeSecondary.addEventListener('input', () => {
     settings.customThemeColor.secondary = inputThemeSecondary.value
     cssVariables.style.setProperty('--secondary', settings.customThemeColor.secondary);
-    (document.querySelector("meta[name='theme-color']") as HTMLMetaElement).content = settings.customThemeColor.secondary;
+    document.querySelectorAll("meta[name='theme-color']").forEach(x => (x as HTMLMetaElement).content = settings.customThemeColor.secondary);
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
     themeTemplates.value = 'custom'
 })
