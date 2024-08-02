@@ -412,6 +412,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     //updating time
     const liveUpdateTimer = setInterval(() => {
         overdueUpdate()
+        notifyDue()
         timeStarted.innerText = `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`
     }, 1000)
 
@@ -423,6 +424,19 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
             displayDiv.classList.remove("listItemOverdue")
             dueDate.classList.remove("errorText")
         }
+    }
+
+    function notifyDue(){
+        if(settings.allowNotifications){
+            if(Date.parse(homeworkObject.dueDate) - Date.now() == 86400000*3){
+                new Notification("Homework Tracker (wrkd.)", { body: `Your ${homeworkObject.subject.name} homework is now due in 3 days!`, icon: "../../icons/logo.png" })
+            }
+    
+            if(Date.parse(homeworkObject.dueDate) - Date.now() == 86400000*1){
+                new Notification("Homework Tracker (wrkd.)", { body: `Your ${homeworkObject.subject.name} homework is due tomorrow!`, icon: "../../icons/logo.png" } )
+            }
+        }
+        return
     }
 
     overdueUpdate()
