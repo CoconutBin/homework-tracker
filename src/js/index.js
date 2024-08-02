@@ -394,8 +394,10 @@ quickAddButton.addEventListener("click", () => {
         if (currentSchedule.subjects.length > 0) {
             switch (currentSchedule.scheduleType) {
                 case "id":
+                    console.log(currentSchedule.subjects.filter(x => x.id = currentSchedule.currentSubject)[0]);
                     break;
                 case "name":
+                    console.log(currentSchedule.subjects.filter(x => x.name = currentSchedule.currentSubject)[0]);
                     break;
                 default:
                     break;
