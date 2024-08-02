@@ -1,10 +1,83 @@
-// const sortButton = document.getElementById('sort') as HTMLButtonElement;
+const sortButton = document.getElementById('sort');
 const settingsButton = document.getElementById('settings');
-/*
+const sortContainer = document.getElementById('sortContainer');
+const sortModal = document.getElementById('sortModal');
+const sortScreen = document.getElementById('sortScreen');
+const sortType = document.getElementById('sortType');
+const sortArrange = document.getElementById('sortArrange');
+const sortArrangeBlock = document.getElementById('sortArrangeBlock');
+const sortCloseButton = document.getElementById('sortCloseButton');
+const toSortButton = document.getElementById('sortButton');
+if (sortType.value != 'dueDate') {
+    sortArrangeBlock.style.display = 'none';
+}
 sortButton.addEventListener("click", () => {
-    alert("Sort Function is currently not avaliable")
-})
-*/
+    sortContainer.style.display = "block";
+    sortScreen.style.display = "block";
+});
+sortModal.addEventListener("click", () => {
+    sortContainer.style.display = "none";
+});
+sortCloseButton.addEventListener("click", () => {
+    sortContainer.style.display = "none";
+});
+toSortButton.addEventListener("click", () => {
+    let sortedListContents = [];
+    switch (sortType.value) {
+        case "subjectName":
+            renderList([]);
+            sortedListContents = listContents.toSorted((a, b) => a.subject.name.localeCompare(b.subject.name));
+            localStorage.setItem("listContents", JSON.stringify(sortedListContents));
+            listContents.splice(0, listContents.length);
+            renderList(sortedListContents);
+            sortContainer.style.display = "none";
+            break;
+        case "dueDate":
+            switch (sortArrange.value) {
+                case "closefar":
+                    renderList([]);
+                    sortedListContents = listContents.toSorted(function (a, b) {
+                        if (isNaN(Date.parse(a.dueDate))) {
+                            return isNaN(Date.parse(b.dueDate)) ? 1 : Date.parse(b.dueDate);
+                        }
+                        else {
+                            return isNaN(Date.parse(b.dueDate)) ? -1 : Date.parse(a.dueDate) - Date.parse(b.dueDate);
+                        }
+                    });
+                    localStorage.setItem("listContents", JSON.stringify(sortedListContents));
+                    listContents.splice(0, listContents.length);
+                    renderList(sortedListContents);
+                    sortContainer.style.display = "none";
+                    break;
+                case "farclose":
+                    renderList([]);
+                    sortedListContents = listContents.toSorted(function (a, b) {
+                        if (isNaN(Date.parse(a.dueDate))) {
+                            return isNaN(Date.parse(b.dueDate)) ? 1 : Date.parse(b.dueDate);
+                        }
+                        else {
+                            return isNaN(Date.parse(b.dueDate)) ? -1 : Date.parse(b.dueDate) - Date.parse(a.dueDate);
+                        }
+                    });
+                    localStorage.setItem("listContents", JSON.stringify(sortedListContents));
+                    listContents.splice(0, listContents.length);
+                    renderList(sortedListContents);
+                    sortContainer.style.display = "none";
+                    break;
+            }
+            break;
+    }
+});
+sortType.addEventListener("change", () => {
+    switch (sortType.value) {
+        case "subjectName":
+            sortArrangeBlock.style.display = "none";
+            break;
+        case "dueDate":
+            sortArrangeBlock.style.display = "block";
+            break;
+    }
+});
 class Settings {
     defaultThemes;
     pureBlackDarkMode;
@@ -323,3 +396,25 @@ if (settings.systemFont) {
 else {
     document.body.style.fontFamily = '"Nunito", system-ui, sans-serif';
 }
+// About Screen
+const aboutButton = document.getElementById("aboutButton");
+const aboutContainer = document.getElementById("aboutContainer");
+const aboutScreen = document.getElementById("aboutScreen");
+const aboutCloseButton = document.getElementById("aboutCloseButton");
+const aboutModal = document.getElementById("aboutModal");
+const aboutVersion = document.getElementById("version");
+const aboutSource = document.getElementById("source");
+aboutButton.addEventListener("click", () => {
+    settingsContainer.style.display = "none";
+    aboutContainer.style.display = "block";
+    aboutScreen.style.display = "block";
+});
+aboutModal.addEventListener("click", () => {
+    aboutContainer.style.display = "none";
+});
+aboutCloseButton.addEventListener("click", () => {
+    aboutContainer.style.display = "none";
+});
+aboutVersion.textContent = `Version: V.${version}`;
+aboutSource.style.textDecoration = "none";
+aboutSource.style.color = "var(--text)";

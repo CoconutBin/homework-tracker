@@ -354,6 +354,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
             dueDate.textContent = `Due: ${new Date(homeworkObject.dueDate).toDateString()}`
             displayDivRender()
             ManageLocalStorage.replace(index, homeworkObject)
+            overdueUpdate()
             dueDateInput.style.display = "none"
         })
     })
@@ -410,8 +411,21 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //updating time
     const liveUpdateTimer = setInterval(() => {
+        overdueUpdate()
         timeStarted.innerText = `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`
     }, 1000)
+
+    function overdueUpdate(){
+        if(Date.now() >= Date.parse(homeworkObject.dueDate) && listItem.classList.contains("listItemOverdue") == false){
+            displayDiv.classList.add("listItemOverdue")
+            dueDate.classList.add("errorText")
+        } else if(Date.now() < Date.parse(homeworkObject.dueDate)){
+            displayDiv.classList.remove("listItemOverdue")
+            dueDate.classList.remove("errorText")
+        }
+    }
+
+    overdueUpdate()
 
     if (homeworkObject.timeEnded != undefined) {
         clearInterval(liveUpdateTimer)
@@ -437,8 +451,10 @@ quickAddButton.addEventListener("click", () => {
         if(currentSchedule.subjects.length > 0) {
             switch(currentSchedule.scheduleType) {
                 case "id":
+                    console.log(currentSchedule.subjects.filter(x => x.id = currentSchedule.currentSubject)[0])
                     break;
                 case "name":
+                    console.log(currentSchedule.subjects.filter(x => x.name = currentSchedule.currentSubject)[0])
                     break;
                 default:
                     break
@@ -461,18 +477,19 @@ function clearList() {
     if(confirm("Are you sure you want to clear the list?")){
         listContents.splice(0, listContents.length);
         localStorage.setItem("listContents", JSON.stringify(listContents));
-        renderList()
+        renderList([])
     }
 }
 
-function renderList(){
+function renderList(arr){
     list.replaceChildren(addListItemButton)
-    listContents.forEach(homeworkObject => addListItem(homeworkObject))
+    arr.forEach(homeworkObject => addListItem(homeworkObject))
 }
 
 //data transfer button setup
 //i cant be bothered finding a good place to put this, so it goes here, move if you want.
 //wrapped in its own block so i dont accidentally modify anything that has the same name.
+// TO DO: Modular Data Transfering
 {
     const dataTransferTextArea = document.getElementById("dataTransferTextArea") as HTMLTextAreaElement;
 
@@ -480,17 +497,45 @@ function renderList(){
     const dataTransferImportButton = document.getElementById("dataTransferImportButton") as HTMLButtonElement;
     const dataTransferDownloadButton = document.getElementById("dataTransferDownloadButton") as HTMLButtonElement;
 
+    const includeSettings = document.getElementById("includeSettings") as HTMLInputElement;
+    const includeCustomThemes = document.getElementById("includeCustomThemes") as HTMLInputElement;
+    const includeSchedule = document.getElementById("includeSchedule") as HTMLInputElement;
+
     type data = {
         listContents: typeof listContents
         archivedHomeworks: typeof archivedHomeworks
+        settings?: typeof settings.settingsObject
+        currentSchedule?: typeof currentSchedule.scheduleObject
     }
 
     function getEncodedData() {
         const listContents = JSON.parse(localStorage.getItem("listContents"));
         const archivedHomeworks = JSON.parse(localStorage.getItem("archivedHomeworks"));
 
+        let dataObject = {
+            listContents: listContents,
+            archivedHomeworks: archivedHomeworks
+        }
+
+        let exportedSettingsObject: typeof settings.settingsObject | Object = JSON.parse(localStorage.getItem("settings"));
+
+        if(includeSettings.checked){
+            if(!includeCustomThemes.checked){
+                (exportedSettingsObject as typeof settings.settingsObject).customThemeColor = {}
+            }
+            dataObject = Object.assign({ settings: exportedSettingsObject }, dataObject)
+        }
+        if(includeCustomThemes.checked && !includeSettings.checked){
+            exportedSettingsObject = {}
+            exportedSettingsObject = Object.assign({ customThemeColor: JSON.parse(localStorage.getItem("settings")).customThemeColor }, exportedSettingsObject)
+            dataObject = Object.assign({ settings: exportedSettingsObject }, dataObject)
+        }
+        if(includeSchedule.checked){
+            dataObject = Object.assign({ currentSchedule: currentSchedule.scheduleObject}, dataObject)
+        }
+
         //see https://developer.mozilla.org/en-US/docs/Glossary/Base64
-        return btoa(JSON.stringify({ listContents: listContents, archivedHomeworks: archivedHomeworks }));
+        return btoa(JSON.stringify(dataObject));
     }
 
     dataTransferExportButton.addEventListener("click", (e) => {
@@ -524,6 +569,20 @@ function renderList(){
 
         localStorage.setItem("listContents", JSON.stringify(data.listContents));
         localStorage.setItem("archivedHomeworks", JSON.stringify(data.archivedHomeworks));
+
+        if(data.settings != undefined){
+            if(data.settings.customThemeColor.primary == undefined){
+                data.settings.customThemeColor = JSON.parse(localStorage.getItem("settings")).customThemeColor
+            } else if(data.settings.useSystemTheme == undefined){
+                let customThemeColorTemp = data.settings.customThemeColor
+                data.settings = JSON.parse(localStorage.getItem("settings"))
+                data.settings.customThemeColor = customThemeColorTemp
+            }
+            localStorage.setItem("settings", JSON.stringify(data.settings));
+        }
+        if(data.currentSchedule != undefined){
+            localStorage.setItem("currentSchedule", JSON.stringify(data.currentSchedule));
+        }
 
         location.reload();
     })

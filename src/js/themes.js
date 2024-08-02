@@ -72,7 +72,7 @@ class Theme {
         return `('${this.name}', '${this.displayName}', '${this.themeType}', '${this.textColor}', '${this.backgroundColor}', '${this.primaryColor}', '${this.secondaryColor}', '${this.accentColor}', '${this.successColor}', '${this.errorColor}')`;
     }
     setCSS() {
-        document.querySelector("meta[name='theme-color']").content = this.secondaryColor;
+        document.querySelectorAll("meta[name='theme-color']").forEach(x => x.content = this.secondaryColor);
         localStorage.setItem("currentTheme", this.name);
         currentTheme = this.name;
         cssVariables.style.setProperty('--text', this.textColor);
@@ -91,9 +91,9 @@ class Theme {
 const Themes = {
     custom: new Theme('custom', "Custom", 'none', null, null, null, null, null),
     // Light Themes
-    matcha: new Theme('matcha', "Matcha", 'light', "#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098"),
-    ice: new Theme('ice', "Ice", 'light', '#081921', '#e2f1f8', '#bae5fd', '#c5aeea', '#84aef1', '#00ff00', '#da0000'),
-    prakiao: new Theme('prakiao', "Prakiao", 'light', "#130112", "#f8e7f8", "#7995cd", "#fdafdf", "#5474bb", "#011206", "#da0000"),
+    matcha: new Theme('matcha', "Matcha", 'light', "#0f0e0a", "#f3e6d5", "#a29b75", "#aac6ab", "#8ab098", "#3eff3b", "#9f0000"),
+    ice: new Theme('ice', "Ice", 'light', '#081921', '#e2f1f8', '#bae5fd', '#c5aeea', '#84aef1', '#00ff00', '#9f0000'),
+    prakiao: new Theme('prakiao', "Prakiao", 'light', "#130112", "#f8e7f8", "#7995cd", "#fdafdf", "#5474bb", "#011206", "##9f0000"),
     peach: new Theme('peach', "Peach", 'light', "#14120a", "#f7f4e2", "#ffdfcc", "#fed85d", "#ffbda3"),
     //Dark Themes
     hojicha: new Theme('hojicha', "Hojicha", 'dark', '#cbcac8', '#151413', '#2e2c28', '#33483b', '#3a4b3b', '#00ff00', '#da0000'),
@@ -190,7 +190,7 @@ inputThemePrimary.addEventListener('input', () => {
 inputThemeSecondary.addEventListener('input', () => {
     settings.customThemeColor.secondary = inputThemeSecondary.value;
     cssVariables.style.setProperty('--secondary', settings.customThemeColor.secondary);
-    document.querySelector("meta[name='theme-color']").content = this.secondaryColor;
+    document.querySelectorAll("meta[name='theme-color']").forEach(x => x.content = settings.customThemeColor.secondary);
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
     themeTemplates.value = 'custom';
 });

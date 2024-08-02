@@ -67,3 +67,4 @@ function convertToTime(time: number): string {
     
     return returnedTime.trim();
 }
+

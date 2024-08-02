@@ -41,8 +41,6 @@
 .listItem {
     display: flex;
     margin: var(--standard-margin);
-    width: var(--listItem-width);
-    height: auto;
     align-items: center;
     padding: 5px;
 }
@@ -61,7 +59,7 @@
 .listItemDisplay {
     height: max(250px, 20vh);
     max-height: 425px;
-    width: auto;
+    width: var(--listItem-width);
     text-overflow: clip;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -89,6 +87,11 @@ p {
 p.settingsCategory{
     margin: 8px 0 !important;
     font-weight: bold;
+}
+
+.settingsDisplay p{
+    margin: 5px 0 !important;
+    padding: 0 5px !important;
 }
 
 #addListItemButton div {
@@ -189,8 +192,13 @@ p.settingsCategory{
 
 .analyticsBlock {
     flex-direction: column !important;
+    font-weight: bold !important;
 }
 
-.overdueHomework {
+.listItemOverdue {
     background: var(--accent) !important;
+}
+
+.errorText {
+    color: var(--error);
 }

@@ -105,6 +105,16 @@ class Schedule {
         this.subjects = obj.subjects
         this.scheduleType = obj.scheduleType
     }
+
+    get scheduleObject(){
+        return {
+            schedule: this.schedule,
+            startingTime: this.startingTime,
+            interval: this.interval,
+            subjects: this.subjects,
+            scheduleType: this.scheduleType
+        }
+    }
 }
 
 const currentSchedule = new Schedule()
