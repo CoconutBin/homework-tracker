@@ -89,6 +89,7 @@ class Settings {
     systemFont;
     noGradientNavbars;
     useSystemTheme;
+    allowNotifications;
     initializeDefaults() {
         this.defaultThemes = {
             light: "matcha",
@@ -103,6 +104,7 @@ class Settings {
         this.subjectNameClick = "";
         this.analytics = false;
         this.systemFont = false;
+        this.allowNotifications = true;
     }
     constructor() {
         this.initializeDefaults();
@@ -122,6 +124,7 @@ class Settings {
             systemFont: this.systemFont,
             noGradientNavbars: this.noGradientNavbars,
             useSystemTheme: this.useSystemTheme,
+            allowNotifications: this.allowNotifications
         };
     }
     set settingsObject(obj) {
@@ -135,6 +138,7 @@ class Settings {
         this.systemFont = obj.systemFont;
         this.noGradientNavbars = obj.noGradientNavbars;
         this.useSystemTheme = obj.useSystemTheme;
+        this.allowNotifications = obj.allowNotifications;
     }
 }
 const settings = new Settings();
@@ -162,6 +166,7 @@ const quickAddTextArea = document.getElementById("quickAddTextArea");
 const quickAddImportButton = document.getElementById("quickAddImportButton");
 const quickAddExportButton = document.getElementById("quickAddExportButton");
 const quickAddCancelButton = document.getElementById("quickAddCancelButton");
+const allowNotifications = document.getElementById("allowNotifications");
 settingsButton.addEventListener("click", () => {
     settingsContainer.style.display = "block";
     settingsDiv.style.display = "block";
@@ -279,6 +284,19 @@ noGradientNavbars.addEventListener("change", () => {
         document.getElementById("navbar").style.background = '';
     }
 });
+allowNotifications.addEventListener("change", () => {
+    settings.allowNotifications = allowNotifications.checked;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    askNotificationPermission();
+    navigator.permissions.query({ name: "notifications" }).then((result) => {
+        if (result.state === "denied") {
+            settings.allowNotifications = false;
+            allowNotifications.checked = false;
+            localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+            alert("You must give Notification Permissions to use Notifications");
+        }
+    });
+});
 useSystemTheme.addEventListener("change", () => {
     settings.useSystemTheme = useSystemTheme.checked;
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
@@ -338,6 +356,7 @@ try {
     systemFont.checked = settings.systemFont;
     useSystemTheme.checked = settings.useSystemTheme;
     noGradientNavbars.checked = settings.noGradientNavbars;
+    allowNotifications.checked = settings.allowNotifications;
     if (customThemes != undefined) {
         customThemes.checked = settings.customThemes;
     }
@@ -353,17 +372,8 @@ try {
     if (analytics != undefined)
         analytics.checked = settings.analytics;
 }
-catch {
-    settings.settingsObject = JSON.parse(localStorage.getItem("settings"));
-    defaultDarkThemeSetting.value = settings.defaultThemes.dark;
-    defaultLightThemeSetting.value = settings.defaultThemes.light;
-    rightToLeft.checked = settings.rightToLeft;
-    systemFont.checked = settings.systemFont;
-    customThemes.checked = settings.customThemes;
-    subjectNameClick.value = settings.subjectNameClick;
-    pureBlackDarkMode.checked = settings.pureBlackDarkMode;
-    noGradientNavbars.checked = settings.noGradientNavbars;
-    useSystemTheme.checked = settings.useSystemTheme;
+catch (e) {
+    console.error(e);
 }
 function rtlFormat(bool) {
     let listItemDisplay = document.querySelectorAll(".listItemDisplay");

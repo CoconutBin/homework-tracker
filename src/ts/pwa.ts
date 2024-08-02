@@ -20,3 +20,21 @@ document.getElementById("list").addEventListener("change", () => {
         });
     }
 })
+
+function askNotificationPermission() {
+    // Check if the browser supports notifications
+    if (!("Notification" in window)) {
+      alert("This browser does not support notifications.");
+      return;
+    }
+    navigator.permissions.query({ name: "notifications" }).then((result) => {
+        if (result.state === "granted") {
+            return;
+        } else if (result.state === "prompt") {
+            Notification.requestPermission().then(() => {
+                return;
+              });
+        }
+        // Don't do anything if the permission was denied.
+    });
+}

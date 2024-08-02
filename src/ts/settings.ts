@@ -106,6 +106,7 @@ class Settings {
     systemFont: boolean;
     noGradientNavbars: boolean;
     useSystemTheme: boolean;
+    allowNotifications: boolean;
 
     private initializeDefaults() {
         this.defaultThemes = {
@@ -121,6 +122,7 @@ class Settings {
         this.subjectNameClick = "";
         this.analytics = false;
         this.systemFont = false;
+        this.allowNotifications = true;
     }
 
     constructor() {
@@ -143,6 +145,7 @@ class Settings {
             systemFont: this.systemFont,
             noGradientNavbars: this.noGradientNavbars,
             useSystemTheme: this.useSystemTheme,
+            allowNotifications: this.allowNotifications
         };
     }
 
@@ -157,6 +160,7 @@ class Settings {
         this.systemFont = obj.systemFont;
         this.noGradientNavbars = obj.noGradientNavbars;
         this.useSystemTheme = obj.useSystemTheme;
+        this.allowNotifications = obj.allowNotifications;
     }
 }
 
@@ -187,6 +191,7 @@ const quickAddTextArea = document.getElementById("quickAddTextArea") as HTMLText
 const quickAddImportButton = document.getElementById("quickAddImportButton") as HTMLButtonElement
 const quickAddExportButton = document.getElementById("quickAddExportButton") as HTMLButtonElement
 const quickAddCancelButton = document.getElementById("quickAddCancelButton") as HTMLButtonElement
+const allowNotifications = document.getElementById("allowNotifications") as HTMLInputElement
 
 
 settingsButton.addEventListener("click", () => {
@@ -316,6 +321,20 @@ noGradientNavbars.addEventListener("change", () => {
     }
 })
 
+allowNotifications.addEventListener("change", () => {
+    settings.allowNotifications = allowNotifications.checked
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    askNotificationPermission()
+    navigator.permissions.query({ name: "notifications" }).then((result) => {
+        if (result.state === "denied") {
+            settings.allowNotifications = false
+            allowNotifications.checked = false
+            localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+            alert("You must give Notification Permissions to use Notifications")
+        }
+    });
+})
+
 useSystemTheme.addEventListener("change", () => {
     settings.useSystemTheme = useSystemTheme.checked
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
@@ -383,6 +402,7 @@ try {
     systemFont.checked = settings.systemFont
     useSystemTheme.checked = settings.useSystemTheme
     noGradientNavbars.checked = settings.noGradientNavbars
+    allowNotifications.checked = settings.allowNotifications
     if (customThemes != undefined) { customThemes.checked = settings.customThemes }
     if (subjectNameClick != undefined) subjectNameClick.value = settings.subjectNameClick
     if (pureBlackDarkMode != undefined) pureBlackDarkMode.checked = settings.pureBlackDarkMode
@@ -393,17 +413,8 @@ try {
     }
     if (analytics != undefined) analytics.checked = settings.analytics
 }
-catch {
-    settings.settingsObject = JSON.parse(localStorage.getItem("settings"))
-    defaultDarkThemeSetting.value = settings.defaultThemes.dark
-    defaultLightThemeSetting.value = settings.defaultThemes.light
-    rightToLeft.checked = settings.rightToLeft
-    systemFont.checked = settings.systemFont
-    customThemes.checked = settings.customThemes
-    subjectNameClick.value = settings.subjectNameClick
-    pureBlackDarkMode.checked = settings.pureBlackDarkMode
-    noGradientNavbars.checked = settings.noGradientNavbars
-    useSystemTheme.checked = settings.useSystemTheme
+catch (e){
+    console.error(e)
 }
 
 function rtlFormat(bool: boolean) {
