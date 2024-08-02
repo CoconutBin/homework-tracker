@@ -43,7 +43,13 @@ toSortButton.addEventListener("click", () => {
             switch (sortArrange.value) {
                 case "closefar":
                     renderList([])
-                    sortedListContents = listContents.toSorted((a, b) => Date.parse(a.dueDate) - Date.parse(b.dueDate))
+                    sortedListContents = listContents.toSorted(function(a, b) {
+                        if(isNaN(Date.parse(a.dueDate))) { 
+                            return isNaN(Date.parse(b.dueDate)) ? 1 : Date.parse(b.dueDate);
+                          } else {
+                            return isNaN(Date.parse(b.dueDate)) ? -1 : Date.parse(a.dueDate) - Date.parse(b.dueDate); 
+                          }
+                        })
                     localStorage.setItem("listContents", JSON.stringify(sortedListContents));
                     listContents.splice(0, listContents.length);
                     renderList(sortedListContents)
@@ -51,7 +57,13 @@ toSortButton.addEventListener("click", () => {
                     break;
                 case "farclose":
                     renderList([])
-                    sortedListContents = listContents.toSorted((a, b) => Date.parse(b.dueDate) - Date.parse(a.dueDate))
+                    sortedListContents = listContents.toSorted(function(a, b) {
+                        if(isNaN(Date.parse(a.dueDate))) { 
+                            return isNaN(Date.parse(b.dueDate)) ? 1 : Date.parse(b.dueDate);
+                          } else {
+                            return isNaN(Date.parse(b.dueDate)) ? -1 : Date.parse(b.dueDate) - Date.parse(a.dueDate); 
+                          }
+                        })
                     localStorage.setItem("listContents", JSON.stringify(sortedListContents));
                     listContents.splice(0, listContents.length);
                     renderList(sortedListContents)
