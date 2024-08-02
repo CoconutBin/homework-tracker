@@ -421,12 +421,12 @@ function clearList() {
     if (confirm("Are you sure you want to clear the list?")) {
         listContents.splice(0, listContents.length);
         localStorage.setItem("listContents", JSON.stringify(listContents));
-        renderList();
+        renderList([]);
     }
 }
-function renderList() {
+function renderList(arr) {
     list.replaceChildren(addListItemButton);
-    listContents.forEach(homeworkObject => addListItem(homeworkObject));
+    arr.forEach(homeworkObject => addListItem(homeworkObject));
 }
 //data transfer button setup
 //i cant be bothered finding a good place to put this, so it goes here, move if you want.

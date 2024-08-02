@@ -1,11 +1,78 @@
-// const sortButton = document.getElementById('sort') as HTMLButtonElement;
+const sortButton = document.getElementById('sort') as HTMLButtonElement;
 const settingsButton = document.getElementById('settings') as HTMLButtonElement;
 
-/*
+const sortContainer = document.getElementById('sortContainer') as HTMLDivElement;
+const sortModal = document.getElementById('sortModal') as HTMLDivElement;
+const sortScreen = document.getElementById('sortScreen') as HTMLDivElement;
+const sortType = document.getElementById('sortType') as HTMLSelectElement;
+const sortArrange = document.getElementById('sortArrange') as HTMLSelectElement;
+const sortArrangeBlock = document.getElementById('sortArrangeBlock') as HTMLDivElement;
+const sortCloseButton = document.getElementById('sortCloseButton') as HTMLButtonElement;
+const toSortButton = document.getElementById('sortButton') as HTMLButtonElement
+
+if (sortType.value != 'dueDate') {
+    sortArrangeBlock.style.display = 'none'
+}
+
+
 sortButton.addEventListener("click", () => {
-    alert("Sort Function is currently not avaliable")
+    sortContainer.style.display = "block"
+    sortScreen.style.display = "block"
 })
-*/
+
+sortModal.addEventListener("click", () => {
+    sortContainer.style.display = "none"
+})
+
+sortCloseButton.addEventListener("click", () => {
+    sortContainer.style.display = "none"
+})
+
+toSortButton.addEventListener("click", () => {
+    let sortedListContents: typeof listContents = []
+    switch (sortType.value) {
+        case "subjectName":
+            renderList([])
+            sortedListContents = listContents.toSorted((a, b) => a.subject.name.localeCompare(b.subject.name))
+            localStorage.setItem("listContents", JSON.stringify(sortedListContents));
+            listContents.splice(0, listContents.length);
+            renderList(sortedListContents)
+            sortContainer.style.display = "none"
+            break;
+        case "dueDate":
+            switch (sortArrange.value) {
+                case "closefar":
+                    renderList([])
+                    sortedListContents = listContents.toSorted((a, b) => Date.parse(a.dueDate) - Date.parse(b.dueDate))
+                    localStorage.setItem("listContents", JSON.stringify(sortedListContents));
+                    listContents.splice(0, listContents.length);
+                    renderList(sortedListContents)
+                    sortContainer.style.display = "none"
+                    break;
+                case "farclose":
+                    renderList([])
+                    sortedListContents = listContents.toSorted((a, b) => Date.parse(b.dueDate) - Date.parse(a.dueDate))
+                    localStorage.setItem("listContents", JSON.stringify(sortedListContents));
+                    listContents.splice(0, listContents.length);
+                    renderList(sortedListContents)
+                    sortContainer.style.display = "none"
+                    break;
+            }
+            break;
+    }
+})
+
+sortType.addEventListener("change", () => {
+    switch (sortType.value) {
+        case "subjectName":
+            sortArrangeBlock.style.display = "none"
+            break;
+        case "dueDate":
+            sortArrangeBlock.style.display = "block"
+            break;
+    }
+})
+
 
 class Settings {
     defaultThemes: {
@@ -189,7 +256,7 @@ customThemes.addEventListener("change", () => {
         pureBlackDarkMode.disabled = true
         themeButton.textContent = "palette"
         themeButton.title = "Cutomize Theme"
-        if(settings.customThemeColor == undefined || Object.values(settings.customThemeColor).length == 0) {
+        if (settings.customThemeColor == undefined || Object.values(settings.customThemeColor).length == 0) {
             console.log(currentTheme)
             settings.customThemeColor = {
                 text: Themes[currentTheme].textColor,
@@ -201,18 +268,18 @@ customThemes.addEventListener("change", () => {
         }
         Themes['custom'].CSSColors = settings.customThemeColor
         Themes['custom'].setCSS()
-    } else{
-        function themeDeterminer(hexcolor: string){
-           let splitHex: string[] = hexcolor.match(/[0-9a-f]{2}/gi)
-           if(((parseInt(splitHex[0], 16) + parseInt(splitHex[1], 16) + parseInt(splitHex[2], 16)) / 3) < 30){
-            return "dark";
-           }
-           else{
-            return "light";
-           }
+    } else {
+        function themeDeterminer(hexcolor: string) {
+            let splitHex: string[] = hexcolor.match(/[0-9a-f]{2}/gi)
+            if (((parseInt(splitHex[0], 16) + parseInt(splitHex[1], 16) + parseInt(splitHex[2], 16)) / 3) < 30) {
+                return "dark";
+            }
+            else {
+                return "light";
+            }
         }
 
-        if(themeDeterminer(Themes[currentTheme].backgroundColor) == "light") {
+        if (themeDeterminer(Themes[currentTheme].backgroundColor) == "light") {
             themeButton.textContent = "light_mode"
             Themes[settings.defaultThemes.light].setCSS()
         }
@@ -230,9 +297,9 @@ customThemes.addEventListener("change", () => {
 noGradientNavbars.addEventListener("change", () => {
     settings.noGradientNavbars = noGradientNavbars.checked
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
-    if(settings.noGradientNavbars){
+    if (settings.noGradientNavbars) {
         document.getElementById("navbar").style.background = 'var(--secondary)'
-    } else{
+    } else {
         document.getElementById("navbar").style.background = ''
     }
 })
@@ -242,7 +309,7 @@ useSystemTheme.addEventListener("change", () => {
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
 })
 
-if(quickAddSetup != undefined) {
+if (quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
         settingsContainer.style.display = "none"
         quickAddContainer.style.display = "block"
@@ -251,7 +318,7 @@ if(quickAddSetup != undefined) {
     quickAddModal.addEventListener("click", () => {
         quickAddContainer.style.display = "none"
     })
-    
+
     quickAddExportButton.addEventListener("click", (e) => {
         quickAddTextArea.value = localStorage.getItem("currentSchedule");
         quickAddTextArea.select();
@@ -259,7 +326,7 @@ if(quickAddSetup != undefined) {
     })
 
     quickAddImportButton.addEventListener("click", (e) => {
-        localStorage.setItem("currentSchedule",quickAddTextArea.value);
+        localStorage.setItem("currentSchedule", quickAddTextArea.value);
         console.log(`saved ${quickAddTextArea.value} into localStorage`)
         currentSchedule.scheduleObject = JSON.parse(localStorage.getItem("currentSchedule"))
         quickAddContainer.style.display = "none";
@@ -270,11 +337,11 @@ if(quickAddSetup != undefined) {
     })
 }
 
-if(analytics != undefined) {
+if (analytics != undefined) {
     analytics.addEventListener("change", () => {
         settings.analytics = analytics.checked
         localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
-        if(settings.analytics){
+        if (settings.analytics) {
             analyticsDiv.style.display = "flex";
             list.style.height = "calc(50vh - 15px)";
         } else {
@@ -295,7 +362,7 @@ if (localStorage.getItem("settings") != null) {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"))
 }
 
-if(settings.useSystemTheme == undefined) {
+if (settings.useSystemTheme == undefined) {
     settings.useSystemTheme = true
 }
 
@@ -304,7 +371,7 @@ try {
     systemFont.checked = settings.systemFont
     useSystemTheme.checked = settings.useSystemTheme
     noGradientNavbars.checked = settings.noGradientNavbars
-    if (customThemes != undefined){customThemes.checked = settings.customThemes} 
+    if (customThemes != undefined) { customThemes.checked = settings.customThemes }
     if (subjectNameClick != undefined) subjectNameClick.value = settings.subjectNameClick
     if (pureBlackDarkMode != undefined) pureBlackDarkMode.checked = settings.pureBlackDarkMode
     if (settings.customThemes) {
@@ -312,7 +379,7 @@ try {
         defaultLightThemeSetting.disabled = true
         pureBlackDarkMode.disabled = true
     }
-    if(analytics != undefined) analytics.checked = settings.analytics
+    if (analytics != undefined) analytics.checked = settings.analytics
 }
 catch {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"))
@@ -327,15 +394,15 @@ catch {
     useSystemTheme.checked = settings.useSystemTheme
 }
 
-function rtlFormat(bool: boolean){
+function rtlFormat(bool: boolean) {
     let listItemDisplay = document.querySelectorAll(".listItemDisplay") as unknown as HTMLElement[]
     let subjectNameContainer = document.querySelectorAll(".subjectNameContainer") as unknown as HTMLElement[]
 
-    if(bool){
+    if (bool) {
         list.style.flexDirection = "row-reverse";
         listItemDisplay.forEach(x => x.style.textAlign = "right");
         subjectNameContainer.forEach(x => x.style.flexDirection = "row-reverse");
-    } else{
+    } else {
         list.style.flexDirection = "row"
         listItemDisplay.forEach(x => x.style.textAlign = "left");
         subjectNameContainer.forEach(x => x.style.flexDirection = "row");
@@ -344,8 +411,8 @@ function rtlFormat(bool: boolean){
 
 rtlFormat(rightToLeft.checked)
 
-if(analyticsDiv != undefined){
-    if(settings.analytics) {
+if (analyticsDiv != undefined) {
+    if (settings.analytics) {
         analyticsDiv.style.display = "flex";
         list.style.height = "calc(50vh - 15px)";
     } else {

@@ -28,7 +28,7 @@
         <p id="logo">Archived Homeworks</p>
         <div style="display: flex">
             <a id="navbarButtons">
-                <!-- <a class="material-symbols-rounded clickable" id="sort">sort</a> -->
+                <a class="material-symbols-rounded clickable" id="sort">sort</a>
                 <a class="material-symbols-rounded clickable" id="clearList" title="Clear List"
                     onclick="clearArchiveList()">delete_forever</a>
                 <a class="material-symbols-rounded clickable" href="./index.html" title="Homework Tracker">book</a>
@@ -38,6 +38,26 @@
         </div>
     </div>
     <div id="list" class="list">
+    </div>
+    <div id="sortContainer" style="display: none;">
+        <div id="sortModal" class="modal"></div>
+        <div id="sortScreen" class="settingsDisplay">
+            <p class="settingsCategory">Sort By</p>
+            <label for="sortType">Sort Type:</label>
+            <select name="sortType" id="sortType">
+                <option value="subjectName">Subject Name</option>
+                <option value="dueDate">Due Date</option>
+            </select><br>
+            <div style="display: inline-block" id="sortArrangeBlock">
+                <label for="sortArrange">Arrange from:</label>
+            <select name="sortArrange" id="sortArrange">
+                <option value="closefar">Closest to Farthest</option>
+                <option value="farclose">Farthest to Closest</option>
+            </select>
+            </div><br>
+            <button id="sortButton">Sort</button>
+            <button id="sortCloseButton">Close</button>
+        </div>
     </div>
     <div id="settingsContainer" style="display: none;">
         <div id="settingsModal" class="modal"></div>
