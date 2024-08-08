@@ -1,7 +1,6 @@
 const sortButton = document.getElementById('sort');
 const settingsButton = document.getElementById('settings');
-const sortContainer = document.getElementById('sortContainer');
-const sortModal = document.getElementById('sortModal');
+const sortDialog = document.getElementById('sortContainer');
 const sortScreen = document.getElementById('sortScreen');
 const sortType = document.getElementById('sortType');
 const sortArrange = document.getElementById('sortArrange');
@@ -12,14 +11,15 @@ if (sortType.value != 'dueDate') {
     sortArrangeBlock.style.display = 'none';
 }
 sortButton.addEventListener("click", () => {
-    sortContainer.style.display = "block";
-    sortScreen.style.display = "block";
+    sortDialog.showModal();
 });
-sortModal.addEventListener("click", () => {
-    sortContainer.style.display = "none";
+sortDialog.addEventListener("click", (e) => {
+    if (e.target == sortDialog) {
+        sortDialog.close();
+    }
 });
 sortCloseButton.addEventListener("click", () => {
-    sortContainer.style.display = "none";
+    sortDialog.close();
 });
 toSortButton.addEventListener("click", () => {
     let sortedListContents = [];
@@ -30,7 +30,7 @@ toSortButton.addEventListener("click", () => {
             localStorage.setItem("listContents", JSON.stringify(sortedListContents));
             listContents.splice(0, listContents.length);
             renderList(sortedListContents);
-            sortContainer.style.display = "none";
+            sortDialog.close();
             break;
         case "dueDate":
             switch (sortArrange.value) {
@@ -47,7 +47,7 @@ toSortButton.addEventListener("click", () => {
                     localStorage.setItem("listContents", JSON.stringify(sortedListContents));
                     listContents.splice(0, listContents.length);
                     renderList(sortedListContents);
-                    sortContainer.style.display = "none";
+                    sortDialog.close();
                     break;
                 case "farclose":
                     renderList([]);
@@ -62,7 +62,7 @@ toSortButton.addEventListener("click", () => {
                     localStorage.setItem("listContents", JSON.stringify(sortedListContents));
                     listContents.splice(0, listContents.length);
                     renderList(sortedListContents);
-                    sortContainer.style.display = "none";
+                    sortDialog.close();
                     break;
             }
             break;
@@ -142,8 +142,7 @@ class Settings {
     }
 }
 const settings = new Settings();
-const settingsContainer = document.getElementById("settingsContainer");
-const settingsModal = document.getElementById("settingsModal");
+const settingsDialog = document.getElementById("settingsContainer");
 const settingsDiv = document.getElementById("settingsScreen");
 const settingsCloseButton = document.getElementById("settingsCloseButton");
 const settingsresetButton = document.getElementById('settingsResetButton');
@@ -159,8 +158,7 @@ const analytics = document.getElementById('analytics');
 const analyticsDiv = document.getElementById("analyticsDiv");
 const quickAddSetup = document.getElementById("quickAddSetup");
 const systemFont = document.getElementById("systemFont");
-const quickAddContainer = document.getElementById("quickAddContainer");
-const quickAddModal = document.getElementById("quickAddModal");
+const quickAddDialog = document.getElementById("quickAddDialog");
 const quickAddDiv = document.getElementById("quickAddScreen");
 const quickAddTextArea = document.getElementById("quickAddTextArea");
 const quickAddImportButton = document.getElementById("quickAddImportButton");
@@ -168,16 +166,15 @@ const quickAddExportButton = document.getElementById("quickAddExportButton");
 const quickAddCancelButton = document.getElementById("quickAddCancelButton");
 const allowNotifications = document.getElementById("allowNotifications");
 settingsButton.addEventListener("click", () => {
-    settingsContainer.style.display = "block";
-    settingsDiv.style.display = "block";
+    settingsDialog.showModal();
 });
-settingsModal.addEventListener("click", () => {
-    settingsContainer.style.display = "none";
-    settingsDiv.style.display = "none";
+settingsDialog.addEventListener("click", (e) => {
+    if (e.target == settingsDialog) {
+        settingsDialog.close();
+    }
 });
 settingsCloseButton.addEventListener("click", () => {
-    settingsContainer.style.display = "none";
-    settingsDiv.style.display = "none";
+    settingsDialog.close();
 });
 settingsresetButton.addEventListener("click", () => {
     if (confirm("Are you sure you want to reset settings?")) {
@@ -303,12 +300,14 @@ useSystemTheme.addEventListener("change", () => {
 });
 if (quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
-        settingsContainer.style.display = "none";
-        quickAddContainer.style.display = "block";
+        settingsDialog.close();
+        quickAddDialog.showModal();
         quickAddDiv.style.display = "block";
     });
-    quickAddModal.addEventListener("click", () => {
-        quickAddContainer.style.display = "none";
+    quickAddDialog.addEventListener("click", (e) => {
+        if (e.target == quickAddDialog) {
+            quickAddDialog.close();
+        }
     });
     quickAddExportButton.addEventListener("click", (e) => {
         quickAddTextArea.value = localStorage.getItem("currentSchedule");
@@ -319,10 +318,10 @@ if (quickAddSetup != undefined) {
         localStorage.setItem("currentSchedule", quickAddTextArea.value);
         console.log(`saved ${quickAddTextArea.value} into localStorage`);
         currentSchedule.scheduleObject = JSON.parse(localStorage.getItem("currentSchedule"));
-        quickAddContainer.style.display = "none";
+        quickAddDialog.close();
     });
     quickAddCancelButton.addEventListener("click", (e) => {
-        quickAddContainer.style.display = "none";
+        quickAddDialog.close();
     });
 }
 if (analytics != undefined) {
@@ -408,22 +407,22 @@ else {
 }
 // About Screen
 const aboutButton = document.getElementById("aboutButton");
-const aboutContainer = document.getElementById("aboutContainer");
+const aboutDialog = document.getElementById("aboutContainer");
 const aboutScreen = document.getElementById("aboutScreen");
 const aboutCloseButton = document.getElementById("aboutCloseButton");
-const aboutModal = document.getElementById("aboutModal");
 const aboutVersion = document.getElementById("version");
 const aboutSource = document.getElementById("source");
 aboutButton.addEventListener("click", () => {
-    settingsContainer.style.display = "none";
-    aboutContainer.style.display = "block";
-    aboutScreen.style.display = "block";
+    settingsDialog.close();
+    aboutDialog.showModal();
 });
-aboutModal.addEventListener("click", () => {
-    aboutContainer.style.display = "none";
+aboutDialog.addEventListener("click", (e) => {
+    if (e.target == aboutDialog) {
+        aboutDialog.close();
+    }
 });
 aboutCloseButton.addEventListener("click", () => {
-    aboutContainer.style.display = "none";
+    aboutDialog.close();
 });
 aboutVersion.textContent = `Version: V.${version}`;
 aboutSource.style.textDecoration = "none";

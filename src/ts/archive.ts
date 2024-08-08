@@ -89,10 +89,7 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     // Details Display Management
 
-    const detailsModal = document.createElement("div")
-    const detailsDisplay = document.createElement("div")
-    const detailsDiv = document.createElement("div")
-
+    const detailsDialog = document.createElement("dialog")
     const detailsSubject = addElement("p", homeworkObject.subject.name)
     const detailsSubjectDetails = document.createElement("p")
     const detailsSubjectID = addElement("span", homeworkObject.subject.id)
@@ -129,21 +126,20 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //Details Modal
 
-    detailsModal.classList.add("modal")
-    detailsDisplay.classList.add("detailsDisplay")
-    detailsDisplay.appendChild(detailsSubject)
+    detailsDialog.classList.add("detailsDisplay")
+    detailsDialog.appendChild(detailsSubject)
     if (detailsSubjectDetails.innerHTML != null && detailsSubjectDetails.innerHTML.length > 0) {
-        detailsDisplay.appendChild(detailsSubjectDetails)
+        detailsDialog.appendChild(detailsSubjectDetails)
     }
-    detailsDisplay.appendChild(detailsDueDate)
-    detailsDisplay.appendChild(detailsIsGroupWork)
-    detailsDisplay.appendChild(detailsPoints)
-    detailsDisplay.appendChild(detailsDescription)
+    detailsDialog.appendChild(detailsDueDate)
+    detailsDialog.appendChild(detailsIsGroupWork)
+    detailsDialog.appendChild(detailsPoints)
+    detailsDialog.appendChild(detailsDescription)
 
-    detailsModal.addEventListener("click", () => {
-        detailsModal.style.display = "none";
-        detailsDisplay.style.display = "none";
-        detailsDiv.style.display = "none";
+    detailsDialog.addEventListener("click", (e) => {
+        if(e.target == detailsDialog){
+            detailsDialog.close()
+        }
     })
 
     //Display Management (Final)
@@ -166,21 +162,16 @@ function addArchiveListItem(homeworkObject: Homework["homeworkObject"]): void {
         listItem.remove();
         updateArchiveAnalytics();
     })
-    detailsDiv.style.display = "none"
-    detailsDiv.appendChild(detailsDisplay)
-    detailsDiv.appendChild(detailsModal)
-    detailsDisplay.appendChild(detailsDeleteButton)
-    detailsDisplay.appendChild(restoreButton)
-    detailsDisplay.appendChild(addButton("Close", detailsDiv))
+    detailsDialog.appendChild(detailsDeleteButton)
+    detailsDialog.appendChild(restoreButton)
+    detailsDialog.appendChild(addButton("Close", detailsDialog))
     listItem.appendChild(displayDiv)
-    listItem.appendChild(detailsDiv)
+    listItem.appendChild(detailsDialog)
 
     //Clicking for Details
     displayDiv.addEventListener("click", (event) => {
         if (event.target != subjectName) {
-            detailsDiv.style.display = "flex";
-            detailsModal.style.display = "flex";
-            detailsDisplay.style.display = "block";
+            detailsDialog.showModal()
         }
     });
 

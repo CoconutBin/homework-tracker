@@ -1,8 +1,6 @@
 const themeButton = document.getElementById('themes') as HTMLButtonElement;
 const cssVariables = document.querySelector(':root') as HTMLElement
-const themesContainer = document.getElementById("themesContainer") as HTMLElement;
-const themesModal = document.getElementById("themesModal") as HTMLElement;
-const themesDiv = document.getElementById("customThemesScreen") as HTMLElement;
+const themesDialog = document.getElementById("customThemesScreen") as HTMLDialogElement;
 const themesCloseButton = document.getElementById("themesCloseButton") as HTMLButtonElement;
 const inputThemeText = document.getElementById("inputThemeText") as HTMLInputElement;
 const inputThemeBackground = document.getElementById("inputThemeBackground") as HTMLInputElement;
@@ -147,20 +145,17 @@ themeButton.addEventListener('click', () => {
         Themes[currentTheme].setCSS()
     } else {
         (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.add("preventTransition"))
-        themesContainer.style.display = "block"
-        themesModal.style.display = "block"
-        themesDiv.style.display = "block"
+        themesDialog.showModal()
     }
 })
 
-themesModal.addEventListener('click', () => {
-    (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.remove("preventTransition"))
-    themesContainer.style.display = "none"
+themesDialog.addEventListener('click', (e) => {
+    console.log(e.target)
 })
 
 themesCloseButton.addEventListener('click', () => {
     (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.remove("preventTransition"))
-    themesContainer.style.display = "none"
+    themesDialog.close()
 })
 
 themesResetButton.addEventListener("click", () => {

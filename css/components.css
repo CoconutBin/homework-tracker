@@ -49,6 +49,11 @@ button:hover {
     background: var(--accent)
 }
 
+dialog{
+    border: none !important;
+    background: none;
+}
+
 .isImportantIsGroupWork{
     color: var(--text);
     padding: 0 5px;

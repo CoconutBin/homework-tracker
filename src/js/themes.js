@@ -1,8 +1,6 @@
 const themeButton = document.getElementById('themes');
 const cssVariables = document.querySelector(':root');
-const themesContainer = document.getElementById("themesContainer");
-const themesModal = document.getElementById("themesModal");
-const themesDiv = document.getElementById("customThemesScreen");
+const themesDialog = document.getElementById("customThemesScreen");
 const themesCloseButton = document.getElementById("themesCloseButton");
 const inputThemeText = document.getElementById("inputThemeText");
 const inputThemeBackground = document.getElementById("inputThemeBackground");
@@ -132,18 +130,15 @@ themeButton.addEventListener('click', () => {
     }
     else {
         Array.from(document.querySelector("body").children).forEach(x => x.classList.add("preventTransition"));
-        themesContainer.style.display = "block";
-        themesModal.style.display = "block";
-        themesDiv.style.display = "block";
+        themesDialog.showModal();
     }
 });
-themesModal.addEventListener('click', () => {
-    Array.from(document.querySelector("body").children).forEach(x => x.classList.remove("preventTransition"));
-    themesContainer.style.display = "none";
+themesDialog.addEventListener('click', (e) => {
+    console.log(e.target);
 });
 themesCloseButton.addEventListener('click', () => {
     Array.from(document.querySelector("body").children).forEach(x => x.classList.remove("preventTransition"));
-    themesContainer.style.display = "none";
+    themesDialog.close();
 });
 themesResetButton.addEventListener("click", () => {
     if (confirm("Are you sure you want to reset themes?")) {

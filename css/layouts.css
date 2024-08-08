@@ -99,39 +99,18 @@ p.settingsCategory{
     text-align: center !important;
 }
 
-.modal {
-    position: fixed;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+::backdrop {
     background: rgba(0, 0, 0, 0.5);
-    z-index: 9998;
-    width: 100vw;
-    height: 100vh;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 .detailsDisplay,
 .inputForm,
 .settingsDisplay,
 .themesDisplay {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
     padding: 20px 20px;
     width: max(30vw,350px);
     max-height: 80vh;
     align-content: center;
-}
-
-.detailsDisplay,
-.settingsDisplay,
-.themesDisplay {
-    display: none;
 }
 
 .detailsDisplay p,

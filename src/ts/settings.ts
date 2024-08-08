@@ -1,8 +1,7 @@
 const sortButton = document.getElementById('sort') as HTMLButtonElement;
 const settingsButton = document.getElementById('settings') as HTMLButtonElement;
 
-const sortContainer = document.getElementById('sortContainer') as HTMLDivElement;
-const sortModal = document.getElementById('sortModal') as HTMLDivElement;
+const sortDialog = document.getElementById('sortContainer') as HTMLDialogElement;
 const sortScreen = document.getElementById('sortScreen') as HTMLDivElement;
 const sortType = document.getElementById('sortType') as HTMLSelectElement;
 const sortArrange = document.getElementById('sortArrange') as HTMLSelectElement;
@@ -16,16 +15,17 @@ if (sortType.value != 'dueDate') {
 
 
 sortButton.addEventListener("click", () => {
-    sortContainer.style.display = "block"
-    sortScreen.style.display = "block"
+    sortDialog.showModal()
 })
 
-sortModal.addEventListener("click", () => {
-    sortContainer.style.display = "none"
+sortDialog.addEventListener("click", (e) => {
+    if(e.target == sortDialog){
+        sortDialog.close()
+    }
 })
 
 sortCloseButton.addEventListener("click", () => {
-    sortContainer.style.display = "none"
+    sortDialog.close()
 })
 
 toSortButton.addEventListener("click", () => {
@@ -37,7 +37,7 @@ toSortButton.addEventListener("click", () => {
             localStorage.setItem("listContents", JSON.stringify(sortedListContents));
             listContents.splice(0, listContents.length);
             renderList(sortedListContents)
-            sortContainer.style.display = "none"
+            sortDialog.close()
             break;
         case "dueDate":
             switch (sortArrange.value) {
@@ -53,7 +53,7 @@ toSortButton.addEventListener("click", () => {
                     localStorage.setItem("listContents", JSON.stringify(sortedListContents));
                     listContents.splice(0, listContents.length);
                     renderList(sortedListContents)
-                    sortContainer.style.display = "none"
+                    sortDialog.close()
                     break;
                 case "farclose":
                     renderList([])
@@ -67,7 +67,7 @@ toSortButton.addEventListener("click", () => {
                     localStorage.setItem("listContents", JSON.stringify(sortedListContents));
                     listContents.splice(0, listContents.length);
                     renderList(sortedListContents)
-                    sortContainer.style.display = "none"
+                    sortDialog.close()
                     break;
             }
             break;
@@ -167,8 +167,7 @@ class Settings {
 
 const settings = new Settings()
 
-const settingsContainer = document.getElementById("settingsContainer");
-const settingsModal = document.getElementById("settingsModal");
+const settingsDialog = document.getElementById("settingsContainer") as HTMLDialogElement;
 const settingsDiv = document.getElementById("settingsScreen");
 const settingsCloseButton = document.getElementById("settingsCloseButton");
 const settingsresetButton = document.getElementById('settingsResetButton') as HTMLButtonElement;
@@ -184,8 +183,7 @@ const analytics = document.getElementById('analytics') as HTMLInputElement
 const analyticsDiv = document.getElementById("analyticsDiv") as HTMLDivElement
 const quickAddSetup = document.getElementById("quickAddSetup") as HTMLButtonElement
 const systemFont = document.getElementById("systemFont") as HTMLInputElement
-const quickAddContainer = document.getElementById("quickAddContainer") as HTMLDivElement
-const quickAddModal = document.getElementById("quickAddModal") as HTMLDivElement
+const quickAddDialog = document.getElementById("quickAddDialog") as HTMLDialogElement
 const quickAddDiv = document.getElementById("quickAddScreen") as HTMLDivElement
 const quickAddTextArea = document.getElementById("quickAddTextArea") as HTMLTextAreaElement
 const quickAddImportButton = document.getElementById("quickAddImportButton") as HTMLButtonElement
@@ -195,18 +193,17 @@ const allowNotifications = document.getElementById("allowNotifications") as HTML
 
 
 settingsButton.addEventListener("click", () => {
-    settingsContainer.style.display = "block"
-    settingsDiv.style.display = "block"
+    settingsDialog.showModal()
 })
 
-settingsModal.addEventListener("click", () => {
-    settingsContainer.style.display = "none"
-    settingsDiv.style.display = "none"
+settingsDialog.addEventListener("click", (e) => {
+    if(e.target == settingsDialog){
+        settingsDialog.close()
+    }
 })
 
 settingsCloseButton.addEventListener("click", () => {
-    settingsContainer.style.display = "none"
-    settingsDiv.style.display = "none"
+    settingsDialog.close()
 })
 
 settingsresetButton.addEventListener("click", () => {
@@ -342,12 +339,14 @@ useSystemTheme.addEventListener("change", () => {
 
 if (quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
-        settingsContainer.style.display = "none"
-        quickAddContainer.style.display = "block"
+        settingsDialog.close()
+        quickAddDialog.showModal()
         quickAddDiv.style.display = "block"
     })
-    quickAddModal.addEventListener("click", () => {
-        quickAddContainer.style.display = "none"
+    quickAddDialog.addEventListener("click", (e) => {
+        if(e.target == quickAddDialog){
+            quickAddDialog.close()
+        }
     })
 
     quickAddExportButton.addEventListener("click", (e) => {
@@ -360,11 +359,11 @@ if (quickAddSetup != undefined) {
         localStorage.setItem("currentSchedule", quickAddTextArea.value);
         console.log(`saved ${quickAddTextArea.value} into localStorage`)
         currentSchedule.scheduleObject = JSON.parse(localStorage.getItem("currentSchedule"))
-        quickAddContainer.style.display = "none";
+        quickAddDialog.close();
     })
 
     quickAddCancelButton.addEventListener("click", (e) => {
-        quickAddContainer.style.display = "none";
+        quickAddDialog.close();
     })
 }
 
@@ -454,25 +453,25 @@ if (settings.systemFont) {
 
 // About Screen
 const aboutButton = document.getElementById("aboutButton") as HTMLElement
-const aboutContainer = document.getElementById("aboutContainer") as HTMLElement
+const aboutDialog = document.getElementById("aboutContainer") as HTMLDialogElement
 const aboutScreen = document.getElementById("aboutScreen") as HTMLElement
 const aboutCloseButton = document.getElementById("aboutCloseButton") as HTMLElement
-const aboutModal = document.getElementById("aboutModal") as HTMLElement
 const aboutVersion = document.getElementById("version") as HTMLElement
 const aboutSource = document.getElementById("source") as HTMLElement
 
 aboutButton.addEventListener("click", () => {
-    settingsContainer.style.display = "none"
-    aboutContainer.style.display = "block"
-    aboutScreen.style.display = "block"
+    settingsDialog.close()
+    aboutDialog.showModal()
 })
 
-aboutModal.addEventListener("click", () => {
-    aboutContainer.style.display = "none"
+aboutDialog.addEventListener("click", (e) => {
+    if(e.target == aboutDialog){
+        aboutDialog.close()
+    }
 })
 
 aboutCloseButton.addEventListener("click", () => {
-    aboutContainer.style.display = "none"
+    aboutDialog.close()
 })
 
 aboutVersion.textContent = `Version: V.${version}`

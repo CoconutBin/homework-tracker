@@ -7,7 +7,12 @@ function addButton(type, affectedElement, customValue) {
     switch (type) {
         case "Close":
             button.addEventListener("click", () => {
-                affectedElement.style.display = "none";
+                try {
+                    affectedElement.close();
+                }
+                catch {
+                    affectedElement.style.display = "none";
+                }
             });
             break;
         case "Custom":

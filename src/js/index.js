@@ -7,11 +7,10 @@ const inputDueDate = document.getElementById("inputDueDate");
 const inputPoints = document.getElementById("inputPoints");
 const inputDescription = document.getElementById("inputDescription");
 const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsImportant, inputIsGroupWork, inputDueDate, inputPoints, inputDescription];
-const inputDiv = document.getElementById("inputform");
+const inputDialog = document.getElementById("inputDialog");
 const listContents = [];
 const localStorageListContents = JSON.parse(localStorage.getItem("listContents"));
 const addListItemButton = document.getElementById("addListItemButton");
-const editModal = document.getElementById("editModal");
 const logo = document.getElementById("logo");
 const quickAddButton = document.getElementById("quickAddButton");
 let localStorageLock = true;
@@ -30,13 +29,15 @@ if (localStorageListContents != undefined && localStorageListContents.length > 0
     }
 }
 addListItemButton.addEventListener("click", function () {
-    inputDiv.style.display = "flex";
+    inputDialog.showModal();
+});
+inputDialog.addEventListener("click", function (e) {
+    if (e.target == inputDialog) {
+        inputDialog.close();
+    }
 });
 document.getElementById("inputFormCloseButton").addEventListener("click", function () {
-    inputDiv.style.display = "none";
-});
-document.getElementById("inputFormModalBackground").addEventListener("click", function () {
-    inputDiv.style.display = "none";
+    inputDialog.close();
 });
 /**
  * Handles different types of input elements and returns the appropriate value.
@@ -59,7 +60,7 @@ function inputHandler(element) {
             console.error("Invalid Input");
     }
 }
-inputDiv.addEventListener("submit", function (event) {
+inputDialog.addEventListener("submit", function (event) {
     event.preventDefault();
     if (inputSubject.value) {
         const inputHomework = new Homework({
@@ -73,7 +74,7 @@ inputDiv.addEventListener("submit", function (event) {
             inputs.checked = false;
         }
         addListItem(inputHomework.homeworkObject);
-        inputDiv.style.display = "none";
+        inputDialog.close();
     }
 });
 /**
@@ -164,9 +165,7 @@ function addListItem(homeworkObject) {
                 break;
             default:
                 subjectName.contentEditable = "false";
-                detailsDiv.style.display = "flex";
-                detailsModal.style.display = "flex";
-                detailsDisplay.style.display = "block";
+                detailsDialog.showModal();
                 break;
         }
     });
@@ -194,9 +193,7 @@ function addListItem(homeworkObject) {
         }
     });
     // Details Display Management
-    const detailsModal = document.createElement("div");
-    const detailsDisplay = document.createElement("div");
-    const detailsDiv = document.createElement("div");
+    const detailsDialog = document.createElement("dialog");
     const detailsSubject = addElement("p", homeworkObject.subject.name);
     const detailsSubjectDetails = document.createElement("p");
     const detailsSubjectID = addElement("span", homeworkObject.subject.id);
@@ -233,20 +230,19 @@ function addListItem(homeworkObject) {
         detailsSubjectDetails.innerHTML = null;
     }
     //Details Modal
-    detailsModal.classList.add("modal");
-    detailsDisplay.classList.add("detailsDisplay");
-    detailsDisplay.appendChild(detailsSubject);
+    detailsDialog.classList.add("detailsDisplay");
+    detailsDialog.appendChild(detailsSubject);
     if (detailsSubjectDetails.innerHTML != null && detailsSubjectDetails.innerHTML.length > 0) {
-        detailsDisplay.appendChild(detailsSubjectDetails);
+        detailsDialog.appendChild(detailsSubjectDetails);
     }
-    detailsDisplay.appendChild(detailsDueDate);
-    detailsDisplay.appendChild(detailsIsGroupWork);
-    detailsDisplay.appendChild(detailsPoints);
-    detailsDisplay.appendChild(detailsDescription);
-    detailsModal.addEventListener("click", () => {
-        detailsModal.style.display = "none";
-        detailsDisplay.style.display = "none";
-        detailsDiv.style.display = "none";
+    detailsDialog.appendChild(detailsDueDate);
+    detailsDialog.appendChild(detailsIsGroupWork);
+    detailsDialog.appendChild(detailsPoints);
+    detailsDialog.appendChild(detailsDescription);
+    detailsDialog.addEventListener("click", (e) => {
+        if (e.target == detailsDialog) {
+            detailsDialog.close();
+        }
     });
     //Display Management (Final)
     const detailsDeleteButton = addButton("Custom", null, "Delete");
@@ -256,19 +252,16 @@ function addListItem(homeworkObject) {
         ManageLocalStorage.deleteListItem(homeworkObject);
         listItem.remove();
     });
-    detailsDiv.style.display = "none";
-    detailsDiv.appendChild(detailsDisplay);
-    detailsDiv.appendChild(detailsModal);
-    detailsDisplay.appendChild(detailsDeleteButton);
-    detailsDisplay.appendChild(addButton("Close", detailsDiv));
+    const detailsCloseButton = addButton("Close", detailsDialog);
+    detailsCloseButton.autofocus = true;
+    detailsDialog.appendChild(detailsDeleteButton);
+    detailsDialog.appendChild(detailsCloseButton);
     listItem.appendChild(displayDiv);
-    listItem.appendChild(detailsDiv);
+    listItem.appendChild(detailsDialog);
     //Clicking for Details
     displayDiv.addEventListener("click", (event) => {
         if (event.target != subjectName && event.target != startHomeworkButton) {
-            detailsDiv.style.display = "flex";
-            detailsModal.style.display = "flex";
-            detailsDisplay.style.display = "block";
+            detailsDialog.showModal();
         }
     });
     //Edit Functionality
@@ -360,7 +353,6 @@ function addListItem(homeworkObject) {
     //updating time
     const liveUpdateTimer = setInterval(() => {
         overdueUpdate();
-        notifyDue();
         timeStarted.innerText = `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`;
     }, 1000);
     setInterval(notifyDue, 86400000);
@@ -424,7 +416,7 @@ quickAddButton.addEventListener("click", () => {
                 type: null
             });
             addListItem(inputHomework.homeworkObject);
-            inputDiv.style.display = "none";
+            inputDialog.close();
         }
         else
             alert("No Subject in Schedule Found");
