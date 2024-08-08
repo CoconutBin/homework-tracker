@@ -377,6 +377,7 @@ if (analytics != undefined) {
         } else {
             analyticsDiv.style.display = "none";
             list.style.height = "auto";
+            list.style.height = "calc(90vh - 20px)"
         }
     })
 }
