@@ -1,6 +1,10 @@
 {
     "name": "Homework Tracker",
     "short_name": "wrkd.",
+    "dir": "auto",
+    "lang": "en",
+    "iarc_rating_id": "",
+    "description": "A simple homework tracker with very limited functionality",
     "background_color": "#f3e6d5",
     "theme_color": "#f3e6d5",
     "categories": [
@@ -79,5 +83,6 @@
     }
   ],
     "start_url": "https://coconutbin.github.io/homework-tracker",
-    "display": "standalone"
+    "display": "standalone",
+    "display_override": ["window-controls-overlay"]
   }
