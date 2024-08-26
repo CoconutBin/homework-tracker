@@ -13,7 +13,7 @@
 
 body,
 html {
-    color: var(--text);
+    color: var(--text) !important;
     font-size: 1.2vw;
     font-family: "Nunito", system-ui, sans-serif;
     cursor: default;
@@ -25,4 +25,8 @@ html {
 
 body::-webkit-scrollbar {
     display: none;
+}
+
+dialog{
+    color: var(--text)
 }

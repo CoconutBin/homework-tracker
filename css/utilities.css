@@ -5,12 +5,3 @@
     color: var(--text);
     padding: 0 5px !important;
 }
-
-.clickable:hover {
-    color: var(--accent);
-    transform: scale(1.1);
-}
-
-.preventTransition {
-    transition: none !important;
-}

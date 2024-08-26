@@ -3,7 +3,7 @@ body>* {
 }
 
 .listItemDisplay:hover {
-    transition: all .05s ease-in-out;
+    transition: all .1s ease-in-out;
 }
 
 .clickable {
@@ -33,4 +33,15 @@ dialog{
     dialog[open] {
         transform: scale(0.5);
     }
+}
+
+.preventTransition {
+    transition: none !important;
+}
+
+.clickable:hover {
+    color: var(--accent);
+    transform: scale(1.1);
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 200, 'opsz' 40;
+    transition: all .1s ease-in-out;
 }
