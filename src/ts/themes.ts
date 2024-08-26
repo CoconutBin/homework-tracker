@@ -150,7 +150,10 @@ themeButton.addEventListener('click', () => {
 })
 
 themesDialog.addEventListener('click', (e) => {
-    console.log(e.target)
+    if(e.target == themesDialog){
+        (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.remove("preventTransition"))
+        themesDialog.close()
+    }
 })
 
 themesCloseButton.addEventListener('click', () => {

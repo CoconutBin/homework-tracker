@@ -134,7 +134,10 @@ themeButton.addEventListener('click', () => {
     }
 });
 themesDialog.addEventListener('click', (e) => {
-    console.log(e.target);
+    if (e.target == themesDialog) {
+        Array.from(document.querySelector("body").children).forEach(x => x.classList.remove("preventTransition"));
+        themesDialog.close();
+    }
 });
 themesCloseButton.addEventListener('click', () => {
     Array.from(document.querySelector("body").children).forEach(x => x.classList.remove("preventTransition"));
