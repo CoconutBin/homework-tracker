@@ -1,6 +1,5 @@
 .clickable {
     cursor: pointer;
-    transition: all .1s ease-in-out;
     font-size: 42px !important;
     text-decoration: none;
     color: var(--text);

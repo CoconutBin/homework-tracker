@@ -1,0 +1,36 @@
+body>* {
+    transition: all .2s ease-in-out;
+}
+
+.listItemDisplay:hover {
+    transition: all .05s ease-in-out;
+}
+
+.clickable {
+    transition: all .1s ease-in-out;
+}
+
+/*   IS-OPEN STATE   */
+dialog[open] {
+    transition-property: overlay all;
+    transition-duration: 0.3s;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+    transform: scale(1);
+}
+
+/*   EXIT STATE   */
+dialog{
+    transition-property: overlay all;
+    transition-duration: 0.3s;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+    transform: scale(0);
+}
+
+/* 0. BEFORE-OPEN STATE   */
+@starting-style {
+    dialog[open] {
+        transform: scale(0.5);
+    }
+}

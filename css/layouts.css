@@ -73,7 +73,6 @@
 .listItemDisplay:hover {
     transform: scale(1.025);
     cursor: pointer;
-    transition: all .05s ease-in-out;
     filter: brightness(115%);
 }
 
