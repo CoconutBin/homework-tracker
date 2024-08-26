@@ -1,10 +1,10 @@
 if (navigator.setAppBadge) {
     navigator.permissions.query({ name: "notifications" }).then((result) => {
         if (result.state === "granted") {
-            navigator.setAppBadge(listContents.length)
+            try{navigator.setAppBadge(listContents.length)} catch (e) {console.error(e)}
         } else if (result.state === "prompt") {
             Notification.requestPermission().then(() => {
-                navigator.setAppBadge(listContents.length);
+                try{navigator.setAppBadge(listContents.length)} catch (e) {console.error(e)};
               });
         }
         // Don't do anything if the permission was denied.
@@ -15,7 +15,7 @@ document.getElementById("list").addEventListener("change", () => {
     if (navigator.setAppBadge) {
         navigator.permissions.query({ name: "notifications" }).then((result) => {
             if (result.state === "granted") {
-                navigator.setAppBadge(listContents.length)
+                try{navigator.setAppBadge(listContents.length)} catch (e) {console.error(e)}
             }
         });
     }
