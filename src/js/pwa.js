@@ -7,6 +7,7 @@ if (navigator.setAppBadge) {
             catch (e) {
                 console.error(e);
             }
+            ;
         }
         else if (result.state === "prompt") {
             Notification.requestPermission().then(() => {
@@ -32,6 +33,7 @@ document.getElementById("list").addEventListener("change", () => {
                 catch (e) {
                     console.error(e);
                 }
+                ;
             }
         });
     }
