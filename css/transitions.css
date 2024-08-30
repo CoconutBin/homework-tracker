@@ -13,19 +13,21 @@ body>* {
 /*   IS-OPEN STATE   */
 dialog[open] {
     transition-property: overlay all;
-    transition-duration: 0.3s;
+    transition-duration: 300ms;
     transition-behavior: allow-discrete;
     transition-timing-function: ease-out;
     transform: scale(1);
+    opacity: 1;
 }
 
 /*   EXIT STATE   */
 dialog{
     transition-property: overlay all;
-    transition-duration: 0.3s;
+    transition-duration: 150ms;
     transition-behavior: allow-discrete;
     transition-timing-function: ease-out;
-    transform: scale(0);
+    transform: scale(0.7);
+    opacity: 0;
 }
 
 /* 0. BEFORE-OPEN STATE   */
