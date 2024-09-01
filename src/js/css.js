@@ -26,7 +26,8 @@ function setNoArchivedHomeworksMessage(){
         noArchivedHomeworksMessage.style.alignContent = "center"
         noArchivedHomeworksMessage.style.margin = "auto"
         noArchivedHomeworksMessage.style.padding = "10px"
-        noArchivedHomeworksMessage.style.color = "rgb(0, 0, 0, 0.7)"
+        noArchivedHomeworksMessage.style.color = "var(--text)"
+        noArchivedHomeworksMessage.style.opacity = "0.7"
         document.getElementById('list').appendChild(noArchivedHomeworksMessage)
         document.getElementById('list').style.height = "calc(90vh - 20px)"
     }
