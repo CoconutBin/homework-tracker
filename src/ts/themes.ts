@@ -11,7 +11,6 @@ const themesResetButton = document.getElementById('themesResetButton') as HTMLBu
 const themeTemplates = document.getElementById("themeTemplates") as HTMLSelectElement;
 
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
-console.log(currentTheme)
 
 if(settings.noGradientNavbars){
     document.getElementById("navbar").style.background = 'var(--secondary)'
@@ -145,20 +144,29 @@ themeButton.addEventListener('click', () => {
         localStorage.setItem("currentTheme", currentTheme)
         Themes[currentTheme].setCSS()
     } else {
-        (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.add("preventTransition"))
+        [...document.body.children].forEach(child => {
+            child.classList.add("preventTransition");
+            [...child.children].forEach(child => child.classList.add("preventTransition"));
+        })
         themesDialog.showModal()
     }
 })
 
 themesDialog.addEventListener('click', (e) => {
     if(e.target == themesDialog){
-        (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.remove("preventTransition"))
+        [...document.body.children].forEach(child => {
+            child.classList.remove("preventTransition");
+            [...child.children].forEach(child => child.classList.remove("preventTransition"));
+        })
         themesDialog.close()
     }
 })
 
 themesCloseButton.addEventListener('click', () => {
-    (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.remove("preventTransition"))
+    [...document.body.children].forEach(child => {
+        child.classList.remove("preventTransition");
+        [...child.children].forEach(child => child.classList.remove("preventTransition"));
+    })
     themesDialog.close()
 })
 
@@ -202,6 +210,7 @@ inputThemeBackground.addEventListener('input', () => {
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
     themeTemplates.value = 'custom'
 })
+
 inputThemePrimary.addEventListener('input', () => {
     settings.customThemeColor.primary = inputThemePrimary.value
     cssVariables.style.setProperty('--primary', settings.customThemeColor.primary)

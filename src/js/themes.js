@@ -10,7 +10,6 @@ const inputThemeAccent = document.getElementById("inputThemeAccent");
 const themesResetButton = document.getElementById('themesResetButton');
 const themeTemplates = document.getElementById("themeTemplates");
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
-console.log(currentTheme);
 if (settings.noGradientNavbars) {
     document.getElementById("navbar").style.background = 'var(--secondary)';
 }
@@ -130,18 +129,27 @@ themeButton.addEventListener('click', () => {
         Themes[currentTheme].setCSS();
     }
     else {
-        Array.from(document.querySelector("body").children).forEach(x => x.classList.add("preventTransition"));
+        [...document.body.children].forEach(child => {
+            child.classList.add("preventTransition");
+            [...child.children].forEach(child => child.classList.add("preventTransition"));
+        });
         themesDialog.showModal();
     }
 });
 themesDialog.addEventListener('click', (e) => {
     if (e.target == themesDialog) {
-        Array.from(document.querySelector("body").children).forEach(x => x.classList.remove("preventTransition"));
+        [...document.body.children].forEach(child => {
+            child.classList.remove("preventTransition");
+            [...child.children].forEach(child => child.classList.remove("preventTransition"));
+        });
         themesDialog.close();
     }
 });
 themesCloseButton.addEventListener('click', () => {
-    Array.from(document.querySelector("body").children).forEach(x => x.classList.remove("preventTransition"));
+    [...document.body.children].forEach(child => {
+        child.classList.remove("preventTransition");
+        [...child.children].forEach(child => child.classList.remove("preventTransition"));
+    });
     themesDialog.close();
 });
 themesResetButton.addEventListener("click", () => {

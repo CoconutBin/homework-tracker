@@ -257,7 +257,7 @@ customThemes.addEventListener("change", () => {
                 return "light";
             }
         }
-        if (themeDeterminer(Themes[currentTheme].backgroundColor) == "light") {
+        if (themeDeterminer(settings.customThemeColor.background) == "light") {
             themeButton.textContent = "light_mode";
             Themes[settings.defaultThemes.light].setCSS();
         }

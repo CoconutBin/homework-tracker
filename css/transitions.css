@@ -97,6 +97,7 @@ dialog::backdrop{
 
     .analyticsDiv {
         translate: 0 100vh;
+        display: none;
     }
 }
 
