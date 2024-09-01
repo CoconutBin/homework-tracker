@@ -10,6 +10,7 @@ const inputThemeAccent = document.getElementById("inputThemeAccent");
 const themesResetButton = document.getElementById('themesResetButton');
 const themeTemplates = document.getElementById("themeTemplates");
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
+console.log(currentTheme);
 if (settings.noGradientNavbars) {
     document.getElementById("navbar").style.background = 'var(--secondary)';
 }

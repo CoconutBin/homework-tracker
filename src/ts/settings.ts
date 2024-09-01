@@ -372,12 +372,14 @@ if (analytics != undefined) {
         settings.analytics = analytics.checked
         localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
         if (settings.analytics) {
+            analyticsDiv.classList.add("to-shown")
+            analyticsDiv.classList.remove("to-none")
             analyticsDiv.style.display = "flex";
             list.style.height = "calc(50vh - 15px)";
         } else {
-            analyticsDiv.style.display = "none";
+            analyticsDiv.classList.add("to-none")
+            analyticsDiv.classList.remove("to-shown")
             list.style.height = "auto";
-            list.style.height = "calc(90vh - 20px)"
         }
     })
 }

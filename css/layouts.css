@@ -32,7 +32,7 @@
 .list {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
     overflow: auto;
 }
@@ -99,7 +99,7 @@ p.settingsCategory{
     text-align: center !important;
 }
 
-::backdrop {
+dialog::backdrop {
     background: rgba(0, 0, 0, 0.5);
 }
 

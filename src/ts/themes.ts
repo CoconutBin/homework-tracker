@@ -11,6 +11,7 @@ const themesResetButton = document.getElementById('themesResetButton') as HTMLBu
 const themeTemplates = document.getElementById("themeTemplates") as HTMLSelectElement;
 
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
+console.log(currentTheme)
 
 if(settings.noGradientNavbars){
     document.getElementById("navbar").style.background = 'var(--secondary)'

@@ -218,7 +218,9 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         else if (startHomeworkButton.value == "Archive") {
             ManageLocalStorage.deleteListItem(homeworkObject)
             archivedHomeworks.push(homeworkObject)
-            listItem.remove()
+            listItem.classList.add("delete-animation")
+            detailsDialog.close()
+            setTimeout(() => listItem.remove(), 150);
             ManageLocalStorage.update()
         }
     })
@@ -288,7 +290,9 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     detailsDeleteButton.addEventListener("click", () => {
         if (!confirm("Are you sure?")) return
         ManageLocalStorage.deleteListItem(homeworkObject)
-        listItem.remove();
+        listItem.classList.add("delete-animation")
+        detailsDialog.close()
+        setTimeout(() => listItem.remove(), 150);
     })
 
     const detailsCloseButton = addButton("Close", detailsDialog)
