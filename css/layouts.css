@@ -182,7 +182,7 @@ dialog::backdrop {
     position: fixed;
     width: 96px;
     height: 96px;
-    border-radius: calc((2vh + 2vw)/2);
+    border-radius: 28px;
     display: flex;
     align-items: center;
     justify-content: center;

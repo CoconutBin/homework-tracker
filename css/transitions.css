@@ -38,6 +38,15 @@ body>* {
     display: none !important;
 }
 
+.addListItemButton{
+    transition-property: all;
+    transition-duration: 250ms;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-in-out;
+    opacity: 1;
+    scale: 1 1;
+}
+
 .listItem {
     transition-property: all;
     transition-duration: 200ms;
@@ -93,6 +102,7 @@ dialog::backdrop{
         background: rgba(0, 0, 0, 0);
     }
 
+    .addListItemButton,
     .listItem {
         opacity: 0;
         scale: 1 0.9;

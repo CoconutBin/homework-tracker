@@ -130,8 +130,8 @@ themeButton.addEventListener('click', () => {
     }
     else {
         [...document.body.children].forEach(child => {
-            child.classList.add("preventTransition");
-            [...child.children].forEach(child => child.classList.add("preventTransition"));
+            setTimeout(() => child.classList.add("preventTransition"), 500);
+            [...child.children].forEach(child => setTimeout(() => child.classList.add("preventTransition"), 500));
         });
         themesDialog.showModal();
     }
