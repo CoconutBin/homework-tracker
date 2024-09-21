@@ -31,4 +31,18 @@ function setNoArchivedHomeworksMessage(){
         document.getElementById('list').appendChild(noArchivedHomeworksMessage)
         document.getElementById('list').style.height = "calc(90vh - 20px)"
     }
+
+    if(listContents.length == 0 && document.querySelector('title').textContent != 'Homework Tracker (Archived Homeworks)'){
+        const noArchivedHomeworksMessage = document.createElement('h1')
+        noArchivedHomeworksMessage.textContent = "There are no homeworks"
+        noArchivedHomeworksMessage.style.fontSize = "30px"
+        noArchivedHomeworksMessage.style.textAlign = "center"
+        noArchivedHomeworksMessage.style.alignContent = "center"
+        noArchivedHomeworksMessage.style.margin = "auto"
+        noArchivedHomeworksMessage.style.padding = "10px"
+        noArchivedHomeworksMessage.style.color = "var(--text)"
+        noArchivedHomeworksMessage.style.opacity = "0.7"
+        document.getElementById('list').appendChild(noArchivedHomeworksMessage)
+        document.getElementById('list').style.height = "calc(90vh - 20px)"
+    }
 }
