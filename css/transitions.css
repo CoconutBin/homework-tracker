@@ -5,8 +5,8 @@ body>* {
 .listItemDisplay:hover, .addListItemButton:hover {
     transform: scale(1.025);
     cursor: pointer;
-    filter: brightness(115%);
-    transition: all .1s ease-in-out;
+    transition: all 100ms ease-in-out;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
 .clickable {
@@ -124,6 +124,12 @@ dialog::backdrop{
     font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 200, 'opsz' 40;
     transition: font-variation-settings .1s ease-in-out .3s;
     transition: all .1s ease-in-out;
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover,
+button:hover {
+    background: var(--accent)
 }
 
 .delete-animation {

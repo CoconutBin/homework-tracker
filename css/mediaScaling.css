@@ -53,6 +53,10 @@
         font-size: medium;
     }
 
+    textarea{
+        width: calc(300px - 10vw)
+    }
+
     .clickable {
         font-size: 36px !important;
     }

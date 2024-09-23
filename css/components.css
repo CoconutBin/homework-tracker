@@ -45,12 +45,6 @@ input[type="color"]{
     background-color: transparent;
 }
 
-input[type="button"]:hover,
-input[type="submit"]:hover,
-button:hover {
-    background: var(--accent)
-}
-
 dialog{
     border: none !important;
     background: none;
