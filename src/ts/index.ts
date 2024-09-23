@@ -126,8 +126,9 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     const isImportant = addElement("p")
     const subjectName = addElement("p", homeworkObject.subject.name)
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`)
-    const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`)
+    const timeStarted = addElement("p", `Started ${convertToTime(homeworkObject.timeUsed - homeworkObject.pauseInterval)} ago`)
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`)
+    const pauseHomeworkButton = addButton("Custom", null, `${homeworkObject.timeEnded > 0 ? "Reset" : "Pause"}`)
     subjectNameContainer.classList.add("subjectNameContainer")
     subjectName.classList.add("subjectNameText")
     isImportant.classList.add("isImportantIsGroupWork")
@@ -154,8 +155,10 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     if (homeworkObject.timeEnded > 0) {
         timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`
         startHomeworkButton.value = "Archive"
-
         timeStarted.style.display = "block"
+    }
+    if(!homeworkStarted){
+        pauseHomeworkButton.style.display = "none"
     }
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
@@ -197,6 +200,31 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         }
     })
 
+    let cachedTime:number
+
+    pauseHomeworkButton.addEventListener("click", () => {
+        switch(pauseHomeworkButton.value){
+            case "Pause":
+                homeworkObject.isPaused = true
+                homeworkObject.timePaused = Date.now()
+                pauseHomeworkButton.value = "Resume"
+                cachedTime = homeworkObject.timeUsed - homeworkObject.pauseInterval
+                timeStarted.innerText = `Paused at ${convertToTime(cachedTime)}`
+                ManageLocalStorage.update()
+                break;
+            case "Resume":
+                homeworkObject.isPaused = false;
+                homeworkObject.timeUnpaused = Date.now()
+                homeworkObject.pauseInterval += homeworkObject.timeUnpaused - homeworkObject.timePaused 
+                timeStarted.innerText = `Started ${convertToTime(homeworkObject.timeUsed - homeworkObject.pauseInterval)} ago`
+                ManageLocalStorage.update()
+                pauseHomeworkButton.value = "Pause"
+                break;
+            case "Reset":
+                break;
+        }
+        console.log(homeworkObject.timeUnpaused, homeworkObject.timePaused, Date.now())
+    })
 
     // Start Button Functionality
 
@@ -207,6 +235,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
             ManageLocalStorage.update()
             startHomeworkButton.value = "End"
             timeStarted.style.display = "block"
+            pauseHomeworkButton.style.display = "inline-block"
         }
         else if (homeworkStarted == true && startHomeworkButton.value != "Archive") {
             homeworkObject.timeEnded = Date.now()
@@ -214,6 +243,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
             ManageLocalStorage.update()
             timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`
             startHomeworkButton.value = "Archive"
+            pauseHomeworkButton.value = "Reset"
         }
         else if (startHomeworkButton.value == "Archive") {
             ManageLocalStorage.deleteListItem(homeworkObject)
@@ -305,7 +335,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //Clicking for Details
     displayDiv.addEventListener("click", (event) => {
-        if (event.target != subjectName && event.target != startHomeworkButton) {
+        if (event.target != subjectName && event.target != startHomeworkButton && event.target != pauseHomeworkButton) {
             detailsDialog.showModal()
         }
     });
@@ -410,8 +440,14 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     //updating time
     const liveUpdateTimer = setInterval(() => {
         overdueUpdate()
-        timeStarted.innerText = `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`
-    }, 1000)
+        homeworkObject.timeUsed = Date.now() - homeworkObject.timeStarted
+        ManageLocalStorage.update()
+        if(homeworkObject.isPaused){
+            timeStarted.innerText = `Paused at ${convertToTime(cachedTime)}`
+        } else{
+            timeStarted.innerText = `Started ${convertToTime(homeworkObject.timeUsed - homeworkObject.pauseInterval)} ago`
+        }
+    }, 500)
 
     setInterval(notifyDue, 86400000)
 
@@ -447,7 +483,9 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //appending to list element
     displayDiv.appendChild(startHomeworkButton)
+    displayDiv.appendChild(pauseHomeworkButton)
     list.appendChild(listItem)
+    listItem.style.order = index.toString()
 
     function displayDivRender(){
         let existingElements = [subjectNameContainer, timeStarted]
@@ -455,6 +493,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
             existingElements.push(dueDate)
         }
         existingElements.push(startHomeworkButton)
+        existingElements.push(pauseHomeworkButton)
         displayDiv.replaceChildren()
         existingElements.forEach(x => displayDiv.appendChild(x))
     }
