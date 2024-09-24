@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Homework Tracker (Archived Homework)</title>
+    <title>Homework Tracker (Archived Homeworks)</title>
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#aac6ab" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#33483b" />
     <link rel="apple-touch-icon" type="image/png" href="icons/icon.png">
@@ -20,11 +20,12 @@
     <link rel="stylesheet" href="./css/components.css">
     <link rel="stylesheet" href="./css/utilities.css">
     <link rel="stylesheet" href="./css/mediaScaling.css">
+    <link rel="stylesheet" href="./css/transitions.css">
 
 </head>
 
 <body>
-    <div class="navbar" id="navbar">
+    <header class="navbar" id="navbar">
         <p id="logo">Archived Homeworks</p>
         <div style="display: flex">
             <a id="navbarButtons">
@@ -36,11 +37,10 @@
                 <a class="material-symbols-rounded clickable" id="settings" title="Settings">settings</a>
             </a>
         </div>
-    </div>
+    </header>
     <div id="list" class="list">
     </div>
-    <div id="sortContainer" style="display: none;">
-        <div id="sortModal" class="modal"></div>
+    <dialog id="sortContainer">
         <div id="sortScreen" class="settingsDisplay">
             <p class="settingsCategory">Sort By</p>
             <label for="sortType">Sort Type:</label>
@@ -50,37 +50,39 @@
             </select><br>
             <div style="display: inline-block" id="sortArrangeBlock">
                 <label for="sortArrange">Arrange from:</label>
-            <select name="sortArrange" id="sortArrange">
-                <option value="closefar">Closest to Farthest</option>
-                <option value="farclose">Farthest to Closest</option>
-            </select>
+                <select name="sortArrange" id="sortArrange">
+                    <option value="closefar">Closest to Farthest</option>
+                    <option value="farclose">Farthest to Closest</option>
+                </select>
             </div><br>
             <button id="sortButton">Sort</button>
             <button id="sortCloseButton">Close</button>
         </div>
-    </div>
-    <div id="settingsContainer" style="display: none;">
-        <div id="settingsModal" class="modal"></div>
+    </dialog>
+    <dialog id="settingsContainer">
         <div id="settingsScreen" class="settingsDisplay">
             <p class="settingsCategory">Themes</p>
             <label for="customThemes">Custom Theming</label>
             <input type="checkbox" name="customThemes" id="customThemes"><br>
-            <label for="defaultLight">Default Light Theme:</label>
-            <select name="defaultLight" id="defaultLight">
-
-            </select><br>
-            <label for="defaultDark">Default Dark Theme:</label>
-            <select name="defaultDark" id="defaultDark">
-
-            </select><br>
-            <label for="noGradientNavbars">No Gradient Navbars</label>
-            <input type="checkbox" name="noGradientNavbars" id="noGradientNavbars">
-            </label><br><br>
+            <label for="defaultLight">Default Light Theme:
+                <select name="defaultLight" id="defaultLight">
+                </select>
+            </label><br>
+            <label for="defaultDark">Default Dark Theme:
+                <select name="defaultDark" id="defaultDark">
+                </select>
+            </label><br>
+            <label for="chooseTheme">Theme:
+                <select name="chooseTheme" id="chooseTheme">
+                    <option value="system">System</option>
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select></label><br>
             <label for="pureBlackDarkMode">Pure black background for dark mode</label>
             <input type="checkbox" name="pureBlackDarkMode" id="pureBlackDarkMode">
-            </label><br><br>
-            <label for="useSystemTheme">Use System Theme</label>
-            <input type="checkbox" name="useSystemTheme" id="useSystemTheme">
+            </label><br>
+            <label for="noGradientNavbars">No Gradient Navbars</label>
+            <input type="checkbox" name="noGradientNavbars" id="noGradientNavbars">
             </label><br>
             <p class="settingsCategory">UI</p>
             <label for="rightToLeft">Right-to-Left Layout</label>
@@ -93,14 +95,13 @@
             <label for="allowNotifications">Notifications</label>
             <input type="checkbox" name="allowNotifications" id="allowNotifications">
             </label><br>
-            <br><input type="button" value="Close" id="settingsCloseButton">
-            <input type="button" value="Reset Settings" id="settingsResetButton">
-            <input type="button" value="About" id="aboutButton">
+            <br><button id="settingsCloseButton">Close</button>
+            <button id="settingsResetButton">Reset Settings</button>
+            <button id="aboutButton">About</button>
         </div>
-    </div>
-    <div id="themesContainer" style="display: none;">
-        <div id="themesModal" class="modal"></div>
-        <div id="customThemesScreen" class="settingsDisplay">
+    </dialog>
+    <dialog id="customThemesScreen">
+        <div class="themesDisplay">
             <label for="inputThemeText">Theme Text Color: </label><input type="color" name="inputThemeText"
                 id="inputThemeText"><br>
             <label for="inputThemeBackground">Theme Background Color: </label><input type="color"
@@ -115,32 +116,33 @@
                 <select name="themeTemplates" id="themeTemplates">
                 </select></label>
             </select><br>
-            <br><input type="button" value="Close" id="themesCloseButton">
-            <input type="button" value="Reset Custom Theme" id="themesResetButton">
+
+            <br><button id="themesCloseButton">Close</button>
+            <button id="themesResetButton">Reset Custom Theme</button>
         </div>
-    </div>
-    <div id="aboutContainer" style="display: none;">
-        <div id="aboutModal" class="modal"></div>
+    </dialog>
+    <dialog id="aboutContainer">
         <div id="aboutScreen" class="settingsDisplay">
             <p class="settingsCategory">About Homework Tracker (wrkd.)</p><br>
             <p id="version">Version: 1.0.0</p>
             <p><a id="source" href="https://www.github.com/coconutbin/homework-tracker">View Source (Github)</a></p><br>
             <button id="aboutCloseButton">Close</button>
         </div>
-        <div id="analyticsDiv" class="analyticsDiv">
-            <div class="analyticsBlock">
-                <p class="analyticsTitle">Total Archived Homeworks:</p>
-                <p id="archiveCount">0</p>
-            </div><br>
-            <div class="analyticsBlock">
-                <p class="analyticsTitle">Average Time Taken:</p>
-                <p id="archiveTime">0d 0h 0s</p>
-            </div>
-            <div class="analyticsBlock">
-                <p class="analyticsTitle">Group Work:Individual Work</p>
-                <p id="archiveGroupRatio">1:1</p>
-            </div>
+    </dialog>
+    <div id="analyticsDiv" class="analyticsDiv">
+        <div class="analyticsBlock">
+            <p class="analyticsTitle">Total Archived Homeworks:</p>
+            <p id="archiveCount">0</p>
+        </div><br>
+        <div class="analyticsBlock">
+            <p class="analyticsTitle">Average Time Taken:</p>
+            <p id="archiveTime">0d 0h 0s</p>
         </div>
+        <div class="analyticsBlock">
+            <p class="analyticsTitle">Group Work:Individual Work</p>
+            <p id="archiveGroupRatio">1:1</p>
+        </div>
+    </div>
 </body>
 <script src="./src/js/localStorage.js"></script>
 <script src="./src/js/homework.js"></script>

@@ -1,8 +1,6 @@
 const themeButton = document.getElementById('themes');
 const cssVariables = document.querySelector(':root');
-const themesContainer = document.getElementById("themesContainer");
-const themesModal = document.getElementById("themesModal");
-const themesDiv = document.getElementById("customThemesScreen");
+const themesDialog = document.getElementById("customThemesScreen");
 const themesCloseButton = document.getElementById("themesCloseButton");
 const inputThemeText = document.getElementById("inputThemeText");
 const inputThemeBackground = document.getElementById("inputThemeBackground");
@@ -18,14 +16,35 @@ if (settings.noGradientNavbars) {
 else {
     document.getElementById("navbar").style.background = '';
 }
-if (settings.useSystemTheme && !settings.customThemes) {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        currentTheme = settings.defaultThemes.dark;
+chooseTheme.addEventListener("change", () => {
+    settings.themeType = chooseTheme.value;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    if (!settings.customThemes) {
+        switch (settings.themeType) {
+            case "light":
+                currentTheme = settings.defaultThemes.light;
+                themeButton.innerText = "light_mode";
+                Themes[currentTheme].setCSS();
+                break;
+            case "dark":
+                currentTheme = settings.defaultThemes.dark;
+                themeButton.innerText = "dark_mode";
+                Themes[currentTheme].setCSS();
+                break;
+            case "system":
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    currentTheme = settings.defaultThemes.dark;
+                    themeButton.innerText = "dark_mode";
+                }
+                else {
+                    currentTheme = settings.defaultThemes.light;
+                    themeButton.innerText = "light_mode";
+                }
+                Themes[currentTheme].setCSS();
+                break;
+        }
     }
-    else {
-        currentTheme = settings.defaultThemes.light;
-    }
-}
+});
 class Theme {
     name;
     displayName;
@@ -117,33 +136,46 @@ else {
 if (settings.customThemes == true && settings.customThemeColor != undefined) {
     Themes['custom'].CSSColors = settings.customThemeColor;
 }
+chooseTheme.value = Themes[currentTheme].themeType == 'none' ? 'system' : Themes[currentTheme].themeType;
 themeButton.addEventListener('click', () => {
     if (settings.customThemes == false) {
         if (currentTheme == settings.defaultThemes.light) {
+            chooseTheme.value = 'dark';
             currentTheme = settings.defaultThemes.dark;
             themeButton.innerText = "dark_mode";
         }
         else {
+            chooseTheme.value = 'light';
             currentTheme = settings.defaultThemes.light;
             themeButton.innerText = "light_mode";
         }
+        localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
         localStorage.setItem("currentTheme", currentTheme);
         Themes[currentTheme].setCSS();
     }
     else {
-        Array.from(document.querySelector("body").children).forEach(x => x.classList.add("preventTransition"));
-        themesContainer.style.display = "block";
-        themesModal.style.display = "block";
-        themesDiv.style.display = "block";
+        [...document.body.children].forEach(child => {
+            setTimeout(() => child.classList.add("preventTransition"), 500);
+            [...child.children].forEach(child => setTimeout(() => child.classList.add("preventTransition"), 500));
+        });
+        themesDialog.showModal();
     }
 });
-themesModal.addEventListener('click', () => {
-    Array.from(document.querySelector("body").children).forEach(x => x.classList.remove("preventTransition"));
-    themesContainer.style.display = "none";
+themesDialog.addEventListener('click', (e) => {
+    if (e.target == themesDialog) {
+        [...document.body.children].forEach(child => {
+            child.classList.remove("preventTransition");
+            [...child.children].forEach(child => child.classList.remove("preventTransition"));
+        });
+        themesDialog.close();
+    }
 });
 themesCloseButton.addEventListener('click', () => {
-    Array.from(document.querySelector("body").children).forEach(x => x.classList.remove("preventTransition"));
-    themesContainer.style.display = "none";
+    [...document.body.children].forEach(child => {
+        child.classList.remove("preventTransition");
+        [...child.children].forEach(child => child.classList.remove("preventTransition"));
+    });
+    themesDialog.close();
 });
 themesResetButton.addEventListener("click", () => {
     if (confirm("Are you sure you want to reset themes?")) {

@@ -1,8 +1,7 @@
 const sortButton = document.getElementById('sort') as HTMLButtonElement;
 const settingsButton = document.getElementById('settings') as HTMLButtonElement;
 
-const sortContainer = document.getElementById('sortContainer') as HTMLDivElement;
-const sortModal = document.getElementById('sortModal') as HTMLDivElement;
+const sortDialog = document.getElementById('sortContainer') as HTMLDialogElement;
 const sortScreen = document.getElementById('sortScreen') as HTMLDivElement;
 const sortType = document.getElementById('sortType') as HTMLSelectElement;
 const sortArrange = document.getElementById('sortArrange') as HTMLSelectElement;
@@ -16,16 +15,17 @@ if (sortType.value != 'dueDate') {
 
 
 sortButton.addEventListener("click", () => {
-    sortContainer.style.display = "block"
-    sortScreen.style.display = "block"
+    sortDialog.showModal()
 })
 
-sortModal.addEventListener("click", () => {
-    sortContainer.style.display = "none"
+sortDialog.addEventListener("click", (e) => {
+    if(e.target == sortDialog){
+        sortDialog.close()
+    }
 })
 
 sortCloseButton.addEventListener("click", () => {
-    sortContainer.style.display = "none"
+    sortDialog.close()
 })
 
 toSortButton.addEventListener("click", () => {
@@ -37,7 +37,7 @@ toSortButton.addEventListener("click", () => {
             localStorage.setItem("listContents", JSON.stringify(sortedListContents));
             listContents.splice(0, listContents.length);
             renderList(sortedListContents)
-            sortContainer.style.display = "none"
+            sortDialog.close()
             break;
         case "dueDate":
             switch (sortArrange.value) {
@@ -53,7 +53,7 @@ toSortButton.addEventListener("click", () => {
                     localStorage.setItem("listContents", JSON.stringify(sortedListContents));
                     listContents.splice(0, listContents.length);
                     renderList(sortedListContents)
-                    sortContainer.style.display = "none"
+                    sortDialog.close()
                     break;
                 case "farclose":
                     renderList([])
@@ -67,7 +67,7 @@ toSortButton.addEventListener("click", () => {
                     localStorage.setItem("listContents", JSON.stringify(sortedListContents));
                     listContents.splice(0, listContents.length);
                     renderList(sortedListContents)
-                    sortContainer.style.display = "none"
+                    sortDialog.close()
                     break;
             }
             break;
@@ -105,8 +105,8 @@ class Settings {
     analytics: boolean;
     systemFont: boolean;
     noGradientNavbars: boolean;
-    useSystemTheme: boolean;
     allowNotifications: boolean;
+    themeType: 'light' | 'dark' | 'system'
 
     private initializeDefaults() {
         this.defaultThemes = {
@@ -115,7 +115,6 @@ class Settings {
         };
         this.noGradientNavbars = false;
         this.pureBlackDarkMode = false;
-        this.useSystemTheme = true;
         this.rightToLeft = false;
         this.customThemes = false;
         this.customThemeColor = {};
@@ -123,6 +122,7 @@ class Settings {
         this.analytics = false;
         this.systemFont = false;
         this.allowNotifications = true;
+        this.themeType = 'system'
     }
 
     constructor() {
@@ -144,8 +144,8 @@ class Settings {
             analytics: this.analytics,
             systemFont: this.systemFont,
             noGradientNavbars: this.noGradientNavbars,
-            useSystemTheme: this.useSystemTheme,
-            allowNotifications: this.allowNotifications
+            allowNotifications: this.allowNotifications,
+            themeType: this.themeType
         };
     }
 
@@ -159,16 +159,15 @@ class Settings {
         this.analytics = obj.analytics;
         this.systemFont = obj.systemFont;
         this.noGradientNavbars = obj.noGradientNavbars;
-        this.useSystemTheme = obj.useSystemTheme;
         this.allowNotifications = obj.allowNotifications;
+        this.themeType = obj.themeType;
     }
 }
 
 
 const settings = new Settings()
 
-const settingsContainer = document.getElementById("settingsContainer");
-const settingsModal = document.getElementById("settingsModal");
+const settingsDialog = document.getElementById("settingsContainer") as HTMLDialogElement;
 const settingsDiv = document.getElementById("settingsScreen");
 const settingsCloseButton = document.getElementById("settingsCloseButton");
 const settingsresetButton = document.getElementById('settingsResetButton') as HTMLButtonElement;
@@ -176,7 +175,6 @@ const defaultDarkThemeSetting = document.getElementById("defaultDark") as HTMLSe
 const defaultLightThemeSetting = document.getElementById("defaultLight") as HTMLSelectElement;
 const rightToLeft = document.getElementById("rightToLeft") as HTMLInputElement;
 const noGradientNavbars = document.getElementById("noGradientNavbars") as HTMLInputElement;
-const useSystemTheme = document.getElementById("useSystemTheme") as HTMLInputElement;
 const subjectNameClick = document.getElementById("subjectNameClick") as HTMLSelectElement;
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode') as HTMLInputElement
 const customThemes = document.getElementById('customThemes') as HTMLInputElement
@@ -184,29 +182,28 @@ const analytics = document.getElementById('analytics') as HTMLInputElement
 const analyticsDiv = document.getElementById("analyticsDiv") as HTMLDivElement
 const quickAddSetup = document.getElementById("quickAddSetup") as HTMLButtonElement
 const systemFont = document.getElementById("systemFont") as HTMLInputElement
-const quickAddContainer = document.getElementById("quickAddContainer") as HTMLDivElement
-const quickAddModal = document.getElementById("quickAddModal") as HTMLDivElement
+const quickAddDialog = document.getElementById("quickAddDialog") as HTMLDialogElement
 const quickAddDiv = document.getElementById("quickAddScreen") as HTMLDivElement
 const quickAddTextArea = document.getElementById("quickAddTextArea") as HTMLTextAreaElement
 const quickAddImportButton = document.getElementById("quickAddImportButton") as HTMLButtonElement
 const quickAddExportButton = document.getElementById("quickAddExportButton") as HTMLButtonElement
 const quickAddCancelButton = document.getElementById("quickAddCancelButton") as HTMLButtonElement
 const allowNotifications = document.getElementById("allowNotifications") as HTMLInputElement
+const chooseTheme = document.getElementById("chooseTheme") as HTMLSelectElement
 
 
 settingsButton.addEventListener("click", () => {
-    settingsContainer.style.display = "block"
-    settingsDiv.style.display = "block"
+    settingsDialog.showModal()
 })
 
-settingsModal.addEventListener("click", () => {
-    settingsContainer.style.display = "none"
-    settingsDiv.style.display = "none"
+settingsDialog.addEventListener("click", (e) => {
+    if(e.target == settingsDialog){
+        settingsDialog.close()
+    }
 })
 
 settingsCloseButton.addEventListener("click", () => {
-    settingsContainer.style.display = "none"
-    settingsDiv.style.display = "none"
+    settingsDialog.close()
 })
 
 settingsresetButton.addEventListener("click", () => {
@@ -270,6 +267,7 @@ customThemes.addEventListener("change", () => {
     if (settings.customThemes) {
         defaultDarkThemeSetting.disabled = true
         defaultLightThemeSetting.disabled = true
+        chooseTheme.disabled = true
         pureBlackDarkMode.disabled = true
         themeButton.textContent = "palette"
         themeButton.title = "Cutomize Theme"
@@ -296,7 +294,7 @@ customThemes.addEventListener("change", () => {
             }
         }
 
-        if (themeDeterminer(Themes[currentTheme].backgroundColor) == "light") {
+        if (themeDeterminer(settings.customThemeColor.background) == "light") {
             themeButton.textContent = "light_mode"
             Themes[settings.defaultThemes.light].setCSS()
         }
@@ -307,6 +305,7 @@ customThemes.addEventListener("change", () => {
         themeButton.title = "Dark/Light Theme"
         defaultDarkThemeSetting.disabled = false
         defaultLightThemeSetting.disabled = false
+        chooseTheme.disabled = false
         pureBlackDarkMode.disabled = false
     }
 })
@@ -335,19 +334,16 @@ allowNotifications.addEventListener("change", () => {
     });
 })
 
-useSystemTheme.addEventListener("change", () => {
-    settings.useSystemTheme = useSystemTheme.checked
-    localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
-})
-
 if (quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
-        settingsContainer.style.display = "none"
-        quickAddContainer.style.display = "block"
+        settingsDialog.close()
+        quickAddDialog.showModal()
         quickAddDiv.style.display = "block"
     })
-    quickAddModal.addEventListener("click", () => {
-        quickAddContainer.style.display = "none"
+    quickAddDialog.addEventListener("click", (e) => {
+        if(e.target == quickAddDialog){
+            quickAddDialog.close()
+        }
     })
 
     quickAddExportButton.addEventListener("click", (e) => {
@@ -360,11 +356,11 @@ if (quickAddSetup != undefined) {
         localStorage.setItem("currentSchedule", quickAddTextArea.value);
         console.log(`saved ${quickAddTextArea.value} into localStorage`)
         currentSchedule.scheduleObject = JSON.parse(localStorage.getItem("currentSchedule"))
-        quickAddContainer.style.display = "none";
+        quickAddDialog.close();
     })
 
     quickAddCancelButton.addEventListener("click", (e) => {
-        quickAddContainer.style.display = "none";
+        quickAddDialog.close();
     })
 }
 
@@ -373,10 +369,13 @@ if (analytics != undefined) {
         settings.analytics = analytics.checked
         localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
         if (settings.analytics) {
+            analyticsDiv.classList.add("to-shown")
+            analyticsDiv.classList.remove("to-none")
             analyticsDiv.style.display = "flex";
             list.style.height = "calc(50vh - 15px)";
         } else {
-            analyticsDiv.style.display = "none";
+            analyticsDiv.classList.add("to-none")
+            analyticsDiv.classList.remove("to-shown")
             list.style.height = "auto";
         }
     })
@@ -390,17 +389,18 @@ if (subjectNameClick != undefined) {
 }
 
 if (localStorage.getItem("settings") != null) {
+    if(JSON.parse(localStorage.getItem("settings")).useSystemTheme){
+        let localStorageSettings = JSON.parse(localStorage.getItem("settings"))
+        localStorageSettings.themeType = 'system'
+        localStorage.setItem("settings", JSON.stringify(localStorageSettings))
+    }
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"))
-}
-
-if (settings.useSystemTheme == undefined) {
-    settings.useSystemTheme = true
 }
 
 try {
     rightToLeft.checked = settings.rightToLeft
     systemFont.checked = settings.systemFont
-    useSystemTheme.checked = settings.useSystemTheme
+    chooseTheme.value = settings.themeType
     noGradientNavbars.checked = settings.noGradientNavbars
     allowNotifications.checked = settings.allowNotifications
     if (customThemes != undefined) { customThemes.checked = settings.customThemes }
@@ -454,25 +454,25 @@ if (settings.systemFont) {
 
 // About Screen
 const aboutButton = document.getElementById("aboutButton") as HTMLElement
-const aboutContainer = document.getElementById("aboutContainer") as HTMLElement
+const aboutDialog = document.getElementById("aboutContainer") as HTMLDialogElement
 const aboutScreen = document.getElementById("aboutScreen") as HTMLElement
 const aboutCloseButton = document.getElementById("aboutCloseButton") as HTMLElement
-const aboutModal = document.getElementById("aboutModal") as HTMLElement
 const aboutVersion = document.getElementById("version") as HTMLElement
 const aboutSource = document.getElementById("source") as HTMLElement
 
 aboutButton.addEventListener("click", () => {
-    settingsContainer.style.display = "none"
-    aboutContainer.style.display = "block"
-    aboutScreen.style.display = "block"
+    settingsDialog.close()
+    aboutDialog.showModal()
 })
 
-aboutModal.addEventListener("click", () => {
-    aboutContainer.style.display = "none"
+aboutDialog.addEventListener("click", (e) => {
+    if(e.target == aboutDialog){
+        aboutDialog.close()
+    }
 })
 
 aboutCloseButton.addEventListener("click", () => {
-    aboutContainer.style.display = "none"
+    aboutDialog.close()
 })
 
 aboutVersion.textContent = `Version: V.${version}`

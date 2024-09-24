@@ -32,7 +32,7 @@
 .list {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
     overflow: auto;
 }
@@ -49,14 +49,16 @@
 .detailsDisplay,
 .inputForm,
 .settingsDisplay,
-.themesDisplay {
+.themesDisplay,
+.phantomDisplay {
     background: var(--primary);
     border-radius: calc((2vh + 2vw)/2);
     padding: 0 10px;
     overflow: auto;
 }
 
-.listItemDisplay {
+.listItemDisplay,
+.phantomDisplay {
     height: max(250px, 20vh);
     max-height: 425px;
     width: var(--listItem-width);
@@ -67,14 +69,8 @@
     text-wrap: wrap;
     flex-grow: 1;
     user-select: none;
+    -webkit-user-select: none;
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
-}
-
-.listItemDisplay:hover {
-    transform: scale(1.025);
-    cursor: pointer;
-    transition: all .05s ease-in-out;
-    filter: brightness(115%);
 }
 
 p {
@@ -86,12 +82,8 @@ p {
 
 p.settingsCategory{
     margin: 8px 0 !important;
+    padding: 0 5px;
     font-weight: bold;
-}
-
-.settingsDisplay p{
-    margin: 5px 0 !important;
-    padding: 0 5px !important;
 }
 
 #addListItemButton div {
@@ -99,46 +91,25 @@ p.settingsCategory{
     text-align: center !important;
 }
 
-.modal {
-    position: fixed;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+dialog::backdrop {
     background: rgba(0, 0, 0, 0.5);
-    z-index: 9998;
-    width: 100vw;
-    height: 100vh;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 .detailsDisplay,
 .inputForm,
 .settingsDisplay,
 .themesDisplay {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
     padding: 20px 20px;
     width: max(30vw,350px);
     max-height: 80vh;
     align-content: center;
 }
 
-.detailsDisplay,
-.settingsDisplay,
-.themesDisplay {
-    display: none;
-}
-
 .detailsDisplay p,
 .detailsDisplay h2,
 .settingsDisplay p,
 .settingsDisplay label {
-    padding: 5px;
+    padding: 4px;
     border-radius: 10px;
 }
 
@@ -196,9 +167,30 @@ p.settingsCategory{
 }
 
 .listItemOverdue {
-    background: var(--accent) !important;
+    background: var(--secondary) !important;
 }
 
 .errorText {
     color: var(--error);
+}
+
+.addListItemButton {
+    color: var(--text);
+    background: var(--accent);
+    position: fixed;
+    width: 96px;
+    height: 96px;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom:0;
+    right:0;
+    margin: 20px;
+    padding: 0;
+}
+
+.addListItemButton h1 span{
+    font-size: 36px !important;
+    font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 200, 'opsz' 36 !important;
 }

@@ -14,11 +14,18 @@ updateArchiveCount();
 function updateArchiveTime() {
     let archiveAddedTime = 0;
     for (let homeworkObject of archivedHomeworks) {
-        archiveAddedTime += homeworkObject.timeEnded - homeworkObject.timeStarted;
+        if (homeworkObject.timeUsed == null)
+            homeworkObject.timeUsed = homeworkObject.timeEnded - homeworkObject.timeStarted;
+        archiveAddedTime += homeworkObject.timeUsed;
     }
     archiveTime.textContent = convertToTime(archiveAddedTime / archivedHomeworks.length);
 }
 updateArchiveTime();
+for (let homeworkObject of archivedHomeworks) {
+    if (homeworkObject.timeUsed == null)
+        homeworkObject.timeUsed = homeworkObject.timeEnded - homeworkObject.timeStarted;
+    ManageLocalStorage.update();
+}
 function updateArchiveGroupRatio() {
     let groupCount = 0;
     let personCount = 0;
@@ -46,7 +53,7 @@ function addArchiveListItem(homeworkObject) {
     const isImportant = addElement("p");
     const subjectName = addElement("p", homeworkObject.subject.name);
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`);
-    const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`);
+    const timeStarted = addElement("p", `Finished homework in ${convertToTime(homeworkObject.timeUsed)}`);
     subjectNameContainer.classList.add("subjectNameContainer");
     subjectName.classList.add("subjectNameText");
     isImportant.classList.add("isImportantIsGroupWork");
@@ -55,7 +62,6 @@ function addArchiveListItem(homeworkObject) {
     subjectNameContainer.appendChild(subjectName);
     displayDiv.appendChild(subjectNameContainer);
     displayDiv.appendChild(timeStarted);
-    timeStarted.style.display = "none";
     if (homeworkObject.isGroupWork) {
         isImportant.innerText = "group";
     }
@@ -68,20 +74,11 @@ function addArchiveListItem(homeworkObject) {
     if (new Date(homeworkObject.dueDate).toDateString() != "Invalid Date") {
         displayDiv.appendChild(dueDate);
     }
-    if (homeworkObject.timeStarted > 0 && homeworkObject.timeEnded == undefined) {
-        timeStarted.style.display = "block";
-    }
-    if (homeworkObject.timeEnded > 0) {
-        timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`;
-        timeStarted.style.display = "block";
-    }
     listItem.classList.add("listItem");
     displayDiv.classList.add("listItemDisplay");
     // Function to add a new archived homework item
     // Details Display Management
-    const detailsModal = document.createElement("div");
-    const detailsDisplay = document.createElement("div");
-    const detailsDiv = document.createElement("div");
+    const detailsDialog = document.createElement("dialog");
     const detailsSubject = addElement("p", homeworkObject.subject.name);
     const detailsSubjectDetails = document.createElement("p");
     const detailsSubjectID = addElement("span", homeworkObject.subject.id);
@@ -114,20 +111,19 @@ function addArchiveListItem(homeworkObject) {
         detailsSubjectDetails.innerHTML = null;
     }
     //Details Modal
-    detailsModal.classList.add("modal");
-    detailsDisplay.classList.add("detailsDisplay");
-    detailsDisplay.appendChild(detailsSubject);
+    detailsDialog.classList.add("detailsDisplay");
+    detailsDialog.appendChild(detailsSubject);
     if (detailsSubjectDetails.innerHTML != null && detailsSubjectDetails.innerHTML.length > 0) {
-        detailsDisplay.appendChild(detailsSubjectDetails);
+        detailsDialog.appendChild(detailsSubjectDetails);
     }
-    detailsDisplay.appendChild(detailsDueDate);
-    detailsDisplay.appendChild(detailsIsGroupWork);
-    detailsDisplay.appendChild(detailsPoints);
-    detailsDisplay.appendChild(detailsDescription);
-    detailsModal.addEventListener("click", () => {
-        detailsModal.style.display = "none";
-        detailsDisplay.style.display = "none";
-        detailsDiv.style.display = "none";
+    detailsDialog.appendChild(detailsDueDate);
+    detailsDialog.appendChild(detailsIsGroupWork);
+    detailsDialog.appendChild(detailsPoints);
+    detailsDialog.appendChild(detailsDescription);
+    detailsDialog.addEventListener("click", (e) => {
+        if (e.target == detailsDialog) {
+            detailsDialog.close();
+        }
     });
     //Display Management (Final)
     const restoreButton = addButton("Custom", null, "Restore");
@@ -137,8 +133,10 @@ function addArchiveListItem(homeworkObject) {
         let listContents = (JSON.parse(localStorage.getItem("listContents")));
         listContents.push(homeworkObject);
         localStorage.setItem("listContents", JSON.stringify(listContents));
+        listItem.classList.add("delete-animation");
+        detailsDialog.close();
         ManageLocalStorage.deleteArchived(homeworkObject);
-        listItem.remove();
+        setTimeout(() => listItem.remove(), 150);
         updateArchiveAnalytics();
     });
     const detailsDeleteButton = addButton("Custom", null, "Delete");
@@ -149,20 +147,15 @@ function addArchiveListItem(homeworkObject) {
         listItem.remove();
         updateArchiveAnalytics();
     });
-    detailsDiv.style.display = "none";
-    detailsDiv.appendChild(detailsDisplay);
-    detailsDiv.appendChild(detailsModal);
-    detailsDisplay.appendChild(detailsDeleteButton);
-    detailsDisplay.appendChild(restoreButton);
-    detailsDisplay.appendChild(addButton("Close", detailsDiv));
+    detailsDialog.appendChild(detailsDeleteButton);
+    detailsDialog.appendChild(restoreButton);
+    detailsDialog.appendChild(addButton("Close", detailsDialog));
     listItem.appendChild(displayDiv);
-    listItem.appendChild(detailsDiv);
+    listItem.appendChild(detailsDialog);
     //Clicking for Details
     displayDiv.addEventListener("click", (event) => {
         if (event.target != subjectName) {
-            detailsDiv.style.display = "flex";
-            detailsModal.style.display = "flex";
-            detailsDisplay.style.display = "block";
+            detailsDialog.showModal();
         }
     });
     //appending to list element

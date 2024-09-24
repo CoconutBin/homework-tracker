@@ -19,6 +19,12 @@ class Homework {
     points;
     timeStarted;
     timeEnded;
+    timeUsed;
+    timePaused;
+    timeUnpaused;
+    isPaused;
+    pauseInterval;
+    cachedTime;
     constructor(subject, isGroupWork, dueDate, points, description) {
         this.subjectName = subject.name ?? undefined;
         this.subjectID = subject.id ?? undefined;
@@ -30,6 +36,27 @@ class Homework {
     }
     start() {
         this.timeStarted = Date.now();
+    }
+    // Pause the timer
+    pause() {
+        if (!this.isPaused) {
+            this.timePaused = Date.now();
+            this.isPaused = true;
+            console.log('Timer paused');
+        }
+    }
+    // Resume the timer
+    resume() {
+        if (this.isPaused) {
+            this.timeUnpaused = Date.now(); // Reset the start time for resuming
+            this.isPaused = false;
+            this.pauseInterval += this.timePaused - this.timeUnpaused;
+            console.log('Timer resumed');
+        }
+    }
+    // Stop the timer and get the total elapsed time
+    stop() {
+        return this.timeUsed;
     }
     get subject() {
         return {
@@ -47,7 +74,13 @@ class Homework {
             description: this.description,
             points: this.points,
             timeStarted: this.timeStarted,
-            timeEnded: this.timeEnded
+            timeEnded: this.timeEnded,
+            timeUsed: this.timeUsed,
+            timePaused: this.timePaused,
+            timeUnpaused: this.timeUnpaused,
+            isPaused: this.isPaused,
+            pauseInterval: this.pauseInterval,
+            cachedTime: this.cachedTime,
         };
     }
     set homeworkObject(obj) {
@@ -58,6 +91,12 @@ class Homework {
         this.description = obj.description;
         this.points = obj.points;
         this.timeStarted = obj.timeStarted;
+        this.timeUsed = obj.timeUsed;
+        this.timePaused = obj.timePaused;
+        this.timeUnpaused = obj.timeUnpaused;
+        this.isPaused = obj.isPaused;
+        this.pauseInterval = obj.pauseInterval;
+        this.cachedTime = obj.cachedTime;
     }
     set subject(obj) {
         this.subjectID = obj.id;

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ISE Chula Calculator</title>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            background: #801e2b;
+            color: white;
+        }
+
+        label {
+            display: block;
+            text-align: center;
+            padding: 4px;
+        }
+
+        input, select {
+            display: block;
+            margin: 4px auto;
+            text-align: center;
+            border-radius: 4px;
+            background: #801e2b;
+            color: white;
+        }
+
+        button {
+            display: block;
+            margin: 16px auto;
+            text-align: center;
+            border-radius: 4px;
+            background: #801e2b;
+            color: white;
+        }
+
+        p {
+            text-align: center;
+            word-break: break-all;
+        }
+
+        .container {
+            background: #e5e5e5;
+            border-radius: 8px;
+        }
+
+        #result-container{
+            padding: 8px;
+            border-radius: 8px;
+            background: #e5e5e5;
+        }
+    </style>
+</head>
+<body style="justify-content: center; display: flex; flex-direction: column;">
+    <form>
+        <h1>ISE Chula Calculator</h1>
+        <div class="container">
+            <label>
+                English Score Type:
+                <select id="english-type">
+                    <option value="ielts" selected>IELTS</option>
+                    <option value="toefl">TOEFL iBT</option>
+                    <option value="cutep">CU-TEP</option>
+                    <option value="duolingo">Duolingo English Test</option>
+                </select>
+            </label>
+            <label>
+                English Score:
+                <input type="number" name="score" id="english" min="0" max="9" step="0.5" required/>
+            </label>
+        </div><br>
+        <div class="container">
+            <label>
+                Maths Score Type:
+                <select id="maths-type">
+                    <option value="sat" selected>SAT (Maths)</option>
+                    <option value="act">ACT</option>
+                    <option value="cuaat">CU-AAT</option>
+                </select>
+            </label>
+            <label>
+                Maths Score:
+                <input type="number" name="score" id="maths" min="200" max="800" step="10" required/>
+            </label>
+        </div><br>
+        <div class="container">
+            <label>
+                Science Score Type:
+                <select id="science-type">
+                    <option value="act" selected>ACT</option>
+                    <option value="cuats">CU-ATS</option>
+                </select>
+            </label>
+            <label>
+                Science Score:
+                <input type="number" name="score" id="science" min="1" max="36" step="1" required/>
+            </label>
+        </div><br>
+        <div class="container">
+            <label>
+                GPAX:
+                <input type="number" name="score" id="gpax" min="0" max="4" step="0.01" required/>
+            </label>
+        </div><br>
+        <button id="submit">Submit</button>
+    </form>
+    <div id="result-container" style="display: none;">
+        <p>Your Predicted Score is <span id="result">10/100</span></p>
+        <p>Predicted Rank:</p>
+        <p>Round 1: <span id="r1rank"></span>*</p>
+        <p>Round 2: <span id="r2rank"></span>*</p><br>
+
+        <p>
+            *Based on information provided by Ignite by OnDemand's 2022 Admission round statistics:
+            <a href="https://www.facebook.com/ignitebyondemand/posts/pfbid079TKnCtVs6ZAqimhLaSnNh3q2tEAnYBUQuYJhY8YLn9RWWtzT3U2eEZSFgpRks2Dl">https://www.facebook.com/ignitebyondemand/posts/pfbid079TKnCtVs6ZAqimhLaSnNh3q2tEAnYBUQuYJhY8YLn9RWWtzT3U2eEZSFgpRks2Dl</a>
+            This is only a speculation based on the data provided by Ignite and the International School of Engineering @ Chulalongkorn University, information is very likely to not be accurate.
+        </p>
+    </div>  
+</body>
+<script>
+    const english = document.querySelector('#english');
+    const maths = document.querySelector('#maths');
+    const science = document.querySelector('#science');
+    const gpax = document.querySelector('#gpax');
+    const result = document.querySelector('#result');
+    const submit = document.querySelector('#submit');
+    const resultContainer = document.querySelector('#result-container');
+
+    const round1 = document.querySelector('#r1rank');
+    const round2 = document.querySelector('#r2rank');
+
+    const englishType = document.querySelector('#english-type');
+    const mathsType = document.querySelector('#maths-type');
+    const scienceType = document.querySelector('#science-type');
+
+    function parseScore(score, type){
+        score = Number(score);
+        switch(type){
+            case 'ielts':
+                return (score/9)
+            case 'toefl':
+                return (score/120)
+            case 'cutep':
+                return (score/120)
+            case 'duolingo':
+                return (score/160)
+            case 'sat':
+            case 'cuaat':
+                return (score/800)
+            case 'cuats':
+                return (score/1600)
+            case 'act':
+                return (score/36)
+            default:
+                console.error("Invalid test provided")
+        }
+    }
+
+    function findRank(score, round){
+        switch(round){
+            case 1:
+                if(score >= 95.91){
+                    return 'About 1-10'
+                } else if(score >= 94.97){
+                    return 'About 11-20'
+                } else if(score >= 93.89){
+                    return 'About 21-30'
+                } else if(score >= 93.07){
+                    return 'About 31-40'
+                } else if(score >= 92.46){
+                    return 'About 41-50'
+                } else if(score >= 92.29){
+                    return 'About 51-70'
+                } else if(score >= 90.61){
+                    return 'About 71-80'
+                } else if(score >= 88.7){
+                    return 'About 81-90'
+                } else if(score >= 88.49){
+                    return 'About 91-130'
+                } else if(score >= 87.6){
+                    return 'About 131-140'
+                } else if(score >= 86.03){
+                    return 'About 141-160'
+                } else if(score >= 85.3){
+                    return 'About 161-170'
+                } else{
+                    return 'Unlikely to get in'
+                }
+            case 2:
+                if(score >= 90.29){
+                    return 'About 1-10'
+                } else if(score >= 87.87){
+                    return 'About 11-20'
+                } else if(score >= 86.13){
+                    return 'About 21-30'
+                } else if(score >= 84.06){
+                    return 'About 31-50'
+                } else if(score >= 76.65){
+                    return 'About 51-60'
+                } else if(score >= 72.93){
+                    return 'About 61-130'
+                } else{
+                    return 'Unlikely to get in'
+                }
+            default:
+                console.error("Invalid round provided")
+        }
+    }
+
+    function minMaxStep(element, min, max, step){
+        element.min = min;
+        element.max = max;
+        element.step = step;
+    }
+
+    englishType.addEventListener('change', (e) => {
+        switch(englishType.value){
+            case 'ielts':
+                minMaxStep(english, 0, 9, 0.5);
+                break;
+            case 'toefl':
+            case 'cutep':
+                minMaxStep(english, 0, 120, 1);
+                break;
+            case 'duolingo':
+                minMaxStep(english, 10, 160, 5);
+                break;
+        };
+    })
+    mathsType.addEventListener('change', (e) => {
+        switch(mathsType.value){
+            case 'sat':
+            case 'cuaat':
+                minMaxStep(english, 200, 800, 10);
+                break;
+            case 'act':
+                minMaxStep(english, 1, 36, 1);
+                break;
+        };
+    })
+    scienceType.addEventListener('change', (e) => {
+        switch(scienceType.value){
+            case 'cuats':
+                minMaxStep(english, 400, 1600, 10);
+                break;
+            case 'act':
+                minMaxStep(english, 1, 36, 1);
+                break;
+        };
+    })
+
+    submit.addEventListener('click', (e) => {
+        e.preventDefault();
+        const total = parseScore(english.value, englishType.value) * 40 + parseScore(maths.value, mathsType.value) * 32.5 + parseScore(science.value, scienceType.value) * 20 + (Number(gpax.value) / 4) * 7.5;
+        resultContainer.style.display = 'block';
+        result.innerHTML = `${total.toFixed(2)}/100`;
+
+        round1.innerHTML = `${findRank(total, 1)}`;
+        round2.innerHTML = `${findRank(total, 2)}`;
+    })
+</script>
+</html>

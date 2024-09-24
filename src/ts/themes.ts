@@ -1,8 +1,6 @@
 const themeButton = document.getElementById('themes') as HTMLButtonElement;
 const cssVariables = document.querySelector(':root') as HTMLElement
-const themesContainer = document.getElementById("themesContainer") as HTMLElement;
-const themesModal = document.getElementById("themesModal") as HTMLElement;
-const themesDiv = document.getElementById("customThemesScreen") as HTMLElement;
+const themesDialog = document.getElementById("customThemesScreen") as HTMLDialogElement;
 const themesCloseButton = document.getElementById("themesCloseButton") as HTMLButtonElement;
 const inputThemeText = document.getElementById("inputThemeText") as HTMLInputElement;
 const inputThemeBackground = document.getElementById("inputThemeBackground") as HTMLInputElement;
@@ -14,20 +12,40 @@ const themeTemplates = document.getElementById("themeTemplates") as HTMLSelectEl
 
 let currentTheme = localStorage.getItem("currentTheme") ?? settings.defaultThemes.light;
 
-if(settings.noGradientNavbars){
+if (settings.noGradientNavbars) {
     document.getElementById("navbar").style.background = 'var(--secondary)'
-} else{
+} else {
     document.getElementById("navbar").style.background = ''
 }
 
-if(settings.useSystemTheme && !settings.customThemes){
-    if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
-        currentTheme = settings.defaultThemes.dark;
-    } else{
-        currentTheme = settings.defaultThemes.light;
+chooseTheme.addEventListener("change", () => {
+    settings.themeType = chooseTheme.value as 'light' | 'dark' | 'system'
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
+    if (!settings.customThemes) {
+        switch (settings.themeType) {
+            case "light":
+                currentTheme = settings.defaultThemes.light;
+                themeButton.innerText = "light_mode"
+                Themes[currentTheme].setCSS()
+                break;
+            case "dark":
+                currentTheme = settings.defaultThemes.dark;
+                themeButton.innerText = "dark_mode"
+                Themes[currentTheme].setCSS()
+                break;
+            case "system":
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    currentTheme = settings.defaultThemes.dark;
+                    themeButton.innerText = "dark_mode"
+                } else {
+                    currentTheme = settings.defaultThemes.light;
+                    themeButton.innerText = "light_mode"
+                }
+                Themes[currentTheme].setCSS()
+                break;
+        }
     }
-}
-
+})
 
 type ThemeTypes = "light" | "dark" | "none";
 class Theme {
@@ -67,7 +85,7 @@ class Theme {
         // this.errorColor = customThemeColorObj.error;
     }
 
-    get CSSColors(){
+    get CSSColors() {
         return {
             text: this.textColor,
             background: this.backgroundColor,
@@ -133,34 +151,47 @@ if (settings.customThemes == true && settings.customThemeColor != undefined) {
     Themes['custom'].CSSColors = settings.customThemeColor
 }
 
+chooseTheme.value = Themes[currentTheme].themeType == 'none'? 'system' : Themes[currentTheme].themeType
 
 themeButton.addEventListener('click', () => {
     if (settings.customThemes == false) {
         if (currentTheme == settings.defaultThemes.light) {
+            chooseTheme.value = 'dark'
             currentTheme = settings.defaultThemes.dark;
             themeButton.innerText = "dark_mode"
         } else {
+            chooseTheme.value = 'light'
             currentTheme = settings.defaultThemes.light
             themeButton.innerText = "light_mode"
         }
+        localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
         localStorage.setItem("currentTheme", currentTheme)
         Themes[currentTheme].setCSS()
     } else {
-        (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.add("preventTransition"))
-        themesContainer.style.display = "block"
-        themesModal.style.display = "block"
-        themesDiv.style.display = "block"
+        [...document.body.children].forEach(child => {
+            setTimeout(() => child.classList.add("preventTransition"), 500);
+            [...child.children].forEach(child => setTimeout(() => child.classList.add("preventTransition"), 500));
+        })
+        themesDialog.showModal()
     }
 })
 
-themesModal.addEventListener('click', () => {
-    (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.remove("preventTransition"))
-    themesContainer.style.display = "none"
+themesDialog.addEventListener('click', (e) => {
+    if (e.target == themesDialog) {
+        [...document.body.children].forEach(child => {
+            child.classList.remove("preventTransition");
+            [...child.children].forEach(child => child.classList.remove("preventTransition"));
+        })
+        themesDialog.close()
+    }
 })
 
 themesCloseButton.addEventListener('click', () => {
-    (Array.from(document.querySelector("body").children) as HTMLElement[]).forEach(x => x.classList.remove("preventTransition"))
-    themesContainer.style.display = "none"
+    [...document.body.children].forEach(child => {
+        child.classList.remove("preventTransition");
+        [...child.children].forEach(child => child.classList.remove("preventTransition"));
+    })
+    themesDialog.close()
 })
 
 themesResetButton.addEventListener("click", () => {
@@ -203,6 +234,7 @@ inputThemeBackground.addEventListener('input', () => {
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
     themeTemplates.value = 'custom'
 })
+
 inputThemePrimary.addEventListener('input', () => {
     settings.customThemeColor.primary = inputThemePrimary.value
     cssVariables.style.setProperty('--primary', settings.customThemeColor.primary)
@@ -251,35 +283,35 @@ function customThemeColorSetup() {
 
 // Add themes to Theme Select Tags
 
-    const defaultLight = document.getElementById("defaultLight") as HTMLSelectElement;
-    const defaultDark = document.getElementById("defaultDark") as HTMLSelectElement;
-    const themeTemplatesLight = document.createElement("optgroup")
-    themeTemplatesLight.label = "Light Themes"
-    const themeTemplatesDark = document.createElement("optgroup")
-    themeTemplatesDark.label = "Dark Themes"
+const defaultLight = document.getElementById("defaultLight") as HTMLSelectElement;
+const defaultDark = document.getElementById("defaultDark") as HTMLSelectElement;
+const themeTemplatesLight = document.createElement("optgroup")
+themeTemplatesLight.label = "Light Themes"
+const themeTemplatesDark = document.createElement("optgroup")
+themeTemplatesDark.label = "Dark Themes"
 
-    for (const theme of Object.values(Themes)) {
-        const option = document.createElement("option") as HTMLOptionElement;
-        const themeTemplateOption = document.createElement("option") as HTMLOptionElement
-        themeTemplateOption.value = theme.name
-        themeTemplateOption.innerText = theme.displayName
-        option.value = theme.name;
-        option.innerText = theme.displayName;
-        if (theme.name == "custom"){
-            themeTemplates.appendChild(themeTemplateOption)
-        }
-        if (theme.themeType == "light") {
-            defaultLight.appendChild(option);
-            themeTemplatesLight.appendChild(themeTemplateOption);
-        }
-        if(theme.themeType == "dark") {
-            defaultDark.appendChild(option);
-            themeTemplatesDark.appendChild(themeTemplateOption);
-        }
+for (const theme of Object.values(Themes)) {
+    const option = document.createElement("option") as HTMLOptionElement;
+    const themeTemplateOption = document.createElement("option") as HTMLOptionElement
+    themeTemplateOption.value = theme.name
+    themeTemplateOption.innerText = theme.displayName
+    option.value = theme.name;
+    option.innerText = theme.displayName;
+    if (theme.name == "custom") {
+        themeTemplates.appendChild(themeTemplateOption)
     }
+    if (theme.themeType == "light") {
+        defaultLight.appendChild(option);
+        themeTemplatesLight.appendChild(themeTemplateOption);
+    }
+    if (theme.themeType == "dark") {
+        defaultDark.appendChild(option);
+        themeTemplatesDark.appendChild(themeTemplateOption);
+    }
+}
 
-    themeTemplates.appendChild(themeTemplatesLight);
-    themeTemplates.appendChild(themeTemplatesDark);
+themeTemplates.appendChild(themeTemplatesLight);
+themeTemplates.appendChild(themeTemplatesDark);
 
-    defaultLight.value = settings.defaultThemes.light;
-    defaultDark.value = settings.defaultThemes.dark;
+defaultLight.value = settings.defaultThemes.light;
+defaultDark.value = settings.defaultThemes.dark;

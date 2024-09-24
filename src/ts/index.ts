@@ -7,11 +7,10 @@ const inputDueDate = document.getElementById("inputDueDate") as HTMLInputElement
 const inputPoints = document.getElementById("inputPoints") as HTMLInputElement;
 const inputDescription = document.getElementById("inputDescription") as HTMLTextAreaElement;
 const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsImportant, inputIsGroupWork, inputDueDate, inputPoints, inputDescription]
-const inputDiv = document.getElementById("inputform")
+const inputDialog = document.getElementById("inputDialog") as HTMLDialogElement
 const listContents: Homework["homeworkObject"][] = []
 const localStorageListContents: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("listContents"))
-const addListItemButton = document.getElementById("addListItemButton") as HTMLElement;
-const editModal = document.getElementById("editModal")
+let addListItemButton = document.getElementById("addListItemButton") as HTMLElement;
 const logo = document.getElementById("logo")
 const quickAddButton = document.getElementById("quickAddButton")
 let localStorageLock = true
@@ -33,17 +32,18 @@ if (localStorageListContents != undefined && localStorageListContents.length > 0
 }
 
 addListItemButton.addEventListener("click", function () {
-    inputDiv.style.display = "flex"
+    inputDialog.showModal()
+})
+
+inputDialog.addEventListener("click", function (e) {
+    if(e.target == inputDialog){
+        inputDialog.close()
+    }
 })
 
 document.getElementById("inputFormCloseButton").addEventListener("click", function () {
-    inputDiv.style.display = "none"
+    inputDialog.close()
 })
-
-document.getElementById("inputFormModalBackground").addEventListener("click", function () {
-    inputDiv.style.display = "none"
-})
-
 
 /**
  * Handles different types of input elements and returns the appropriate value.
@@ -67,7 +67,7 @@ function inputHandler(element) {
     }
 }
 
-inputDiv.addEventListener(
+inputDialog.addEventListener(
     "submit", function (event) {
         event.preventDefault();
         if (inputSubject.value) {
@@ -88,7 +88,7 @@ inputDiv.addEventListener(
                 (inputs as HTMLInputElement).checked = false
             }
             addListItem(inputHomework.homeworkObject)
-            inputDiv.style.display = "none"
+            inputDialog.close()
         }
     }
 )
@@ -126,8 +126,9 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     const isImportant = addElement("p")
     const subjectName = addElement("p", homeworkObject.subject.name)
     const dueDate = addElement("p", `Due: ${new Date(homeworkObject.dueDate).toDateString()}`)
-    const timeStarted = addElement("p", `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`)
+    const timeStarted = addElement("p", `Started ${convertToTime(homeworkObject.timeUsed - homeworkObject.pauseInterval)} ago`)
     const startHomeworkButton = addButton("Custom", null, `${homeworkStarted ? "End" : "Start"}`)
+    const pauseHomeworkButton = addButton("Custom", null, `${homeworkObject.timeEnded > 0 ? "Reset" : "Pause"}`)
     subjectNameContainer.classList.add("subjectNameContainer")
     subjectName.classList.add("subjectNameText")
     isImportant.classList.add("isImportantIsGroupWork")
@@ -152,10 +153,16 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         timeStarted.style.display = "block"
     }
     if (homeworkObject.timeEnded > 0) {
-        timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`
+        homeworkObject.timeUsed = homeworkObject.timeEnded - homeworkObject.timeStarted - homeworkObject.pauseInterval
+        timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeUsed)}`
         startHomeworkButton.value = "Archive"
-
         timeStarted.style.display = "block"
+    }
+    if(!homeworkStarted){
+        pauseHomeworkButton.style.display = "none"
+    }
+    if(homeworkObject.isPaused) {
+        pauseHomeworkButton.value = "Resume"
     }
     listItem.classList.add("listItem")
     displayDiv.classList.add("listItemDisplay")
@@ -192,45 +199,93 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
                 break;
             default:
                 subjectName.contentEditable = "false"
-                detailsDiv.style.display = "flex";
-                detailsModal.style.display = "flex";
-                detailsDisplay.style.display = "block";
+                detailsDialog.showModal()
                 break;
         }
     })
 
+    pauseHomeworkButton.addEventListener("click", () => {
+        switch(pauseHomeworkButton.value){
+            case "Pause":
+                homeworkObject.isPaused = true
+                homeworkObject.timePaused = Date.now()
+                pauseHomeworkButton.value = "Resume"
+                homeworkObject.cachedTime = homeworkObject.timeUsed - homeworkObject.pauseInterval
+                timeStarted.innerText = `Paused at ${convertToTime(homeworkObject.cachedTime)}`
+                ManageLocalStorage.update()
+                break;
+            case "Resume":
+                homeworkObject.isPaused = false;
+                homeworkObject.timeUnpaused = Date.now()
+                homeworkObject.pauseInterval += homeworkObject.timeUnpaused - homeworkObject.timePaused 
+                timeStarted.innerText = `Started ${convertToTime(homeworkObject.timeUsed - homeworkObject.pauseInterval)} ago`
+                ManageLocalStorage.update()
+                pauseHomeworkButton.value = "Pause"
+                break;
+            case "Reset":
+                homeworkStarted = false
+                startHomeworkButton.value = "Start"
+                timeStarted.style.display = "none"
+                homeworkObject.timeStarted = null
+                homeworkObject.timeEnded = null
+                homeworkObject.timeUsed = null
+                homeworkObject.pauseInterval = null
+                homeworkObject.isPaused = false
+                clearInterval(liveUpdateTimer)
+                ManageLocalStorage.update()
+                pauseHomeworkButton.value = "Pause"
+                pauseHomeworkButton.style.display = "none"
+                break;
+        }
+        console.log(homeworkObject.timeUnpaused, homeworkObject.timePaused, Date.now())
+    })
 
     // Start Button Functionality
 
     startHomeworkButton.addEventListener("click", () => {
-        if (homeworkStarted == false && startHomeworkButton.value != "Archive") {
-            homeworkStarted = true
-            homeworkObject.timeStarted = Date.now()
-            ManageLocalStorage.update()
-            startHomeworkButton.value = "End"
-            timeStarted.style.display = "block"
-        }
-        else if (homeworkStarted == true && startHomeworkButton.value != "Archive") {
-            homeworkObject.timeEnded = Date.now()
-            clearInterval(liveUpdateTimer)
-            ManageLocalStorage.update()
-            timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`
-            startHomeworkButton.value = "Archive"
-        }
-        else if (startHomeworkButton.value == "Archive") {
-            ManageLocalStorage.deleteListItem(homeworkObject)
-            archivedHomeworks.push(homeworkObject)
-            listItem.remove()
-            ManageLocalStorage.update()
+        switch(startHomeworkButton.value){
+            case "Start":
+                homeworkStarted = true
+                homeworkObject.timeStarted = Date.now()
+                homeworkObject.isPaused = false
+                ManageLocalStorage.update()
+                timeStarted.innerText = `Started ${convertToTime(homeworkObject.timeUsed - homeworkObject.pauseInterval)} ago`
+                startHomeworkButton.value = "End"
+                timeStarted.style.display = "block"
+                pauseHomeworkButton.style.display = "inline-block"
+                setLiveUpdateTimer()
+                break;
+            case "End":
+                if(homeworkObject.isPaused){
+                    homeworkObject.timeUnpaused = Date.now()
+                    homeworkObject.pauseInterval += homeworkObject.timeUnpaused - homeworkObject.timePaused
+                    homeworkObject.isPaused = false
+                }
+                homeworkObject.timeEnded = Date.now()
+                homeworkObject.timeUsed = homeworkObject.timeEnded - homeworkObject.timeStarted - homeworkObject.pauseInterval
+                clearInterval(liveUpdateTimer)
+                ManageLocalStorage.update()
+                timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeUsed)}`
+                startHomeworkButton.value = "Archive"
+                pauseHomeworkButton.value = "Reset"
+                break;
+            case "Archive":
+                ManageLocalStorage.deleteListItem(homeworkObject)
+                archivedHomeworks.push(homeworkObject)
+                listItem.classList.add("delete-animation")
+                detailsDialog.close()
+                setTimeout(() => listItem.remove(), 150);
+                ManageLocalStorage.update()
+                break;
+            default:
+                console.error("Start Button has an invalid value")
+                break;
         }
     })
 
     // Details Display Management
 
-    const detailsModal = document.createElement("div")
-    const detailsDisplay = document.createElement("div")
-    const detailsDiv = document.createElement("div")
-
+    const detailsDialog = document.createElement("dialog")
     const detailsSubject = addElement("p", homeworkObject.subject.name)
     const detailsSubjectDetails = document.createElement("p")
     const detailsSubjectID = addElement("span", homeworkObject.subject.id)
@@ -270,22 +325,21 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     }
 
     //Details Modal
-
-    detailsModal.classList.add("modal")
-    detailsDisplay.classList.add("detailsDisplay")
-    detailsDisplay.appendChild(detailsSubject)
+    
+    detailsDialog.classList.add("detailsDisplay")
+    detailsDialog.appendChild(detailsSubject)
     if (detailsSubjectDetails.innerHTML != null && detailsSubjectDetails.innerHTML.length > 0) {
-        detailsDisplay.appendChild(detailsSubjectDetails)
+        detailsDialog.appendChild(detailsSubjectDetails)
     }
-    detailsDisplay.appendChild(detailsDueDate)
-    detailsDisplay.appendChild(detailsIsGroupWork)
-    detailsDisplay.appendChild(detailsPoints)
-    detailsDisplay.appendChild(detailsDescription)
+    detailsDialog.appendChild(detailsDueDate)
+    detailsDialog.appendChild(detailsIsGroupWork)
+    detailsDialog.appendChild(detailsPoints)
+    detailsDialog.appendChild(detailsDescription)
 
-    detailsModal.addEventListener("click", () => {
-        detailsModal.style.display = "none";
-        detailsDisplay.style.display = "none";
-        detailsDiv.style.display = "none";
+    detailsDialog.addEventListener("click", (e) => {
+        if(e.target == detailsDialog){
+            detailsDialog.close()
+        }
     })
 
     //Display Management (Final)
@@ -294,25 +348,27 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
     detailsDeleteButton.addEventListener("click", () => {
         if (!confirm("Are you sure?")) return
         ManageLocalStorage.deleteListItem(homeworkObject)
-        listItem.remove();
+        listItem.classList.add("delete-animation")
+        detailsDialog.close()
+        setTimeout(() => listItem.remove(), 150);
     })
-    detailsDiv.style.display = "none"
-    detailsDiv.appendChild(detailsDisplay)
-    detailsDiv.appendChild(detailsModal)
-    detailsDisplay.appendChild(detailsDeleteButton)
-    detailsDisplay.appendChild(addButton("Close", detailsDiv))
+
+    const detailsCloseButton = addButton("Close", detailsDialog)
+    detailsCloseButton.autofocus = true
+
+    detailsDialog.appendChild(detailsDeleteButton)
+    detailsDialog.appendChild(detailsCloseButton)
     listItem.appendChild(displayDiv)
-    listItem.appendChild(detailsDiv)
+    listItem.appendChild(detailsDialog)
 
     //Clicking for Details
     displayDiv.addEventListener("click", (event) => {
-        if (event.target != subjectName && event.target != startHomeworkButton) {
-            detailsDiv.style.display = "flex";
-            detailsModal.style.display = "flex";
-            detailsDisplay.style.display = "block";
+        if (event.target != subjectName && event.target != startHomeworkButton && event.target != pauseHomeworkButton) {
+            detailsDialog.showModal()
         }
     });
 
+    
     //Edit Functionality
 
     // Subject Name
@@ -409,30 +465,54 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         });
     }
 
+    let liveUpdateTimer = null
+
     //updating time
-    const liveUpdateTimer = setInterval(() => {
-        overdueUpdate()
-        notifyDue()
-        timeStarted.innerText = `Started ${convertToTime(Date.now() - homeworkObject.timeStarted)} ago`
-    }, 1000)
+    function setLiveUpdateTimer(){
+        // Clear the existing interval if it's already running
+    if (liveUpdateTimer !== null) {
+        clearInterval(liveUpdateTimer);
+    }
+
+    // Reinitialize the interval
+    liveUpdateTimer = setInterval(() => {
+        overdueUpdate();
+        homeworkObject.timeUsed = Date.now() - homeworkObject.timeStarted;
+        if (homeworkObject.pauseInterval === undefined) homeworkObject.pauseInterval = 0;
+        ManageLocalStorage.update();
+        if (homeworkObject.isPaused) {
+            timeStarted.innerText = `Paused at ${convertToTime(homeworkObject.cachedTime)}`;
+        } else {
+            timeStarted.innerText = `Started ${convertToTime(homeworkObject.timeUsed - homeworkObject.pauseInterval)} ago`;
+        }
+        }, 500)
+    }
+
+    setLiveUpdateTimer()
+    setInterval(notifyDue, 86400000)
+
+    let isOverdue = false
 
     function overdueUpdate(){
         if(Date.now() >= Date.parse(homeworkObject.dueDate) && listItem.classList.contains("listItemOverdue") == false){
             displayDiv.classList.add("listItemOverdue")
             dueDate.classList.add("errorText")
+            isOverdue = true
         } else if(Date.now() < Date.parse(homeworkObject.dueDate)){
             displayDiv.classList.remove("listItemOverdue")
             dueDate.classList.remove("errorText")
+            isOverdue = false
         }
     }
 
     function notifyDue(){
         if(settings.allowNotifications){
-            if(Date.parse(homeworkObject.dueDate) - Date.now() == 86400000*3){
+            console.log(new Date().toDateString())
+            if(Date.parse(new Date().toDateString()) == Date.parse(homeworkObject.dueDate) - 86400000*3){
                 new Notification("Homework Tracker (wrkd.)", { body: `Your ${homeworkObject.subject.name} homework is now due in 3 days!`, icon: "../../icons/logo.png" })
             }
     
-            if(Date.parse(homeworkObject.dueDate) - Date.now() == 86400000*1){
+            if(Date.parse(new Date().toDateString()) == Date.parse(homeworkObject.dueDate) - 86400000*1){
                 new Notification("Homework Tracker (wrkd.)", { body: `Your ${homeworkObject.subject.name} homework is due tomorrow!`, icon: "../../icons/logo.png" } )
             }
         }
@@ -447,7 +527,9 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
 
     //appending to list element
     displayDiv.appendChild(startHomeworkButton)
+    displayDiv.appendChild(pauseHomeworkButton)
     list.appendChild(listItem)
+    listItem.style.order = index.toString()
 
     function displayDivRender(){
         let existingElements = [subjectNameContainer, timeStarted]
@@ -455,9 +537,83 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
             existingElements.push(dueDate)
         }
         existingElements.push(startHomeworkButton)
+        existingElements.push(pauseHomeworkButton)
         displayDiv.replaceChildren()
         existingElements.forEach(x => displayDiv.appendChild(x))
     }
+
+    displayDiv.addEventListener("mousedown" , (e) => {
+        const bounding = listItem.getBoundingClientRect()
+        const relativeX = e.x - bounding.x
+        const relativeY = e.y - bounding.y
+        
+        if(relativeX < 0 || relativeY < 0 || relativeX > bounding.width || relativeY > bounding.height) return
+    
+        document.addEventListener("mouseup", mouseupmove)
+        document.addEventListener("mousemove", mousemove)
+        
+        function mouseupmove(e){
+
+            document.removeEventListener("mousemove", mousemove)
+            phantomElement.remove()
+
+            function findNewIndex(){
+                let coordY = Math.ceil((e.y - document.getElementById("navbar").getBoundingClientRect().height)/bounding.height)
+                let coordX = Math.ceil(e.x/bounding.width)
+                let listInY = Math.floor(window.innerWidth/bounding.width)
+    
+                return ((coordY - 1) * listInY ) + coordX - 1
+            } 
+
+            const newIndex = findNewIndex();
+
+            function findElementWithOrder(num){
+                const elementWithOrder = Array.from(document.querySelectorAll('.listItem')).find(el => {
+                    const orderStyle = window.getComputedStyle(el).order;
+                    return Number(orderStyle) === num;
+                });
+
+                return elementWithOrder as HTMLElement
+            }
+
+            if(findElementWithOrder(newIndex) == null) return
+
+            findElementWithOrder(newIndex).style.order = listItem.style.order;
+            findElementWithOrder(parseInt(listItem.style.order)).style.order = newIndex.toString();
+
+            function swapElements(array, index1, index2){
+                array[index1] = array.splice(index2, 1, array[index1])[0];
+                return array
+            };
+
+            index = listContents.indexOf(homeworkObject)
+
+            swapElements(listContents, index, newIndex)
+            ManageLocalStorage.update()
+
+            document.removeEventListener("mouseup", mouseupmove)
+        }
+
+        const initPosition = {
+            x: e.x,
+            y: e.y
+        }
+
+        const phantomElement = addElement("div")
+        phantomElement.style.opacity = "0.3"
+        phantomElement.classList.add("phantomDisplay")
+        if(isOverdue) phantomElement.classList.add("listItemOverdue")
+        
+
+
+
+        function mousemove(e: MouseEvent){
+            document.body.appendChild(phantomElement)
+            phantomElement.style.position = "absolute"
+            phantomElement.style.left = `${bounding.x + e.x - initPosition.x}px`
+            phantomElement.style.top = `${bounding.y + e.y - initPosition.y}px`
+        }
+    })
 }
 
 quickAddButton.addEventListener("click", () => {
@@ -480,7 +636,7 @@ quickAddButton.addEventListener("click", () => {
                 type: null
             })
             addListItem(inputHomework.homeworkObject)
-            inputDiv.style.display = "none"
+            inputDialog.close()
         } else alert("No Subject in Schedule Found")
     } else{
         alert("Quick Add requires setup")
@@ -587,7 +743,7 @@ function renderList(arr){
         if(data.settings != undefined){
             if(data.settings.customThemeColor.primary == undefined){
                 data.settings.customThemeColor = JSON.parse(localStorage.getItem("settings")).customThemeColor
-            } else if(data.settings.useSystemTheme == undefined){
+            } else if(data.settings.themeType != 'system'){
                 let customThemeColorTemp = data.settings.customThemeColor
                 data.settings = JSON.parse(localStorage.getItem("settings"))
                 data.settings.customThemeColor = customThemeColorTemp

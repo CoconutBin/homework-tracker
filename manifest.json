@@ -1,6 +1,10 @@
 {
     "name": "Homework Tracker",
     "short_name": "wrkd.",
+    "dir": "auto",
+    "lang": "en",
+    "iarc_rating_id": "",
+    "description": "A simple homework tracker with very limited functionality",
     "background_color": "#f3e6d5",
     "theme_color": "#f3e6d5",
     "categories": [
@@ -76,8 +80,33 @@
           "purpose": "any"
         }
       ]
+    },
+    {
+      "name": "Chula ISE Calculator",
+      "url": "/homework-tracker/cuisecalculator.html",
+      "icons": [
+        {
+          "src": "./icons/logomonochrome.png",
+          "type": "image/png",
+          "sizes": "512x512",
+          "purpose": "monochrome"
+        },
+        {
+          "src": "./icons/logomaskable.png",
+          "type": "image/png",
+          "sizes": "512x512",
+          "purpose": "maskable"
+        },
+        {
+          "src": "./icons/logo.png",
+          "type": "image/png",
+          "sizes": "512x512",
+          "purpose": "any"
+        }
+      ]
     }
   ],
     "start_url": "https://coconutbin.github.io/homework-tracker",
-    "display": "standalone"
+    "display": "standalone",
+    "display_override": ["window-controls-overlay"]
   }

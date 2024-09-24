@@ -53,6 +53,10 @@
         font-size: medium;
     }
 
+    textarea{
+        width: calc(300px - 10vw)
+    }
+
     .clickable {
         font-size: 36px !important;
     }
@@ -64,8 +68,7 @@
     .detailsDisplay,
     .inputForm,
     .settingsDisplay {
-        width: 100vw;
-        margin-left: 15px;
+        width: auto
     }
 }
 

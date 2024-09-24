@@ -33,6 +33,8 @@ textarea {
 .material-symbols-rounded {
     font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 200, 'opsz' 40;
     user-select: none;
+    -webkit-user-select: none;
+    display: flex !important;
 }
 
 input[type="color"]{
@@ -43,10 +45,9 @@ input[type="color"]{
     background-color: transparent;
 }
 
-input[type="button"]:hover,
-input[type="submit"]:hover,
-button:hover {
-    background: var(--accent)
+dialog{
+    border: none !important;
+    background: none;
 }
 
 .isImportantIsGroupWork{

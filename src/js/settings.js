@@ -1,7 +1,6 @@
 const sortButton = document.getElementById('sort');
 const settingsButton = document.getElementById('settings');
-const sortContainer = document.getElementById('sortContainer');
-const sortModal = document.getElementById('sortModal');
+const sortDialog = document.getElementById('sortContainer');
 const sortScreen = document.getElementById('sortScreen');
 const sortType = document.getElementById('sortType');
 const sortArrange = document.getElementById('sortArrange');
@@ -12,14 +11,15 @@ if (sortType.value != 'dueDate') {
     sortArrangeBlock.style.display = 'none';
 }
 sortButton.addEventListener("click", () => {
-    sortContainer.style.display = "block";
-    sortScreen.style.display = "block";
+    sortDialog.showModal();
 });
-sortModal.addEventListener("click", () => {
-    sortContainer.style.display = "none";
+sortDialog.addEventListener("click", (e) => {
+    if (e.target == sortDialog) {
+        sortDialog.close();
+    }
 });
 sortCloseButton.addEventListener("click", () => {
-    sortContainer.style.display = "none";
+    sortDialog.close();
 });
 toSortButton.addEventListener("click", () => {
     let sortedListContents = [];
@@ -30,7 +30,7 @@ toSortButton.addEventListener("click", () => {
             localStorage.setItem("listContents", JSON.stringify(sortedListContents));
             listContents.splice(0, listContents.length);
             renderList(sortedListContents);
-            sortContainer.style.display = "none";
+            sortDialog.close();
             break;
         case "dueDate":
             switch (sortArrange.value) {
@@ -47,7 +47,7 @@ toSortButton.addEventListener("click", () => {
                     localStorage.setItem("listContents", JSON.stringify(sortedListContents));
                     listContents.splice(0, listContents.length);
                     renderList(sortedListContents);
-                    sortContainer.style.display = "none";
+                    sortDialog.close();
                     break;
                 case "farclose":
                     renderList([]);
@@ -62,7 +62,7 @@ toSortButton.addEventListener("click", () => {
                     localStorage.setItem("listContents", JSON.stringify(sortedListContents));
                     listContents.splice(0, listContents.length);
                     renderList(sortedListContents);
-                    sortContainer.style.display = "none";
+                    sortDialog.close();
                     break;
             }
             break;
@@ -88,8 +88,8 @@ class Settings {
     analytics;
     systemFont;
     noGradientNavbars;
-    useSystemTheme;
     allowNotifications;
+    themeType;
     initializeDefaults() {
         this.defaultThemes = {
             light: "matcha",
@@ -97,7 +97,6 @@ class Settings {
         };
         this.noGradientNavbars = false;
         this.pureBlackDarkMode = false;
-        this.useSystemTheme = true;
         this.rightToLeft = false;
         this.customThemes = false;
         this.customThemeColor = {};
@@ -105,6 +104,7 @@ class Settings {
         this.analytics = false;
         this.systemFont = false;
         this.allowNotifications = true;
+        this.themeType = 'system';
     }
     constructor() {
         this.initializeDefaults();
@@ -123,8 +123,8 @@ class Settings {
             analytics: this.analytics,
             systemFont: this.systemFont,
             noGradientNavbars: this.noGradientNavbars,
-            useSystemTheme: this.useSystemTheme,
-            allowNotifications: this.allowNotifications
+            allowNotifications: this.allowNotifications,
+            themeType: this.themeType
         };
     }
     set settingsObject(obj) {
@@ -137,13 +137,12 @@ class Settings {
         this.analytics = obj.analytics;
         this.systemFont = obj.systemFont;
         this.noGradientNavbars = obj.noGradientNavbars;
-        this.useSystemTheme = obj.useSystemTheme;
         this.allowNotifications = obj.allowNotifications;
+        this.themeType = obj.themeType;
     }
 }
 const settings = new Settings();
-const settingsContainer = document.getElementById("settingsContainer");
-const settingsModal = document.getElementById("settingsModal");
+const settingsDialog = document.getElementById("settingsContainer");
 const settingsDiv = document.getElementById("settingsScreen");
 const settingsCloseButton = document.getElementById("settingsCloseButton");
 const settingsresetButton = document.getElementById('settingsResetButton');
@@ -151,7 +150,6 @@ const defaultDarkThemeSetting = document.getElementById("defaultDark");
 const defaultLightThemeSetting = document.getElementById("defaultLight");
 const rightToLeft = document.getElementById("rightToLeft");
 const noGradientNavbars = document.getElementById("noGradientNavbars");
-const useSystemTheme = document.getElementById("useSystemTheme");
 const subjectNameClick = document.getElementById("subjectNameClick");
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode');
 const customThemes = document.getElementById('customThemes');
@@ -159,25 +157,24 @@ const analytics = document.getElementById('analytics');
 const analyticsDiv = document.getElementById("analyticsDiv");
 const quickAddSetup = document.getElementById("quickAddSetup");
 const systemFont = document.getElementById("systemFont");
-const quickAddContainer = document.getElementById("quickAddContainer");
-const quickAddModal = document.getElementById("quickAddModal");
+const quickAddDialog = document.getElementById("quickAddDialog");
 const quickAddDiv = document.getElementById("quickAddScreen");
 const quickAddTextArea = document.getElementById("quickAddTextArea");
 const quickAddImportButton = document.getElementById("quickAddImportButton");
 const quickAddExportButton = document.getElementById("quickAddExportButton");
 const quickAddCancelButton = document.getElementById("quickAddCancelButton");
 const allowNotifications = document.getElementById("allowNotifications");
+const chooseTheme = document.getElementById("chooseTheme");
 settingsButton.addEventListener("click", () => {
-    settingsContainer.style.display = "block";
-    settingsDiv.style.display = "block";
+    settingsDialog.showModal();
 });
-settingsModal.addEventListener("click", () => {
-    settingsContainer.style.display = "none";
-    settingsDiv.style.display = "none";
+settingsDialog.addEventListener("click", (e) => {
+    if (e.target == settingsDialog) {
+        settingsDialog.close();
+    }
 });
 settingsCloseButton.addEventListener("click", () => {
-    settingsContainer.style.display = "none";
-    settingsDiv.style.display = "none";
+    settingsDialog.close();
 });
 settingsresetButton.addEventListener("click", () => {
     if (confirm("Are you sure you want to reset settings?")) {
@@ -234,6 +231,7 @@ customThemes.addEventListener("change", () => {
     if (settings.customThemes) {
         defaultDarkThemeSetting.disabled = true;
         defaultLightThemeSetting.disabled = true;
+        chooseTheme.disabled = true;
         pureBlackDarkMode.disabled = true;
         themeButton.textContent = "palette";
         themeButton.title = "Cutomize Theme";
@@ -260,7 +258,7 @@ customThemes.addEventListener("change", () => {
                 return "light";
             }
         }
-        if (themeDeterminer(Themes[currentTheme].backgroundColor) == "light") {
+        if (themeDeterminer(settings.customThemeColor.background) == "light") {
             themeButton.textContent = "light_mode";
             Themes[settings.defaultThemes.light].setCSS();
         }
@@ -271,6 +269,7 @@ customThemes.addEventListener("change", () => {
         themeButton.title = "Dark/Light Theme";
         defaultDarkThemeSetting.disabled = false;
         defaultLightThemeSetting.disabled = false;
+        chooseTheme.disabled = false;
         pureBlackDarkMode.disabled = false;
     }
 });
@@ -297,18 +296,16 @@ allowNotifications.addEventListener("change", () => {
         }
     });
 });
-useSystemTheme.addEventListener("change", () => {
-    settings.useSystemTheme = useSystemTheme.checked;
-    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
-});
 if (quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
-        settingsContainer.style.display = "none";
-        quickAddContainer.style.display = "block";
+        settingsDialog.close();
+        quickAddDialog.showModal();
         quickAddDiv.style.display = "block";
     });
-    quickAddModal.addEventListener("click", () => {
-        quickAddContainer.style.display = "none";
+    quickAddDialog.addEventListener("click", (e) => {
+        if (e.target == quickAddDialog) {
+            quickAddDialog.close();
+        }
     });
     quickAddExportButton.addEventListener("click", (e) => {
         quickAddTextArea.value = localStorage.getItem("currentSchedule");
@@ -319,10 +316,10 @@ if (quickAddSetup != undefined) {
         localStorage.setItem("currentSchedule", quickAddTextArea.value);
         console.log(`saved ${quickAddTextArea.value} into localStorage`);
         currentSchedule.scheduleObject = JSON.parse(localStorage.getItem("currentSchedule"));
-        quickAddContainer.style.display = "none";
+        quickAddDialog.close();
     });
     quickAddCancelButton.addEventListener("click", (e) => {
-        quickAddContainer.style.display = "none";
+        quickAddDialog.close();
     });
 }
 if (analytics != undefined) {
@@ -330,11 +327,14 @@ if (analytics != undefined) {
         settings.analytics = analytics.checked;
         localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
         if (settings.analytics) {
+            analyticsDiv.classList.add("to-shown");
+            analyticsDiv.classList.remove("to-none");
             analyticsDiv.style.display = "flex";
             list.style.height = "calc(50vh - 15px)";
         }
         else {
-            analyticsDiv.style.display = "none";
+            analyticsDiv.classList.add("to-none");
+            analyticsDiv.classList.remove("to-shown");
             list.style.height = "auto";
         }
     });
@@ -346,15 +346,17 @@ if (subjectNameClick != undefined) {
     });
 }
 if (localStorage.getItem("settings") != null) {
+    if (JSON.parse(localStorage.getItem("settings")).useSystemTheme) {
+        let localStorageSettings = JSON.parse(localStorage.getItem("settings"));
+        localStorageSettings.themeType = 'system';
+        localStorage.setItem("settings", JSON.stringify(localStorageSettings));
+    }
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"));
-}
-if (settings.useSystemTheme == undefined) {
-    settings.useSystemTheme = true;
 }
 try {
     rightToLeft.checked = settings.rightToLeft;
     systemFont.checked = settings.systemFont;
-    useSystemTheme.checked = settings.useSystemTheme;
+    chooseTheme.value = settings.themeType;
     noGradientNavbars.checked = settings.noGradientNavbars;
     allowNotifications.checked = settings.allowNotifications;
     if (customThemes != undefined) {
@@ -408,22 +410,22 @@ else {
 }
 // About Screen
 const aboutButton = document.getElementById("aboutButton");
-const aboutContainer = document.getElementById("aboutContainer");
+const aboutDialog = document.getElementById("aboutContainer");
 const aboutScreen = document.getElementById("aboutScreen");
 const aboutCloseButton = document.getElementById("aboutCloseButton");
-const aboutModal = document.getElementById("aboutModal");
 const aboutVersion = document.getElementById("version");
 const aboutSource = document.getElementById("source");
 aboutButton.addEventListener("click", () => {
-    settingsContainer.style.display = "none";
-    aboutContainer.style.display = "block";
-    aboutScreen.style.display = "block";
+    settingsDialog.close();
+    aboutDialog.showModal();
 });
-aboutModal.addEventListener("click", () => {
-    aboutContainer.style.display = "none";
+aboutDialog.addEventListener("click", (e) => {
+    if (e.target == aboutDialog) {
+        aboutDialog.close();
+    }
 });
 aboutCloseButton.addEventListener("click", () => {
-    aboutContainer.style.display = "none";
+    aboutDialog.close();
 });
 aboutVersion.textContent = `Version: V.${version}`;
 aboutSource.style.textDecoration = "none";

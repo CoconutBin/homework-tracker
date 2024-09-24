@@ -5,6 +5,7 @@
     <title>Homework Tracker</title>
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#aac6ab" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#33483b" />
+    <meta name="google-site-verification" content="eQDWmn2VePY5CyzH0gBsQCbtikLKTIG0EXuixg4D45w" />
     <link rel="apple-touch-icon" type="image/png" href="icons/icon.png">
     <link rel="icon" type="image/png" href="icons/icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,10 +21,11 @@
     <link rel="stylesheet" href="./css/components.css">
     <link rel="stylesheet" href="./css/utilities.css">
     <link rel="stylesheet" href="./css/mediaScaling.css">
+    <link rel="stylesheet" href="./css/transitions.css">
 </head>
 
 <body>
-    <div class="navbar" id="navbar">
+    <header class="navbar" id="navbar">
         <p id="logo">Homework Tracker</p>
         <div style="display: flex">
             <a id="navbarButtons">
@@ -36,16 +38,10 @@
                 <a class="material-symbols-rounded clickable" id="settings" title="Settings">settings</a>
             </a>
         </div>
-    </div>
+    </header>
     <div id="list" class="list">
-        <div class="listItem" id="addListItemButton">
-            <div class="listItemDisplay">
-                <h1><span class="material-symbols-rounded" style="font-size: 48px;">add</span></h1>
-            </div>
-        </div>
     </div>
-    <div id="sortContainer" style="display: none;">
-        <div id="sortModal" class="modal"></div>
+    <dialog id="sortContainer">
         <div id="sortScreen" class="settingsDisplay">
             <p class="settingsCategory">Sort By</p>
             <label for="sortType">Sort Type:</label>
@@ -63,9 +59,8 @@
             <button id="sortButton">Sort</button>
             <button id="sortCloseButton">Close</button>
         </div>
-    </div>
-    <div id="settingsContainer" style="display: none;">
-        <div id="settingsModal" class="modal"></div>
+    </dialog>
+    <dialog id="settingsContainer">
         <div id="settingsScreen" class="settingsDisplay">
             <p class="settingsCategory">General</p>
             <label for="subjectNameClick">Subject Name clicking behavior:</label>
@@ -77,20 +72,25 @@
             <p class="settingsCategory">Themes</p>
             <label for="customThemes">Custom Theming</label>
             <input type="checkbox" name="customThemes" id="customThemes"><br>
-            <label for="defaultLight">Default Light Theme:</label>
-            <select name="defaultLight" id="defaultLight">
-            </select><br>
-            <label for="defaultDark">Default Dark Theme:</label>
-            <select name="defaultDark" id="defaultDark">
-            </select><br>
-            <label for="noGradientNavbars">No Gradient Navbars</label>
-            <input type="checkbox" name="noGradientNavbars" id="noGradientNavbars">
-            </label><br><br>
+            <label for="defaultLight">Default Light Theme:
+                <select name="defaultLight" id="defaultLight">
+                </select>
+            </label><br>
+            <label for="defaultDark">Default Dark Theme:
+                <select name="defaultDark" id="defaultDark">
+                </select>
+            </label><br>
+            <label for="chooseTheme">Theme:
+                <select name="chooseTheme" id="chooseTheme">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select></label><br>
             <label for="pureBlackDarkMode">Pure black background for dark mode</label>
             <input type="checkbox" name="pureBlackDarkMode" id="pureBlackDarkMode">
-            </label><br><br>
-            <label for="useSystemTheme">Use System Theme</label>
-            <input type="checkbox" name="useSystemTheme" id="useSystemTheme">
+            </label><br>
+            <label for="noGradientNavbars">No Gradient Navbars</label>
+            <input type="checkbox" name="noGradientNavbars" id="noGradientNavbars">
             </label><br>
             <p class="settingsCategory">UI</p>
             <label for="rightToLeft">Right-to-Left Layout</label>
@@ -120,13 +120,12 @@
             <input type="checkbox" name="allowNotifications" id="allowNotifications">
             </label><br>
             <br>
-            <input type="button" value="Close" id="settingsCloseButton">
-            <input type="button" value="Reset Settings" id="settingsResetButton">
-            <input type="button" value="About" id="aboutButton">
+            <button id="settingsCloseButton">Close</button>
+            <button id="settingsResetButton">Reset Settings</button>
+            <button id="aboutButton">About</button>
         </div>
-    </div>
-    <div id="quickAddContainer" style="display: none;">
-        <div id="quickAddModal" class="modal"></div>
+    </dialog>
+    <dialog id="quickAddDialog">
         <div id="quickAddScreen" class="settingsDisplay">
             <p class="settingsCategory">Quick Add Setup</p>
             <div>
@@ -137,41 +136,38 @@
                 <button id="quickAddCancelButton">Cancel</button>
             </div>
         </div>
-    </div>
-    <div id="themesContainer" style="display: none;">
-        <div id="themesModal" class="modal"></div>
-        <div id="customThemesScreen" class="themesDisplay">
+    </dialog>
+    <dialog id="customThemesScreen" class="themesDisplay">
+        <div>
             <label for="inputThemeText">Theme Text Color: </label><input type="color" name="inputThemeText"
-                id="inputThemeText"><br>
-            <label for="inputThemeBackground">Theme Background Color: </label><input type="color"
-                name="inputThemeBackground" id="inputThemeBackground"><br>
-            <label for="inputThemePrimary">Theme Primary Color: </label><input type="color" name="inputThemePrimary"
-                id="inputThemePrimary"><br>
-            <label for="inputThemeSecondary">Theme Secondary Color: </label><input type="color"
-                name="inputThemeSecondary" id="inputThemeSecondary"><br>
-            <label for="inputThemeAccent">Theme Accent Color: </label><input type="color" name="inputThemeAccent"
-                id="inputThemeAccent"><br><br>
-            <label for="themeTemplates"> Theme Template:
-                <select name="themeTemplates" id="themeTemplates">
-                </select></label>
-            </select><br>
+            id="inputThemeText"><br>
+        <label for="inputThemeBackground">Theme Background Color: </label><input type="color"
+            name="inputThemeBackground" id="inputThemeBackground"><br>
+        <label for="inputThemePrimary">Theme Primary Color: </label><input type="color" name="inputThemePrimary"
+            id="inputThemePrimary"><br>
+        <label for="inputThemeSecondary">Theme Secondary Color: </label><input type="color"
+            name="inputThemeSecondary" id="inputThemeSecondary"><br>
+        <label for="inputThemeAccent">Theme Accent Color: </label><input type="color" name="inputThemeAccent"
+            id="inputThemeAccent"><br><br>
+        <label for="themeTemplates"> Theme Template:
+            <select name="themeTemplates" id="themeTemplates">
+            </select></label>
+        </select><br>
 
-            <br><input type="button" value="Close" id="themesCloseButton">
-            <input type="button" value="Reset Custom Theme" id="themesResetButton">
+        <br><button id="themesCloseButton">Close</button>
+        <button id="themesResetButton">Reset Custom Theme</button>
         </div>
-    </div>
-    <div id="aboutContainer" style="display: none;">
-        <div id="aboutModal" class="modal"></div>
+    </dialog>
+    <dialog id="aboutContainer">
         <div id="aboutScreen" class="settingsDisplay">
             <p class="settingsCategory">About Homework Tracker (wrkd.)</p><br>
-            <p id="version">Version: 1.0.0</p><br>
-            <p><a id="source" href="https://www.github.com/coconutbin/homework-tracker">View Source (Github)</a></p>
-            <br>
+            <p id="version">Version: 1.0.0</p>
+            <p><a id="source" href="https://www.github.com/coconutbin/homework-tracker">View Source (Github)</a></p><br>
             <button id="aboutCloseButton">Close</button>
         </div>
-    </div>
-    <div id="inputform" style="display: none;">
-        <form class="inputForm" style="z-index: 9999">
+    </dialog>
+    <dialog id="inputDialog">
+        <form class="inputForm">
             <label>
                 Subject:
                 <input type="text" name="subject" id="inputSubject" autocomplete="off">
@@ -206,10 +202,12 @@
                     placeholder="write here"></textarea>
             </label><br><br>
             <input type="submit">
-            <input type="button" value="Close" id="inputFormCloseButton">
-            <input type="button" value="Quick Add" id="quickAddButton">
+            <button id="inputFormCloseButton">Close</button>
+            <button id="quickAddButton">Quick Add</button>
         </form>
-        <div class="modal" id="inputFormModalBackground"></div>
+    </dialog>
+    <div class="addListItemButton" id="addListItemButton" title="Add New Homework">
+            <h1><span class="material-symbols-rounded">add</span></h1>
     </div>
 </body>
 

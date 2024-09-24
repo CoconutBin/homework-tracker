@@ -1,0 +1,146 @@
+body>* {
+    transition: all .2s ease-in-out;
+}
+
+.listItemDisplay:hover, .addListItemButton:hover {
+    transform: scale(1.025);
+    cursor: pointer;
+    transition: all 100ms ease-in-out;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+
+.clickable {
+    transition: all .1s ease-in-out;
+}
+
+.analyticsDiv.to-shown {
+    transition-property: all;
+    transition-duration: .5s;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+    translate: 0 0;
+}
+
+.analyticsDiv {
+    transition-property: all;
+    transition-duration: .5s;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+    translate: 0 0;
+}
+
+.analyticsDiv.to-none {
+    transition-property: all;
+    transition-duration: .5s;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+    translate: 0 100vh;
+    display: none !important;
+}
+
+.addListItemButton{
+    transition-property: all;
+    transition-duration: 250ms;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-in-out;
+    opacity: 1;
+    scale: 1 1;
+}
+
+.listItem {
+    transition-property: all;
+    transition-duration: 200ms;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+    opacity: 1;
+    scale: 1 1;
+}
+
+.listItem {
+    transition: order none !important;
+}
+
+/*   IS-OPEN STATE   */
+dialog[open] {
+    transition-property: all;
+    transition-duration: 200ms;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+    transform: scale(1);
+    opacity: 1;
+}
+
+dialog[open]::backdrop{
+    transition-property: all;
+    transition-duration: 200ms;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/*   EXIT STATE   */
+dialog{
+    transition-property: all;
+    transition-duration: 150ms;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+    transform: scale(0.7);
+    opacity: 0;
+}
+
+dialog::backdrop{
+    transition-property: all;
+    transition-duration: 150ms;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+    background: rgba(0, 0, 0, 0);
+}
+
+/* 0. BEFORE-OPEN STATE   */
+@starting-style {
+    dialog[open] {
+        transform: scale(0.5);
+    }
+
+    dialog::backdrop {
+        background: rgba(0, 0, 0, 0);
+    }
+
+    .addListItemButton,
+    .listItem {
+        opacity: 0;
+        scale: 1 0.9;
+    }
+
+    .analyticsDiv {
+        translate: 0 100vh;
+        display: none;
+    }
+}
+
+.preventTransition {
+    transition: none !important;
+}
+
+.clickable:hover {
+    color: var(--accent);
+    transform: scale(1.1);
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 200, 'opsz' 40;
+    transition: font-variation-settings .1s ease-in-out .3s;
+    transition: all .1s ease-in-out;
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover,
+button:hover {
+    background: var(--accent)
+}
+
+.delete-animation {
+    opacity: 0; 
+    scale: 0;
+    transition-property: all;
+    transition-duration: 150ms;
+    transition-behavior: allow-discrete;
+    transition-timing-function: ease-out;
+}

@@ -1,17 +1,7 @@
 .clickable {
     cursor: pointer;
-    transition: all .1s ease-in-out;
     font-size: 42px !important;
     text-decoration: none;
     color: var(--text);
     padding: 0 5px !important;
-}
-
-.clickable:hover {
-    color: var(--accent);
-    transform: scale(1.1);
-}
-
-.preventTransition {
-    transition: none !important;
 }

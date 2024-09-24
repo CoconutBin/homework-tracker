@@ -1,14 +1,15 @@
 const archivedHomeworks: Homework["homeworkObject"][] = JSON.parse(localStorage.getItem("archivedHomeworks")) != undefined? JSON.parse(localStorage.getItem("archivedHomeworks")):[]
 const list = document.getElementById("list")
 
-function addButton(type: string, affectedElement?: HTMLElement, customValue?: string): HTMLInputElement {
+function addButton(type: string, affectedElement?: HTMLDialogElement, customValue?: string): HTMLInputElement {
     let button = document.createElement("input");
     button.type = "button";
     button.value = type;
     switch (type) {
         case "Close":
             button.addEventListener("click", () => {
-                affectedElement.style.display = "none"
+                try { affectedElement.close() }
+                catch { affectedElement.style.display = "none" }
             })
             break;
         case "Custom":

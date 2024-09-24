@@ -7,13 +7,13 @@
     --success: #1ec726;
     --error: #da0000;
 
-    --standard-margin: 5px;
+    --standard-margin: 4px;
     --listItem-width: 350px;
 }
 
 body,
 html {
-    color: var(--text);
+    color: var(--text) !important;
     font-size: 1.2vw;
     font-family: "Nunito", system-ui, sans-serif;
     cursor: default;
@@ -27,6 +27,6 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-body>* {
-    transition: all .2s ease-in-out;
+dialog{
+    color: var(--text)
 }
