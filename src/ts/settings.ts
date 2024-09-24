@@ -106,6 +106,7 @@ class Settings {
     systemFont: boolean;
     noGradientNavbars: boolean;
     allowNotifications: boolean;
+    swappableHomeworks: boolean;
     themeType: 'light' | 'dark' | 'system'
 
     private initializeDefaults() {
@@ -123,6 +124,7 @@ class Settings {
         this.systemFont = false;
         this.allowNotifications = true;
         this.themeType = 'system'
+        this.swappableHomeworks = true;
     }
 
     constructor() {
@@ -145,7 +147,8 @@ class Settings {
             systemFont: this.systemFont,
             noGradientNavbars: this.noGradientNavbars,
             allowNotifications: this.allowNotifications,
-            themeType: this.themeType
+            themeType: this.themeType,
+            swappableHomeworks: this.swappableHomeworks,
         };
     }
 
@@ -161,6 +164,7 @@ class Settings {
         this.noGradientNavbars = obj.noGradientNavbars;
         this.allowNotifications = obj.allowNotifications;
         this.themeType = obj.themeType;
+        this.swappableHomeworks = obj.swappableHomeworks;
     }
 }
 
@@ -190,6 +194,7 @@ const quickAddExportButton = document.getElementById("quickAddExportButton") as 
 const quickAddCancelButton = document.getElementById("quickAddCancelButton") as HTMLButtonElement
 const allowNotifications = document.getElementById("allowNotifications") as HTMLInputElement
 const chooseTheme = document.getElementById("chooseTheme") as HTMLSelectElement
+const swappableHomeworks = document.getElementById("swappableHomeworks") as HTMLInputElement
 
 
 settingsButton.addEventListener("click", () => {
@@ -219,6 +224,11 @@ settingsresetButton.addEventListener("click", () => {
         list.style.flexDirection = "row"
     }
 
+})
+
+swappableHomeworks.addEventListener("change", () => {
+    settings.swappableHomeworks = swappableHomeworks.checked
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
 })
 
 defaultDarkThemeSetting.addEventListener("change", () => {
@@ -398,6 +408,7 @@ if (localStorage.getItem("settings") != null) {
 }
 
 try {
+    swappableHomeworks.checked = settings.swappableHomeworks
     rightToLeft.checked = settings.rightToLeft
     systemFont.checked = settings.systemFont
     chooseTheme.value = settings.themeType

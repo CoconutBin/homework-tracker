@@ -88,7 +88,7 @@ inputDialog.addEventListener(
                 (inputs as HTMLInputElement).checked = false
             }
             addListItem(inputHomework.homeworkObject)
-            document.getElementById("noHomeworksMessage").style.display = "none"
+            try {document.getElementById("noHomeworksMessage").style.display = "none"} catch(e){console.error(e)}
             inputDialog.close()
         }
     }
@@ -548,7 +548,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         const relativeX = e.x - bounding.x
         const relativeY = e.y - bounding.y
         
-        if(relativeX < 0 || relativeY < 0 || relativeX > bounding.width || relativeY > bounding.height) return
+        if(relativeX < 0 || relativeY < 0 || relativeX > bounding.width || relativeY > bounding.height || !settings.swappableHomeworks || window.innerWidth < 500) return
     
         document.addEventListener("mouseup", mouseupmove)
         document.addEventListener("mousemove", mousemove)

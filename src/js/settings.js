@@ -89,6 +89,7 @@ class Settings {
     systemFont;
     noGradientNavbars;
     allowNotifications;
+    swappableHomeworks;
     themeType;
     initializeDefaults() {
         this.defaultThemes = {
@@ -105,6 +106,7 @@ class Settings {
         this.systemFont = false;
         this.allowNotifications = true;
         this.themeType = 'system';
+        this.swappableHomeworks = true;
     }
     constructor() {
         this.initializeDefaults();
@@ -124,7 +126,8 @@ class Settings {
             systemFont: this.systemFont,
             noGradientNavbars: this.noGradientNavbars,
             allowNotifications: this.allowNotifications,
-            themeType: this.themeType
+            themeType: this.themeType,
+            swappableHomeworks: this.swappableHomeworks,
         };
     }
     set settingsObject(obj) {
@@ -139,6 +142,7 @@ class Settings {
         this.noGradientNavbars = obj.noGradientNavbars;
         this.allowNotifications = obj.allowNotifications;
         this.themeType = obj.themeType;
+        this.swappableHomeworks = obj.swappableHomeworks;
     }
 }
 const settings = new Settings();
@@ -165,6 +169,7 @@ const quickAddExportButton = document.getElementById("quickAddExportButton");
 const quickAddCancelButton = document.getElementById("quickAddCancelButton");
 const allowNotifications = document.getElementById("allowNotifications");
 const chooseTheme = document.getElementById("chooseTheme");
+const swappableHomeworks = document.getElementById("swappableHomeworks");
 settingsButton.addEventListener("click", () => {
     settingsDialog.showModal();
 });
@@ -190,6 +195,10 @@ settingsresetButton.addEventListener("click", () => {
             pureBlackDarkMode.checked = settings.pureBlackDarkMode;
         list.style.flexDirection = "row";
     }
+});
+swappableHomeworks.addEventListener("change", () => {
+    settings.swappableHomeworks = swappableHomeworks.checked;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
 });
 defaultDarkThemeSetting.addEventListener("change", () => {
     settings.defaultThemes.dark = defaultDarkThemeSetting.value;
@@ -354,6 +363,7 @@ if (localStorage.getItem("settings") != null) {
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"));
 }
 try {
+    swappableHomeworks.checked = settings.swappableHomeworks;
     rightToLeft.checked = settings.rightToLeft;
     systemFont.checked = settings.systemFont;
     chooseTheme.value = settings.themeType;
