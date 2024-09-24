@@ -88,8 +88,8 @@ class Settings {
     analytics;
     systemFont;
     noGradientNavbars;
-    useSystemTheme;
     allowNotifications;
+    themeType;
     initializeDefaults() {
         this.defaultThemes = {
             light: "matcha",
@@ -97,7 +97,6 @@ class Settings {
         };
         this.noGradientNavbars = false;
         this.pureBlackDarkMode = false;
-        this.useSystemTheme = true;
         this.rightToLeft = false;
         this.customThemes = false;
         this.customThemeColor = {};
@@ -105,6 +104,7 @@ class Settings {
         this.analytics = false;
         this.systemFont = false;
         this.allowNotifications = true;
+        this.themeType = 'system';
     }
     constructor() {
         this.initializeDefaults();
@@ -123,8 +123,8 @@ class Settings {
             analytics: this.analytics,
             systemFont: this.systemFont,
             noGradientNavbars: this.noGradientNavbars,
-            useSystemTheme: this.useSystemTheme,
-            allowNotifications: this.allowNotifications
+            allowNotifications: this.allowNotifications,
+            themeType: this.themeType
         };
     }
     set settingsObject(obj) {
@@ -137,8 +137,8 @@ class Settings {
         this.analytics = obj.analytics;
         this.systemFont = obj.systemFont;
         this.noGradientNavbars = obj.noGradientNavbars;
-        this.useSystemTheme = obj.useSystemTheme;
         this.allowNotifications = obj.allowNotifications;
+        this.themeType = obj.themeType;
     }
 }
 const settings = new Settings();
@@ -150,7 +150,6 @@ const defaultDarkThemeSetting = document.getElementById("defaultDark");
 const defaultLightThemeSetting = document.getElementById("defaultLight");
 const rightToLeft = document.getElementById("rightToLeft");
 const noGradientNavbars = document.getElementById("noGradientNavbars");
-const useSystemTheme = document.getElementById("useSystemTheme");
 const subjectNameClick = document.getElementById("subjectNameClick");
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode');
 const customThemes = document.getElementById('customThemes');
@@ -165,6 +164,7 @@ const quickAddImportButton = document.getElementById("quickAddImportButton");
 const quickAddExportButton = document.getElementById("quickAddExportButton");
 const quickAddCancelButton = document.getElementById("quickAddCancelButton");
 const allowNotifications = document.getElementById("allowNotifications");
+const chooseTheme = document.getElementById("chooseTheme");
 settingsButton.addEventListener("click", () => {
     settingsDialog.showModal();
 });
@@ -294,10 +294,6 @@ allowNotifications.addEventListener("change", () => {
         }
     });
 });
-useSystemTheme.addEventListener("change", () => {
-    settings.useSystemTheme = useSystemTheme.checked;
-    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
-});
 if (quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
         settingsDialog.close();
@@ -348,15 +344,17 @@ if (subjectNameClick != undefined) {
     });
 }
 if (localStorage.getItem("settings") != null) {
+    if (JSON.parse(localStorage.getItem("settings")).useSystemTheme) {
+        let localStorageSettings = JSON.parse(localStorage.getItem("settings"));
+        localStorageSettings.themeType = 'system';
+        localStorage.setItem("settings", JSON.stringify(localStorageSettings));
+    }
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"));
-}
-if (settings.useSystemTheme == undefined) {
-    settings.useSystemTheme = true;
 }
 try {
     rightToLeft.checked = settings.rightToLeft;
     systemFont.checked = settings.systemFont;
-    useSystemTheme.checked = settings.useSystemTheme;
+    chooseTheme.value = settings.themeType;
     noGradientNavbars.checked = settings.noGradientNavbars;
     allowNotifications.checked = settings.allowNotifications;
     if (customThemes != undefined) {

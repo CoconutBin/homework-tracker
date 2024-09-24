@@ -16,14 +16,34 @@ if (settings.noGradientNavbars) {
 else {
     document.getElementById("navbar").style.background = '';
 }
-if (settings.useSystemTheme && !settings.customThemes) {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        currentTheme = settings.defaultThemes.dark;
+chooseTheme.addEventListener("change", () => {
+    settings.themeType = chooseTheme.value;
+    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
+    if (!settings.customThemes) {
+        switch (settings.themeType) {
+            case "light":
+                currentTheme = settings.defaultThemes.light;
+                themeButton.innerText = "light_mode";
+                Themes[currentTheme].setCSS();
+                break;
+            case "dark":
+                currentTheme = settings.defaultThemes.dark;
+                themeButton.innerText = "dark_mode";
+                Themes[currentTheme].setCSS();
+                break;
+            case "system":
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    currentTheme = settings.defaultThemes.dark;
+                    themeButton.innerText = "dark_mode";
+                }
+                else {
+                    currentTheme = settings.defaultThemes.light;
+                    themeButton.innerText = "light_mode";
+                }
+                break;
+        }
     }
-    else {
-        currentTheme = settings.defaultThemes.light;
-    }
-}
+});
 class Theme {
     name;
     displayName;

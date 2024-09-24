@@ -105,8 +105,8 @@ class Settings {
     analytics: boolean;
     systemFont: boolean;
     noGradientNavbars: boolean;
-    useSystemTheme: boolean;
     allowNotifications: boolean;
+    themeType: 'light' | 'dark' | 'system'
 
     private initializeDefaults() {
         this.defaultThemes = {
@@ -115,7 +115,6 @@ class Settings {
         };
         this.noGradientNavbars = false;
         this.pureBlackDarkMode = false;
-        this.useSystemTheme = true;
         this.rightToLeft = false;
         this.customThemes = false;
         this.customThemeColor = {};
@@ -123,6 +122,7 @@ class Settings {
         this.analytics = false;
         this.systemFont = false;
         this.allowNotifications = true;
+        this.themeType = 'system'
     }
 
     constructor() {
@@ -144,8 +144,8 @@ class Settings {
             analytics: this.analytics,
             systemFont: this.systemFont,
             noGradientNavbars: this.noGradientNavbars,
-            useSystemTheme: this.useSystemTheme,
-            allowNotifications: this.allowNotifications
+            allowNotifications: this.allowNotifications,
+            themeType: this.themeType
         };
     }
 
@@ -159,8 +159,8 @@ class Settings {
         this.analytics = obj.analytics;
         this.systemFont = obj.systemFont;
         this.noGradientNavbars = obj.noGradientNavbars;
-        this.useSystemTheme = obj.useSystemTheme;
         this.allowNotifications = obj.allowNotifications;
+        this.themeType = obj.themeType;
     }
 }
 
@@ -175,7 +175,6 @@ const defaultDarkThemeSetting = document.getElementById("defaultDark") as HTMLSe
 const defaultLightThemeSetting = document.getElementById("defaultLight") as HTMLSelectElement;
 const rightToLeft = document.getElementById("rightToLeft") as HTMLInputElement;
 const noGradientNavbars = document.getElementById("noGradientNavbars") as HTMLInputElement;
-const useSystemTheme = document.getElementById("useSystemTheme") as HTMLInputElement;
 const subjectNameClick = document.getElementById("subjectNameClick") as HTMLSelectElement;
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode') as HTMLInputElement
 const customThemes = document.getElementById('customThemes') as HTMLInputElement
@@ -190,6 +189,7 @@ const quickAddImportButton = document.getElementById("quickAddImportButton") as 
 const quickAddExportButton = document.getElementById("quickAddExportButton") as HTMLButtonElement
 const quickAddCancelButton = document.getElementById("quickAddCancelButton") as HTMLButtonElement
 const allowNotifications = document.getElementById("allowNotifications") as HTMLInputElement
+const chooseTheme = document.getElementById("chooseTheme") as HTMLSelectElement
 
 
 settingsButton.addEventListener("click", () => {
@@ -332,11 +332,6 @@ allowNotifications.addEventListener("change", () => {
     });
 })
 
-useSystemTheme.addEventListener("change", () => {
-    settings.useSystemTheme = useSystemTheme.checked
-    localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
-})
-
 if (quickAddSetup != undefined) {
     quickAddSetup.addEventListener("click", () => {
         settingsDialog.close()
@@ -392,17 +387,18 @@ if (subjectNameClick != undefined) {
 }
 
 if (localStorage.getItem("settings") != null) {
+    if(JSON.parse(localStorage.getItem("settings")).useSystemTheme){
+        let localStorageSettings = JSON.parse(localStorage.getItem("settings"))
+        localStorageSettings.themeType = 'system'
+        localStorage.setItem("settings", JSON.stringify(localStorageSettings))
+    }
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"))
-}
-
-if (settings.useSystemTheme == undefined) {
-    settings.useSystemTheme = true
 }
 
 try {
     rightToLeft.checked = settings.rightToLeft
     systemFont.checked = settings.systemFont
-    useSystemTheme.checked = settings.useSystemTheme
+    chooseTheme.value = settings.themeType
     noGradientNavbars.checked = settings.noGradientNavbars
     allowNotifications.checked = settings.allowNotifications
     if (customThemes != undefined) { customThemes.checked = settings.customThemes }

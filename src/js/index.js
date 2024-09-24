@@ -648,7 +648,7 @@ function renderList(arr) {
             if (data.settings.customThemeColor.primary == undefined) {
                 data.settings.customThemeColor = JSON.parse(localStorage.getItem("settings")).customThemeColor;
             }
-            else if (data.settings.useSystemTheme == undefined) {
+            else if (data.settings.themeType != 'system') {
                 let customThemeColorTemp = data.settings.customThemeColor;
                 data.settings = JSON.parse(localStorage.getItem("settings"));
                 data.settings.customThemeColor = customThemeColorTemp;
