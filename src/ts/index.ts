@@ -480,7 +480,6 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         homeworkObject.timeUsed = Date.now() - homeworkObject.timeStarted;
         if (homeworkObject.pauseInterval === undefined) homeworkObject.pauseInterval = 0;
         ManageLocalStorage.update();
-
         if (homeworkObject.isPaused) {
             timeStarted.innerText = `Paused at ${convertToTime(homeworkObject.cachedTime)}`;
         } else {
@@ -489,6 +488,7 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         }, 500)
     }
 
+    setLiveUpdateTimer()
     setInterval(notifyDue, 86400000)
 
     let isOverdue = false

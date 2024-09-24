@@ -435,6 +435,7 @@ function addListItem(homeworkObject) {
             }
         }, 500);
     }
+    setLiveUpdateTimer();
     setInterval(notifyDue, 86400000);
     let isOverdue = false;
     function overdueUpdate() {
