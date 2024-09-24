@@ -4,50 +4,111 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>ISE Chula Calculator</title>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            background: #801e2b;
+            color: white;
+        }
+
+        label {
+            display: block;
+            text-align: center;
+            padding: 4px;
+        }
+
+        input, select {
+            display: block;
+            margin: 4px auto;
+            text-align: center;
+            border-radius: 4px;
+            background: #801e2b;
+            color: white;
+        }
+
+        button {
+            display: block;
+            margin: 16px auto;
+            text-align: center;
+            border-radius: 4px;
+            background: #801e2b;
+            color: white;
+        }
+
+        p {
+            text-align: center;
+            word-break: break-all;
+        }
+
+        .container {
+            background: #e5e5e5;
+            border-radius: 8px;
+        }
+
+        #result-container{
+            padding: 8px;
+            border-radius: 8px;
+            background: #e5e5e5;
+        }
+    </style>
 </head>
 <body style="justify-content: center; display: flex; flex-direction: column;">
     <form>
         <h1>ISE Chula Calculator</h1>
-        <label>
-            English Score Type:
-            <select id="english-type">
-                <option value="ielts" selected>IELTS</option>
-                <option value="toefl">TOEFL iBT</option>
-                <option value="cutep">CU-TEP</option>
-                <option value="duolingo">Duolingo English Test</option>
-            </select>
-        </label><br>
-        <label>
-            English Score:
-            <input type="number" name="score" id="english" min="0" max="9" step="0.5" required/>
-        </label><br><br>
-        <label>
-            Maths Score Type:
-            <select id="maths-type">
-                <option value="sat" selected>SAT (Maths)</option>
-                <option value="act">ACT</option>
-                <option value="cuaat">CU-AAT</option>
-            </select>
-        </label><br>
-        <label>
-            Maths Score:
-            <input type="number" name="score" id="maths" min="200" max="800" step="10" required/>
-        </label><br><br>
-        <label>
-            Science Score Type:
-            <select id="science-type">
-                <option value="act" selected>ACT</option>
-                <option value="cuats">CU-ATS</option>
-            </select>
-        </label><br>
-        <label>
-            Science Score:
-            <input type="number" name="score" id="science" min="1" max="36" step="1" required/>
-        </label><br><br>
-        <label>
-            GPAX:
-            <input type="number" name="score" id="gpax" min="0" max="4" step="0.01" required/>
-        </label><br><br>
+        <div class="container">
+            <label>
+                English Score Type:
+                <select id="english-type">
+                    <option value="ielts" selected>IELTS</option>
+                    <option value="toefl">TOEFL iBT</option>
+                    <option value="cutep">CU-TEP</option>
+                    <option value="duolingo">Duolingo English Test</option>
+                </select>
+            </label>
+            <label>
+                English Score:
+                <input type="number" name="score" id="english" min="0" max="9" step="0.5" required/>
+            </label>
+        </div><br>
+        <div class="container">
+            <label>
+                Maths Score Type:
+                <select id="maths-type">
+                    <option value="sat" selected>SAT (Maths)</option>
+                    <option value="act">ACT</option>
+                    <option value="cuaat">CU-AAT</option>
+                </select>
+            </label>
+            <label>
+                Maths Score:
+                <input type="number" name="score" id="maths" min="200" max="800" step="10" required/>
+            </label>
+        </div><br>
+        <div class="container">
+            <label>
+                Science Score Type:
+                <select id="science-type">
+                    <option value="act" selected>ACT</option>
+                    <option value="cuats">CU-ATS</option>
+                </select>
+            </label>
+            <label>
+                Science Score:
+                <input type="number" name="score" id="science" min="1" max="36" step="1" required/>
+            </label>
+        </div><br>
+        <div class="container">
+            <label>
+                GPAX:
+                <input type="number" name="score" id="gpax" min="0" max="4" step="0.01" required/>
+            </label>
+        </div><br>
         <button id="submit">Submit</button>
     </form>
     <div id="result-container" style="display: none;">
