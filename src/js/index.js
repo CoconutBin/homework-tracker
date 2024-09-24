@@ -132,12 +132,16 @@ function addListItem(homeworkObject) {
         timeStarted.style.display = "block";
     }
     if (homeworkObject.timeEnded > 0) {
-        timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`;
+        homeworkObject.timeUsed = homeworkObject.timeEnded - homeworkObject.timeStarted - homeworkObject.pauseInterval;
+        timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeUsed)}`;
         startHomeworkButton.value = "Archive";
         timeStarted.style.display = "block";
     }
     if (!homeworkStarted) {
         pauseHomeworkButton.style.display = "none";
+    }
+    if (homeworkObject.isPaused) {
+        pauseHomeworkButton.value = "Resume";
     }
     listItem.classList.add("listItem");
     displayDiv.classList.add("listItemDisplay");
@@ -173,15 +177,14 @@ function addListItem(homeworkObject) {
                 break;
         }
     });
-    let cachedTime;
     pauseHomeworkButton.addEventListener("click", () => {
         switch (pauseHomeworkButton.value) {
             case "Pause":
                 homeworkObject.isPaused = true;
                 homeworkObject.timePaused = Date.now();
                 pauseHomeworkButton.value = "Resume";
-                cachedTime = homeworkObject.timeUsed - homeworkObject.pauseInterval;
-                timeStarted.innerText = `Paused at ${convertToTime(cachedTime)}`;
+                homeworkObject.cachedTime = homeworkObject.timeUsed - homeworkObject.pauseInterval;
+                timeStarted.innerText = `Paused at ${convertToTime(homeworkObject.cachedTime)}`;
                 ManageLocalStorage.update();
                 break;
             case "Resume":
@@ -193,35 +196,61 @@ function addListItem(homeworkObject) {
                 pauseHomeworkButton.value = "Pause";
                 break;
             case "Reset":
+                homeworkStarted = false;
+                startHomeworkButton.value = "Start";
+                timeStarted.style.display = "none";
+                homeworkObject.timeStarted = null;
+                homeworkObject.timeEnded = null;
+                homeworkObject.timeUsed = null;
+                homeworkObject.pauseInterval = null;
+                homeworkObject.isPaused = false;
+                clearInterval(liveUpdateTimer);
+                ManageLocalStorage.update();
+                pauseHomeworkButton.value = "Pause";
+                pauseHomeworkButton.style.display = "none";
                 break;
         }
         console.log(homeworkObject.timeUnpaused, homeworkObject.timePaused, Date.now());
     });
     // Start Button Functionality
     startHomeworkButton.addEventListener("click", () => {
-        if (homeworkStarted == false && startHomeworkButton.value != "Archive") {
-            homeworkStarted = true;
-            homeworkObject.timeStarted = Date.now();
-            ManageLocalStorage.update();
-            startHomeworkButton.value = "End";
-            timeStarted.style.display = "block";
-            pauseHomeworkButton.style.display = "inline-block";
-        }
-        else if (homeworkStarted == true && startHomeworkButton.value != "Archive") {
-            homeworkObject.timeEnded = Date.now();
-            clearInterval(liveUpdateTimer);
-            ManageLocalStorage.update();
-            timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeEnded - homeworkObject.timeStarted)}`;
-            startHomeworkButton.value = "Archive";
-            pauseHomeworkButton.value = "Reset";
-        }
-        else if (startHomeworkButton.value == "Archive") {
-            ManageLocalStorage.deleteListItem(homeworkObject);
-            archivedHomeworks.push(homeworkObject);
-            listItem.classList.add("delete-animation");
-            detailsDialog.close();
-            setTimeout(() => listItem.remove(), 150);
-            ManageLocalStorage.update();
+        switch (startHomeworkButton.value) {
+            case "Start":
+                homeworkStarted = true;
+                homeworkObject.timeStarted = Date.now();
+                homeworkObject.isPaused = false;
+                ManageLocalStorage.update();
+                timeStarted.innerText = `Started ${convertToTime(homeworkObject.timeUsed - homeworkObject.pauseInterval)} ago`;
+                startHomeworkButton.value = "End";
+                timeStarted.style.display = "block";
+                pauseHomeworkButton.style.display = "inline-block";
+                setLiveUpdateTimer();
+                break;
+            case "End":
+                if (homeworkObject.isPaused) {
+                    homeworkObject.timeUnpaused = Date.now();
+                    homeworkObject.pauseInterval += homeworkObject.timeUnpaused - homeworkObject.timePaused;
+                    homeworkObject.isPaused = false;
+                }
+                homeworkObject.timeEnded = Date.now();
+                homeworkObject.timeUsed = homeworkObject.timeEnded - homeworkObject.timeStarted - homeworkObject.pauseInterval;
+                clearInterval(liveUpdateTimer);
+                ManageLocalStorage.update();
+                timeStarted.innerText = `Finished homework in ${convertToTime(homeworkObject.timeUsed)}`;
+                startHomeworkButton.value = "Archive";
+                pauseHomeworkButton.value = "Reset";
+                break;
+            case "Archive":
+                ManageLocalStorage.deleteListItem(homeworkObject);
+                archivedHomeworks.push(homeworkObject);
+                listItem.classList.add("delete-animation");
+                detailsDialog.close();
+                setTimeout(() => listItem.remove(), 150);
+                ManageLocalStorage.update();
+                break;
+            default:
+                console.error("Start Button has an invalid value");
+                break;
         }
     });
     // Details Display Management
@@ -384,27 +413,40 @@ function addListItem(homeworkObject) {
             ManageLocalStorage.replace(index, homeworkObject);
         });
     }
+    let liveUpdateTimer = null;
     //updating time
-    const liveUpdateTimer = setInterval(() => {
-        overdueUpdate();
-        homeworkObject.timeUsed = Date.now() - homeworkObject.timeStarted;
-        ManageLocalStorage.update();
-        if (homeworkObject.isPaused) {
-            timeStarted.innerText = `Paused at ${convertToTime(cachedTime)}`;
+    function setLiveUpdateTimer() {
+        // Clear the existing interval if it's already running
+        if (liveUpdateTimer !== null) {
+            clearInterval(liveUpdateTimer);
         }
-        else {
-            timeStarted.innerText = `Started ${convertToTime(homeworkObject.timeUsed - homeworkObject.pauseInterval)} ago`;
-        }
-    }, 500);
+        // Reinitialize the interval
+        liveUpdateTimer = setInterval(() => {
+            overdueUpdate();
+            homeworkObject.timeUsed = Date.now() - homeworkObject.timeStarted;
+            if (homeworkObject.pauseInterval === undefined)
+                homeworkObject.pauseInterval = 0;
+            ManageLocalStorage.update();
+            if (homeworkObject.isPaused) {
+                timeStarted.innerText = `Paused at ${convertToTime(homeworkObject.cachedTime)}`;
+            }
+            else {
+                timeStarted.innerText = `Started ${convertToTime(homeworkObject.timeUsed - homeworkObject.pauseInterval)} ago`;
+            }
+        }, 500);
+    }
     setInterval(notifyDue, 86400000);
+    let isOverdue = false;
     function overdueUpdate() {
         if (Date.now() >= Date.parse(homeworkObject.dueDate) && listItem.classList.contains("listItemOverdue") == false) {
             displayDiv.classList.add("listItemOverdue");
             dueDate.classList.add("errorText");
+            isOverdue = true;
         }
         else if (Date.now() < Date.parse(homeworkObject.dueDate)) {
             displayDiv.classList.remove("listItemOverdue");
             dueDate.classList.remove("errorText");
+            isOverdue = false;
         }
     }
     function notifyDue() {
@@ -438,6 +480,61 @@ function addListItem(homeworkObject) {
         displayDiv.replaceChildren();
         existingElements.forEach(x => displayDiv.appendChild(x));
     }
+    displayDiv.addEventListener("mousedown", (e) => {
+        const bounding = listItem.getBoundingClientRect();
+        const relativeX = e.x - bounding.x;
+        const relativeY = e.y - bounding.y;
+        if (relativeX < 0 || relativeY < 0 || relativeX > bounding.width || relativeY > bounding.height)
+            return;
+        document.addEventListener("mouseup", mouseupmove);
+        document.addEventListener("mousemove", mousemove);
+        function mouseupmove(e) {
+            document.removeEventListener("mousemove", mousemove);
+            phantomElement.remove();
+            function findNewIndex() {
+                let coordY = Math.ceil((e.y - document.getElementById("navbar").getBoundingClientRect().height) / bounding.height);
+                let coordX = Math.ceil(e.x / bounding.width);
+                let listInY = Math.floor(window.innerWidth / bounding.width);
+                return ((coordY - 1) * listInY) + coordX - 1;
+            }
+            const newIndex = findNewIndex();
+            function findElementWithOrder(num) {
+                const elementWithOrder = Array.from(document.querySelectorAll('.listItem')).find(el => {
+                    const orderStyle = window.getComputedStyle(el).order;
+                    return Number(orderStyle) === num;
+                });
+                return elementWithOrder;
+            }
+            if (findElementWithOrder(newIndex) == null)
+                return;
+            findElementWithOrder(newIndex).style.order = listItem.style.order;
+            findElementWithOrder(parseInt(listItem.style.order)).style.order = newIndex.toString();
+            function swapElements(array, index1, index2) {
+                array[index1] = array.splice(index2, 1, array[index1])[0];
+                return array;
+            }
+            ;
+            index = listContents.indexOf(homeworkObject);
+            swapElements(listContents, index, newIndex);
+            ManageLocalStorage.update();
+            document.removeEventListener("mouseup", mouseupmove);
+        }
+        const initPosition = {
+            x: e.x,
+            y: e.y
+        };
+        const phantomElement = addElement("div");
+        phantomElement.style.opacity = "0.3";
+        phantomElement.classList.add("phantomDisplay");
+        if (isOverdue)
+            phantomElement.classList.add("listItemOverdue");
+        function mousemove(e) {
+            document.body.appendChild(phantomElement);
+            phantomElement.style.position = "absolute";
+            phantomElement.style.left = `${bounding.x + e.x - initPosition.x}px`;
+            phantomElement.style.top = `${bounding.y + e.y - initPosition.y}px`;
+        }
+    });
 }
 quickAddButton.addEventListener("click", () => {
     if (currentSchedule.schedule != undefined) {

@@ -56,6 +56,10 @@ body>* {
     scale: 1 1;
 }
 
+.listItem {
+    transition: order none !important;
+}
+
 /*   IS-OPEN STATE   */
 dialog[open] {
     transition-property: all;

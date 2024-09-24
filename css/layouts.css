@@ -49,14 +49,16 @@
 .detailsDisplay,
 .inputForm,
 .settingsDisplay,
-.themesDisplay {
+.themesDisplay,
+.phantomDisplay {
     background: var(--primary);
     border-radius: calc((2vh + 2vw)/2);
     padding: 0 10px;
     overflow: auto;
 }
 
-.listItemDisplay {
+.listItemDisplay,
+.phantomDisplay {
     height: max(250px, 20vh);
     max-height: 425px;
     width: var(--listItem-width);

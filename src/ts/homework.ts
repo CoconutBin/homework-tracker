@@ -26,6 +26,7 @@ class Homework {
     timeUnpaused: number
     isPaused: boolean
     pauseInterval: number
+    cachedTime: number
 
     constructor(subject, isGroupWork?, dueDate?, points?, description?) {
         this.subjectName = subject.name ?? undefined
@@ -87,7 +88,8 @@ class Homework {
             timePaused: this.timePaused,
             timeUnpaused: this.timeUnpaused,
             isPaused: this.isPaused,
-            pauseInterval: this.pauseInterval
+            pauseInterval: this.pauseInterval,
+            cachedTime: this.cachedTime,
         }
     }
 
@@ -104,6 +106,7 @@ class Homework {
         this.timeUnpaused = obj.timeUnpaused
         this.isPaused = obj.isPaused
         this.pauseInterval = obj.pauseInterval
+        this.cachedTime = obj.cachedTime
     }
 
     set subject(obj) {
