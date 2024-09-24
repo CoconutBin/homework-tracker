@@ -267,6 +267,7 @@ customThemes.addEventListener("change", () => {
     if (settings.customThemes) {
         defaultDarkThemeSetting.disabled = true
         defaultLightThemeSetting.disabled = true
+        chooseTheme.disabled = true
         pureBlackDarkMode.disabled = true
         themeButton.textContent = "palette"
         themeButton.title = "Cutomize Theme"
@@ -304,6 +305,7 @@ customThemes.addEventListener("change", () => {
         themeButton.title = "Dark/Light Theme"
         defaultDarkThemeSetting.disabled = false
         defaultLightThemeSetting.disabled = false
+        chooseTheme.disabled = false
         pureBlackDarkMode.disabled = false
     }
 })

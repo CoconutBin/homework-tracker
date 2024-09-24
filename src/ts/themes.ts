@@ -151,15 +151,20 @@ if (settings.customThemes == true && settings.customThemeColor != undefined) {
     Themes['custom'].CSSColors = settings.customThemeColor
 }
 
+chooseTheme.value = Themes[currentTheme].themeType == 'none'? 'system' : Themes[currentTheme].themeType
+
 themeButton.addEventListener('click', () => {
     if (settings.customThemes == false) {
         if (currentTheme == settings.defaultThemes.light) {
+            chooseTheme.value = 'dark'
             currentTheme = settings.defaultThemes.dark;
             themeButton.innerText = "dark_mode"
         } else {
+            chooseTheme.value = 'light'
             currentTheme = settings.defaultThemes.light
             themeButton.innerText = "light_mode"
         }
+        localStorage.setItem("settings", JSON.stringify(settings.settingsObject))
         localStorage.setItem("currentTheme", currentTheme)
         Themes[currentTheme].setCSS()
     } else {

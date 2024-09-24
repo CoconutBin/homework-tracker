@@ -50,10 +50,10 @@
             </select><br>
             <div style="display: inline-block" id="sortArrangeBlock">
                 <label for="sortArrange">Arrange from:</label>
-            <select name="sortArrange" id="sortArrange">
-                <option value="closefar">Closest to Farthest</option>
-                <option value="farclose">Farthest to Closest</option>
-            </select>
+                <select name="sortArrange" id="sortArrange">
+                    <option value="closefar">Closest to Farthest</option>
+                    <option value="farclose">Farthest to Closest</option>
+                </select>
             </div><br>
             <button id="sortButton">Sort</button>
             <button id="sortCloseButton">Close</button>
@@ -74,18 +74,15 @@
             </label><br>
             <label for="chooseTheme">Theme:
                 <select name="chooseTheme" id="chooseTheme">
-                <option value="system">System</option>
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
-            </select></label><br>
-            <label for="noGradientNavbars">No Gradient Navbars</label>
-            <input type="checkbox" name="noGradientNavbars" id="noGradientNavbars">
-            </label><br><br>
+                    <option value="system">System</option>
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select></label><br>
             <label for="pureBlackDarkMode">Pure black background for dark mode</label>
             <input type="checkbox" name="pureBlackDarkMode" id="pureBlackDarkMode">
-            </label><br><br>
-            <label for="useSystemTheme">Use System Theme</label>
-            <input type="checkbox" name="useSystemTheme" id="useSystemTheme">
+            </label><br>
+            <label for="noGradientNavbars">No Gradient Navbars</label>
+            <input type="checkbox" name="noGradientNavbars" id="noGradientNavbars">
             </label><br>
             <p class="settingsCategory">UI</p>
             <label for="rightToLeft">Right-to-Left Layout</label>
@@ -103,25 +100,25 @@
             <button id="aboutButton">About</button>
         </div>
     </dialog>
-    <dialog id="customThemesScreen" >
+    <dialog id="customThemesScreen">
         <div class="themesDisplay">
             <label for="inputThemeText">Theme Text Color: </label><input type="color" name="inputThemeText"
-            id="inputThemeText"><br>
-        <label for="inputThemeBackground">Theme Background Color: </label><input type="color"
-            name="inputThemeBackground" id="inputThemeBackground"><br>
-        <label for="inputThemePrimary">Theme Primary Color: </label><input type="color" name="inputThemePrimary"
-            id="inputThemePrimary"><br>
-        <label for="inputThemeSecondary">Theme Secondary Color: </label><input type="color"
-            name="inputThemeSecondary" id="inputThemeSecondary"><br>
-        <label for="inputThemeAccent">Theme Accent Color: </label><input type="color" name="inputThemeAccent"
-            id="inputThemeAccent"><br><br>
-        <label for="themeTemplates"> Theme Template:
-            <select name="themeTemplates" id="themeTemplates">
-            </select></label>
-        </select><br>
+                id="inputThemeText"><br>
+            <label for="inputThemeBackground">Theme Background Color: </label><input type="color"
+                name="inputThemeBackground" id="inputThemeBackground"><br>
+            <label for="inputThemePrimary">Theme Primary Color: </label><input type="color" name="inputThemePrimary"
+                id="inputThemePrimary"><br>
+            <label for="inputThemeSecondary">Theme Secondary Color: </label><input type="color"
+                name="inputThemeSecondary" id="inputThemeSecondary"><br>
+            <label for="inputThemeAccent">Theme Accent Color: </label><input type="color" name="inputThemeAccent"
+                id="inputThemeAccent"><br><br>
+            <label for="themeTemplates"> Theme Template:
+                <select name="themeTemplates" id="themeTemplates">
+                </select></label>
+            </select><br>
 
-        <br><button id="themesCloseButton">Close</button>
-        <button id="themesResetButton">Reset Custom Theme</button>
+            <br><button id="themesCloseButton">Close</button>
+            <button id="themesResetButton">Reset Custom Theme</button>
         </div>
     </dialog>
     <dialog id="aboutContainer">
@@ -132,20 +129,20 @@
             <button id="aboutCloseButton">Close</button>
         </div>
     </dialog>
-        <div id="analyticsDiv" class="analyticsDiv">
-            <div class="analyticsBlock">
-                <p class="analyticsTitle">Total Archived Homeworks:</p>
-                <p id="archiveCount">0</p>
-            </div><br>
-            <div class="analyticsBlock">
-                <p class="analyticsTitle">Average Time Taken:</p>
-                <p id="archiveTime">0d 0h 0s</p>
-            </div>
-            <div class="analyticsBlock">
-                <p class="analyticsTitle">Group Work:Individual Work</p>
-                <p id="archiveGroupRatio">1:1</p>
-            </div>
+    <div id="analyticsDiv" class="analyticsDiv">
+        <div class="analyticsBlock">
+            <p class="analyticsTitle">Total Archived Homeworks:</p>
+            <p id="archiveCount">0</p>
+        </div><br>
+        <div class="analyticsBlock">
+            <p class="analyticsTitle">Average Time Taken:</p>
+            <p id="archiveTime">0d 0h 0s</p>
         </div>
+        <div class="analyticsBlock">
+            <p class="analyticsTitle">Group Work:Individual Work</p>
+            <p id="archiveGroupRatio">1:1</p>
+        </div>
+    </div>
 </body>
 <script src="./src/js/localStorage.js"></script>
 <script src="./src/js/homework.js"></script>

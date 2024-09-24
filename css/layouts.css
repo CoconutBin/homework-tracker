@@ -82,12 +82,8 @@ p {
 
 p.settingsCategory{
     margin: 8px 0 !important;
+    padding: 0 5px;
     font-weight: bold;
-}
-
-.settingsDisplay p{
-    margin: 5px 0 !important;
-    padding: 0 5px !important;
 }
 
 #addListItemButton div {
@@ -113,7 +109,7 @@ dialog::backdrop {
 .detailsDisplay h2,
 .settingsDisplay p,
 .settingsDisplay label {
-    padding: 5px;
+    padding: 4px;
     border-radius: 10px;
 }
 
