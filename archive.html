@@ -42,7 +42,7 @@
     </div>
     <dialog id="sortContainer">
         <div id="sortScreen" class="settingsDisplay">
-            <p class="settingsCategory">Sort By</p>
+            <p class="settingsCategory" autofocus>Sort By</p>
             <label for="sortType">Sort Type:</label>
             <select name="sortType" id="sortType">
                 <option value="subjectName">Subject Name</option>
@@ -61,7 +61,7 @@
     </dialog>
     <dialog id="settingsContainer">
         <div id="settingsScreen" class="settingsDisplay">
-            <p class="settingsCategory">Themes</p>
+            <p class="settingsCategory" autofocus>Themes</p>
             <label for="customThemes">Custom Theming</label>
             <input type="checkbox" name="customThemes" id="customThemes"><br>
             <label for="defaultLight">Default Light Theme:
@@ -117,13 +117,13 @@
                 </select></label>
             </select><br>
 
-            <br><button id="themesCloseButton">Close</button>
+            <br><button id="themesCloseButton" autofocus>Close</button>
             <button id="themesResetButton">Reset Custom Theme</button>
         </div>
     </dialog>
     <dialog id="aboutContainer">
         <div id="aboutScreen" class="settingsDisplay">
-            <p class="settingsCategory">About Homework Tracker (wrkd.)</p><br>
+            <p class="settingsCategory" autofocus>About Homework Tracker (wrkd.)</p><br>
             <p id="version">Version: 1.0.0</p>
             <p><a id="source" href="https://www.github.com/coconutbin/homework-tracker">View Source (Github)</a></p><br>
             <button id="aboutCloseButton">Close</button>

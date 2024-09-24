@@ -88,6 +88,7 @@ inputDialog.addEventListener(
                 (inputs as HTMLInputElement).checked = false
             }
             addListItem(inputHomework.homeworkObject)
+            document.getElementById("noHomeworksMessage").style.display = "none"
             inputDialog.close()
         }
     }
