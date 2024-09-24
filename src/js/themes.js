@@ -40,6 +40,7 @@ chooseTheme.addEventListener("change", () => {
                     currentTheme = settings.defaultThemes.light;
                     themeButton.innerText = "light_mode";
                 }
+                Themes[currentTheme].setCSS();
                 break;
         }
     }
