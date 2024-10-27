@@ -69,3 +69,6 @@ function convertToTime(time: number): string {
     return returnedTime.trim();
 }
 
+function openWhiteboard(){
+    window.open("./whiteboard.html", "Whiteboard", "popup");
+}

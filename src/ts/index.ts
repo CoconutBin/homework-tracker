@@ -640,7 +640,11 @@ quickAddButton.addEventListener("click", () => {
             inputDialog.close()
         } else alert("No Subject in Schedule Found")
     } else{
-        alert("Quick Add requires setup")
+        if(confirm("Quick Add requires setup, would you like to do that now?")){
+            inputDialog.close()
+            quickAddDialog.showModal()
+            quickAddDiv.style.display = "block"
+        }
     }
     })
 

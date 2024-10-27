@@ -10,6 +10,11 @@ const toSortButton = document.getElementById('sortButton');
 if (sortType.value != 'dueDate') {
     sortArrangeBlock.style.display = 'none';
 }
+if (JSON.parse(localStorage.getItem("settings")).customThemes) {
+    let customModernConvert = JSON.parse(localStorage.getItem("settings"));
+    customModernConvert.themeType = 'custom';
+    localStorage.setItem("settings", JSON.stringify(customModernConvert));
+}
 sortButton.addEventListener("click", () => {
     sortDialog.showModal();
 });
@@ -81,7 +86,6 @@ sortType.addEventListener("change", () => {
 class Settings {
     defaultThemes;
     pureBlackDarkMode;
-    customThemes;
     customThemeColor;
     rightToLeft;
     subjectNameClick;
@@ -99,7 +103,6 @@ class Settings {
         this.noGradientNavbars = false;
         this.pureBlackDarkMode = false;
         this.rightToLeft = false;
-        this.customThemes = false;
         this.customThemeColor = {};
         this.subjectNameClick = "";
         this.analytics = false;
@@ -117,7 +120,6 @@ class Settings {
     get settingsObject() {
         return {
             defaultThemes: this.defaultThemes,
-            customThemes: this.customThemes,
             customThemeColor: this.customThemeColor,
             pureBlackDarkMode: this.pureBlackDarkMode,
             rightToLeft: this.rightToLeft,
@@ -132,7 +134,6 @@ class Settings {
     }
     set settingsObject(obj) {
         this.customThemeColor = obj.customThemeColor;
-        this.customThemes = obj.customThemes;
         this.defaultThemes = obj.defaultThemes;
         this.rightToLeft = obj.rightToLeft;
         this.subjectNameClick = obj.subjectNameClick;
@@ -156,7 +157,6 @@ const rightToLeft = document.getElementById("rightToLeft");
 const noGradientNavbars = document.getElementById("noGradientNavbars");
 const subjectNameClick = document.getElementById("subjectNameClick");
 const pureBlackDarkMode = document.getElementById('pureBlackDarkMode');
-const customThemes = document.getElementById('customThemes');
 const analytics = document.getElementById('analytics');
 const analyticsDiv = document.getElementById("analyticsDiv");
 const quickAddSetup = document.getElementById("quickAddSetup");
@@ -233,54 +233,6 @@ pureBlackDarkMode.addEventListener("change", () => {
     settings.pureBlackDarkMode = pureBlackDarkMode.checked;
     localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
     Themes[currentTheme].setCSS();
-});
-customThemes.addEventListener("change", () => {
-    settings.customThemes = customThemes.checked;
-    localStorage.setItem("settings", JSON.stringify(settings.settingsObject));
-    if (settings.customThemes) {
-        defaultDarkThemeSetting.disabled = true;
-        defaultLightThemeSetting.disabled = true;
-        chooseTheme.disabled = true;
-        pureBlackDarkMode.disabled = true;
-        themeButton.textContent = "palette";
-        themeButton.title = "Cutomize Theme";
-        if (settings.customThemeColor == undefined || Object.values(settings.customThemeColor).length == 0) {
-            console.log(currentTheme);
-            settings.customThemeColor = {
-                text: Themes[currentTheme].textColor,
-                background: Themes[currentTheme].backgroundColor,
-                primary: Themes[currentTheme].primaryColor,
-                secondary: Themes[currentTheme].secondaryColor,
-                accent: Themes[currentTheme].accentColor
-            };
-        }
-        Themes['custom'].CSSColors = settings.customThemeColor;
-        Themes['custom'].setCSS();
-    }
-    else {
-        function themeDeterminer(hexcolor) {
-            let splitHex = hexcolor.match(/[0-9a-f]{2}/gi);
-            if (((parseInt(splitHex[0], 16) + parseInt(splitHex[1], 16) + parseInt(splitHex[2], 16)) / 3) < 30) {
-                return "dark";
-            }
-            else {
-                return "light";
-            }
-        }
-        if (themeDeterminer(settings.customThemeColor.background) == "light") {
-            themeButton.textContent = "light_mode";
-            Themes[settings.defaultThemes.light].setCSS();
-        }
-        else {
-            themeButton.textContent = "dark_mode";
-            Themes[settings.defaultThemes.dark].setCSS();
-        }
-        themeButton.title = "Dark/Light Theme";
-        defaultDarkThemeSetting.disabled = false;
-        defaultLightThemeSetting.disabled = false;
-        chooseTheme.disabled = false;
-        pureBlackDarkMode.disabled = false;
-    }
 });
 noGradientNavbars.addEventListener("change", () => {
     settings.noGradientNavbars = noGradientNavbars.checked;
@@ -362,27 +314,27 @@ if (localStorage.getItem("settings") != null) {
     }
     settings.settingsObject = JSON.parse(localStorage.getItem("settings"));
 }
-try {
+function updateVisual() {
     swappableHomeworks.checked = settings.swappableHomeworks;
     rightToLeft.checked = settings.rightToLeft;
     systemFont.checked = settings.systemFont;
     chooseTheme.value = settings.themeType;
     noGradientNavbars.checked = settings.noGradientNavbars;
     allowNotifications.checked = settings.allowNotifications;
-    if (customThemes != undefined) {
-        customThemes.checked = settings.customThemes;
-    }
     if (subjectNameClick != undefined)
         subjectNameClick.value = settings.subjectNameClick;
     if (pureBlackDarkMode != undefined)
         pureBlackDarkMode.checked = settings.pureBlackDarkMode;
-    if (settings.customThemes) {
+    if (settings.themeType == "custom") {
         defaultDarkThemeSetting.disabled = true;
         defaultLightThemeSetting.disabled = true;
         pureBlackDarkMode.disabled = true;
     }
     if (analytics != undefined)
         analytics.checked = settings.analytics;
+}
+try {
+    updateVisual();
 }
 catch (e) {
     console.error(e);
