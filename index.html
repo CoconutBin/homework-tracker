@@ -29,7 +29,8 @@
         <p id="logo">Homework Tracker</p>
         <div style="display: flex">
             <a id="navbarButtons">
-                <a class="material-symbols-rounded clickable" id="sort">sort</a>
+                <a class="material-symbols-rounded clickable" id="whiteboard" title="Whiteboard" onclick="openWhiteboard()">draw</a>
+                <a class="material-symbols-rounded clickable" id="sort" title="Sort">sort</a>
                 <a class="material-symbols-rounded clickable" id="clearList" title="Clear List"
                     onclick="clearList()">delete_forever</a>
                 <a class="material-symbols-rounded clickable" href="./archive.html"
@@ -74,8 +75,13 @@
                 <input type="checkbox" id="swappableHomeworks"></label>
             </label><br>
             <p class="settingsCategory">Themes</p>
-            <label for="customThemes">Custom Theming</label>
-            <input type="checkbox" name="customThemes" id="customThemes"><br>
+            <label for="chooseTheme">Theme:
+                <select name="chooseTheme" id="chooseTheme">
+                    <option value="system">System</option>
+                    <option value="custom">Custom</option>
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+            </select></label><br>
             <label for="defaultLight">Default Light Theme:
                 <select name="defaultLight" id="defaultLight">
                 </select>
@@ -84,12 +90,6 @@
                 <select name="defaultDark" id="defaultDark">
                 </select>
             </label><br>
-            <label for="chooseTheme">Theme:
-                <select name="chooseTheme" id="chooseTheme">
-                <option value="system">System</option>
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
-            </select></label><br>
             <label for="pureBlackDarkMode">Pure black background for dark mode</label>
             <input type="checkbox" name="pureBlackDarkMode" id="pureBlackDarkMode">
             </label><br>
