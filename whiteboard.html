@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Homework Tracker (Whiteboard)</title>
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#aac6ab" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#33483b" />
+        <meta name="google-site-verification" content="eQDWmn2VePY5CyzH0gBsQCbtikLKTIG0EXuixg4D45w" />
+        <link rel="apple-touch-icon" type="image/png" href="icons/icon.png">
+        <link rel="icon" type="image/png" href="icons/icon.png">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300..800;1,300..800&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="manifest" href="./manifest.json" />
+        <link rel="stylesheet" href="./css/base.css">
+        <link rel="stylesheet" href="./css/layouts.css">
+        <link rel="stylesheet" href="./css/components.css">
+        <link rel="stylesheet" href="./css/utilities.css">
+        <link rel="stylesheet" href="./css/mediaScaling.css">
+        <link rel="stylesheet" href="./css/transitions.css">
+    </head>
+    <body>
+        <canvas id="canvas">
+
+        </canvas>
+    </body>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+
+        let drawing = false
+        let posX = 0
+        let posY = 0
+
+        canvas.addEventListener('mousedown', (e) => {
+            init(e)
+            drawing = true
+        })
+
+        canvas.addEventListener('mousemove', (e) => {
+            draw(e)
+        })
+
+        canvas.addEventListener('mouseup', (e) => {
+            drawing = false
+        })
+
+        function init(e){
+            posX = e.x
+            posY = e.y
+        }
+
+        function draw(e){
+            if(drawing){
+                context.beginPath();
+                context.moveTo(posX, posY);
+                context.lineTo(e.x, e.y);
+                context.stroke();
+                context.closePath();
+                posX = e.x
+                posY = e.y
+            }
+        }
+    </script>
+</html>
