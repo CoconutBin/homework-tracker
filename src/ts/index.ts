@@ -583,10 +583,18 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         const relativeX = e.x - bounding.x
         const relativeY = e.y - bounding.y
         
-        if(relativeX < 0 || relativeY < 0 || relativeX > bounding.width || relativeY > bounding.height || !settings.swappableHomeworks || window.innerWidth < 500) return
+        if(relativeX < 0 || relativeY < 0 || relativeX > bounding.width || relativeY > bounding.height || !settings.swappableHomeworks) return
     
+        document.addEventListener("touchstart", touchmanage)
+        document.addEventListener("touchmove", touchmanage)
         document.addEventListener("mouseup", mouseupmove)
         document.addEventListener("mousemove", mousemove)
+
+        function touchmanage(){
+            document.removeEventListener("mousemove", mousemove)
+            document.removeEventListener("mouseup", mouseupmove)
+            console.log("touch dealt with")
+        }
         
         function mouseupmove(e){
 
@@ -638,10 +646,8 @@ function addListItem(homeworkObject: Homework["homeworkObject"]): void {
         const phantomElement = addElement("div")
         phantomElement.style.opacity = "0.3"
         phantomElement.classList.add("phantomDisplay")
+        if(window.innerWidth > 1440) phantomElement.style.width = `${(window.innerWidth/Math.round(window.innerWidth/375))-40}px`
         if(isOverdue) phantomElement.classList.add("listItemOverdue")
-        
-
-
 
         function mousemove(e: MouseEvent){
             document.body.appendChild(phantomElement)
