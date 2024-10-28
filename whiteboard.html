@@ -35,6 +35,11 @@
         canvas.width = width;
         canvas.height = height;
 
+        window.onresize = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
         let drawing = false
         let posX = 0
         let posY = 0
