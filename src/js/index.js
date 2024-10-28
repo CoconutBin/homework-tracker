@@ -6,6 +6,7 @@ const inputIsImportant = document.getElementById("inputIsImportant");
 const inputDueDate = document.getElementById("inputDueDate");
 const inputPoints = document.getElementById("inputPoints");
 const inputDescription = document.getElementById("inputDescription");
+const inputSubmit = document.getElementById("inputSubmit");
 const allInputs = [inputSubject, inputSubjectID, inputSubjectType, inputIsImportant, inputIsGroupWork, inputDueDate, inputPoints, inputDescription];
 const inputDialog = document.getElementById("inputDialog");
 const listContents = [];
@@ -36,7 +37,8 @@ inputDialog.addEventListener("click", function (e) {
         inputDialog.close();
     }
 });
-document.getElementById("inputFormCloseButton").addEventListener("click", function () {
+document.getElementById("inputFormCloseButton").addEventListener("click", function (event) {
+    event.preventDefault();
     inputDialog.close();
 });
 /**
@@ -62,7 +64,7 @@ function inputHandler(element) {
 }
 inputDialog.addEventListener("submit", function (event) {
     event.preventDefault();
-    if (inputSubject.value) {
+    if (inputSubject.value && event.target == inputSubmit) {
         const inputHomework = new Homework({
             name: inputHandler(inputSubject),
             id: inputHandler(inputSubjectID),
@@ -81,6 +83,41 @@ inputDialog.addEventListener("submit", function (event) {
             console.error(e);
         }
         inputDialog.close();
+    }
+});
+quickAddButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (currentSchedule.schedule != undefined) {
+        if (currentSchedule.subjects.length > 0) {
+            switch (currentSchedule.scheduleType) {
+                case "id":
+                    console.log(currentSchedule.subjects.filter(x => x.id = currentSchedule.currentSubject)[0]);
+                    break;
+                case "name":
+                    console.log(currentSchedule.subjects.filter(x => x.name = currentSchedule.currentSubject)[0]);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (currentSchedule.currentSubject != undefined && currentSchedule.currentSubject.length > 0) {
+            const inputHomework = new Homework({
+                name: currentSchedule.currentSubject,
+                id: null,
+                type: null
+            });
+            addListItem(inputHomework.homeworkObject);
+            inputDialog.close();
+        }
+        else
+            alert("No Subject in Schedule Found");
+    }
+    else {
+        if (confirm("Quick Add requires setup, would you like to do that now?")) {
+            inputDialog.close();
+            quickAddDialog.showModal();
+            quickAddDiv.style.display = "block";
+        }
     }
 });
 /**
@@ -543,40 +580,6 @@ function addListItem(homeworkObject) {
         }
     });
 }
-quickAddButton.addEventListener("click", () => {
-    if (currentSchedule.schedule != undefined) {
-        if (currentSchedule.subjects.length > 0) {
-            switch (currentSchedule.scheduleType) {
-                case "id":
-                    console.log(currentSchedule.subjects.filter(x => x.id = currentSchedule.currentSubject)[0]);
-                    break;
-                case "name":
-                    console.log(currentSchedule.subjects.filter(x => x.name = currentSchedule.currentSubject)[0]);
-                    break;
-                default:
-                    break;
-            }
-        }
-        else if (currentSchedule.currentSubject != undefined && currentSchedule.currentSubject.length > 0) {
-            const inputHomework = new Homework({
-                name: currentSchedule.currentSubject,
-                id: null,
-                type: null
-            });
-            addListItem(inputHomework.homeworkObject);
-            inputDialog.close();
-        }
-        else
-            alert("No Subject in Schedule Found");
-    }
-    else {
-        if (confirm("Quick Add requires setup, would you like to do that now?")) {
-            inputDialog.close();
-            quickAddDialog.showModal();
-            quickAddDiv.style.display = "block";
-        }
-    }
-});
 function clearList() {
     if (confirm("Are you sure you want to clear the list?")) {
         listContents.splice(0, listContents.length);
